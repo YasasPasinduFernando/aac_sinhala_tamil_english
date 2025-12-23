@@ -10,6 +10,7 @@ class StorageService {
   static const String _keyHiddenCategories = 'hidden_categories';
   static const String _keyCustomWords = 'custom_words';
   static const String _keyQuickAccessWords = 'quick_access_words';
+  static const String _keyKidMode = 'kid_mode';
 
   static Future<bool> isRegistered() async {
     final prefs = await SharedPreferences.getInstance();
@@ -80,5 +81,15 @@ class StorageService {
       List<Map<String, dynamic>> words) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyQuickAccessWords, jsonEncode(words));
+  }
+
+  static Future<bool> isKidMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyKidMode) ?? true;
+  }
+
+  static Future<void> setKidMode(bool kidMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyKidMode, kidMode);
   }
 }
