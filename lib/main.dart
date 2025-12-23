@@ -22,17 +22,26 @@ class AACApp extends StatefulWidget {
 
 class _AACAppState extends State<AACApp> {
   ThemeMode _themeMode = ThemeMode.light;
+  late ThemeData _lightTheme;
+  late ThemeData _darkTheme;
+  bool _themesLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    _loadThemeMode();
+    _loadThemes();
   }
 
-  Future<void> _loadThemeMode() async {
+  Future<void> _loadThemes() async {
     final isDark = await ThemeService.isDarkMode();
+    final lightTheme = await ThemeService.buildLightTheme();
+    final darkTheme = await ThemeService.buildDarkTheme();
+
     setState(() {
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+      _lightTheme = lightTheme;
+      _darkTheme = darkTheme;
+      _themesLoaded = true;
     });
   }
 
@@ -43,24 +52,44 @@ class _AACAppState extends State<AACApp> {
     ThemeService.setDarkMode(isDark);
   }
 
+  void _updateThemeColor(String colorName) async {
+    final lightTheme = await ThemeService.buildLightTheme();
+    final darkTheme = await ThemeService.buildDarkTheme();
+
+    setState(() {
+      _lightTheme = lightTheme;
+      _darkTheme = darkTheme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_themesLoaded) {
+      return MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('AAC කථා කරමු'),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       title: 'AAC Sinhala Tamil English',
       themeMode: _themeMode,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        fontFamily: 'Noto Sans',
+      theme: _lightTheme,
+      darkTheme: _darkTheme,
+      home: SplashScreen(
+        onThemeChanged: _toggleTheme,
+        onColorChanged: _updateThemeColor,
       ),
-      darkTheme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        fontFamily: 'Noto Sans',
-        scaffoldBackgroundColor: Colors.grey[900],
-        cardColor: Colors.grey[850],
-      ),
-      home: SplashScreen(onThemeChanged: _toggleTheme),
       debugShowCheckedModeBanner: false,
     );
   }

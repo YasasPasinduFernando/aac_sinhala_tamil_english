@@ -7,6 +7,8 @@ import '../data/word_data.dart';
 import 'category_screen.dart';
 import 'settings_screen.dart';
 import 'custom_category_screen.dart';
+import 'quick_access_settings_screen.dart';
+import 'theme_settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(bool) onThemeChanged;
@@ -140,6 +142,22 @@ class _HomeScreenState extends State<HomeScreen> {
               );
               if (result == true) _loadCategoryPreferences();
             },
+          ),
+          IconButton(
+            icon: const Icon(Icons.palette),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ThemeSettingsScreen(
+                    onThemeChanged: (colorName) {
+                      // Theme will be updated globally
+                    },
+                  ),
+                ),
+              );
+            },
+            tooltip: 'තේමා',
           ),
         ],
       ),

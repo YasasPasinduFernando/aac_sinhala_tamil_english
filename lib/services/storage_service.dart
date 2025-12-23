@@ -9,6 +9,7 @@ class StorageService {
   static const String _keyPinnedCategories = 'pinned_categories';
   static const String _keyHiddenCategories = 'hidden_categories';
   static const String _keyCustomWords = 'custom_words';
+  static const String _keyQuickAccessWords = 'quick_access_words';
 
   static Future<bool> isRegistered() async {
     final prefs = await SharedPreferences.getInstance();
@@ -66,5 +67,18 @@ class StorageService {
   static Future<void> saveCustomWords(List<Map<String, dynamic>> words) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyCustomWords, jsonEncode(words));
+  }
+
+  static Future<List<Map<String, dynamic>>> getQuickAccessWords() async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString(_keyQuickAccessWords);
+    if (json == null) return [];
+    return List<Map<String, dynamic>>.from(jsonDecode(json));
+  }
+
+  static Future<void> saveQuickAccessWords(
+      List<Map<String, dynamic>> words) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyQuickAccessWords, jsonEncode(words));
   }
 }

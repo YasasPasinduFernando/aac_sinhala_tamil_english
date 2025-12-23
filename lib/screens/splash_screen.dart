@@ -5,9 +5,13 @@ import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(bool) onThemeChanged;
+  final Function(String)? onColorChanged;
 
-  const SplashScreen({Key? key, required this.onThemeChanged})
-      : super(key: key);
+  const SplashScreen({
+    Key? key,
+    required this.onThemeChanged,
+    this.onColorChanged,
+  }) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
