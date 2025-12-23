@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/storage_service.dart';
 import '../services/payment_service.dart';
+import 'payment_dialog.dart';
 import 'home_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => const PaymentDialog(),
+      builder: (context) => PaymentDialog(),
     );
 
     if (result == true) {

@@ -1,10 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class StorageService {
   static const String _keyIsRegistered = 'is_registered';
   static const String _keyIsPremium = 'is_premium';
   static const String _keyName = 'user_name';
   static const String _keyPhone = 'user_phone';
+  static const String _keyPinnedCategories = 'pinned_categories';
+  static const String _keyHiddenCategories = 'hidden_categories';
+  static const String _keyCustomWords = 'custom_words';
 
   static Future<bool> isRegistered() async {
     final prefs = await SharedPreferences.getInstance();
@@ -26,5 +30,41 @@ class StorageService {
     await prefs.setBool(_keyIsPremium, isPremium);
     await prefs.setString(_keyName, name);
     await prefs.setString(_keyPhone, phone);
+  }
+
+  static Future<List<String>> getPinnedCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString(_keyPinnedCategories);
+    if (json == null) return [];
+    return List<String>.from(jsonDecode(json));
+  }
+
+  static Future<void> savePinnedCategories(List<String> categories) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyPinnedCategories, jsonEncode(categories));
+  }
+
+  static Future<List<String>> getHiddenCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString(_keyHiddenCategories);
+    if (json == null) return [];
+    return List<String>.from(jsonDecode(json));
+  }
+
+  static Future<void> saveHiddenCategories(List<String> categories) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyHiddenCategories, jsonEncode(categories));
+  }
+
+  static Future<List<Map<String, dynamic>>> getCustomWords() async {
+    final prefs = await SharedPreferences.getInstance();
+    final json = prefs.getString(_keyCustomWords);
+    if (json == null) return [];
+    return List<Map<String, dynamic>>.from(jsonDecode(json));
+  }
+
+  static Future<void> saveCustomWords(List<Map<String, dynamic>> words) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyCustomWords, jsonEncode(words));
   }
 }
