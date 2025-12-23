@@ -4,7 +4,10 @@ import 'registration_screen.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final Function(bool) onThemeChanged;
+
+  const SplashScreen({Key? key, required this.onThemeChanged})
+      : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -25,8 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              isRegistered ? const HomeScreen() : const RegistrationScreen(),
+          builder: (context) => isRegistered
+              ? HomeScreen(onThemeChanged: widget.onThemeChanged)
+              : RegistrationScreen(onThemeChanged: widget.onThemeChanged),
         ),
       );
     }
