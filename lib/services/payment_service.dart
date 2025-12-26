@@ -1,16 +1,17 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+// Placeholder payment service. Network/http and json imports removed
+// until a concrete gateway integration is added to avoid unused-import warnings.
 
 class PaymentService {
   // This will integrate with Sri Lankan mobile payment gateways
   // Dialog, Mobitel, Hutch, Airtel APIs
 
   static const String _apiUrl = 'https://api.payment-gateway.lk/v1/payment';
-  static const String _apiKey = 'YOUR_API_KEY_HERE'; // Replace with actual API key
+  static const String _apiKey =
+      'YOUR_API_KEY_HERE'; // Replace with actual API key
 
   /// Initiate mobile payment through Dialog/Mobitel/Hutch/Airtel
-  static Future<bool> initiateMobilePayment(String provider, String phone) async {
+  static Future<bool> initiateMobilePayment(
+      String provider, String phone) async {
     try {
       // TODO: Implement actual payment gateway integration
       // This is a placeholder for now
