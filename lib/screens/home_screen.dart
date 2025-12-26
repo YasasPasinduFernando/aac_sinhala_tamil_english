@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _scrollController = ScrollController(keepScrollOffset: false);
     _scrollController.addListener(_onScroll);
     _initTts();
     _checkPremiumStatus();
@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    flutterTts.stop();
     super.dispose();
   }
 
@@ -491,7 +492,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return AnimatedCategoryCard(
                                 categoryName: category['name'],
                                 emoji: category['emoji'],
-                                description: category['description'],
+                                description: category['desc'],
                                 onTap: () => _openCategory(category['name']),
                                 isGirl: isGirl,
                                 index: index,
