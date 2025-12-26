@@ -33,24 +33,22 @@ class _AnimatedCategoryCardState extends State<AnimatedCategoryCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: Offset(0, 0.5),
+      begin: Offset(0, 0.3),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1).animate(
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    Future.delayed(Duration(milliseconds: widget.index * 100), () {
-      if (mounted) _controller.forward();
-    });
+    if (mounted) _controller.forward();
   }
 
   @override

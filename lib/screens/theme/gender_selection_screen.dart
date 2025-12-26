@@ -23,7 +23,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
