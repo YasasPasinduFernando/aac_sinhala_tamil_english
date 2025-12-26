@@ -36,6 +36,14 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     await ThemeService.setPrimaryColor(colorName);
     setState(() => selectedColor = colorName);
     widget.onThemeChanged(colorName);
+
+    // Add a small delay to ensure the theme is applied before showing feedback
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    // Close the screen to trigger app rebuild
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   Color _getColor(String colorName) {
