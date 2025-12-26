@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
+import 'screens/theme/app_theme.dart';
 import 'services/ads_service.dart';
 
 void main() async {
@@ -15,7 +16,7 @@ class AACApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AAC Sinhala Tamil English',
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Noto Sans'),
+      theme: AppTheme.getThemeData(true),
       home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
     );

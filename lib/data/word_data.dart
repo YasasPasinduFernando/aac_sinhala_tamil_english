@@ -1,5 +1,94 @@
 import 'package:flutter/material.dart';
 
+final Map<String, List<Map<String, dynamic>>> wordData = {
+  'body_parts': [
+    {'si': 'හස', 'ta': 'கை', 'en': 'Hand', 'emoji': '🤚'},
+    {'si': 'පා', 'ta': 'கால்', 'en': 'Leg', 'emoji': '🦵'},
+    {'si': 'මුහුණ', 'ta': 'முகம்', 'en': 'Face', 'emoji': '😊'},
+    {'si': 'ගස', 'ta': 'கண்', 'en': 'Eye', 'emoji': '👁️'},
+    {'si': 'කන්', 'ta': 'காது', 'en': 'Ear', 'emoji': '👂'},
+    {'si': 'නාසය', 'ta': 'மூக்கு', 'en': 'Nose', 'emoji': '👃'},
+    {'si': 'දිව', 'ta': 'பல்', 'en': 'Tooth', 'emoji': '😁'},
+    {'si': 'වാචා', 'ta': 'வாய்', 'en': 'Mouth', 'emoji': '👄'},
+  ],
+  'animals': [
+    {'si': 'බඩවුන්', 'ta': 'பசு', 'en': 'Cow', 'emoji': '🐄'},
+    {'si': 'බිතුන්', 'ta': 'நாய்', 'en': 'Dog', 'emoji': '🐕'},
+    {'si': 'පූසා', 'ta': 'பூனை', 'en': 'Cat', 'emoji': '🐱'},
+    {'si': 'හිටිනැටිනා', 'ta': 'பாம்பு', 'en': 'Snake', 'emoji': '🐍'},
+    {'si': 'වඩුරා', 'ta': 'பட்டம்', 'en': 'Bird', 'emoji': '🐦'},
+    {'si': 'මසුන්', 'ta': 'மீன்', 'en': 'Fish', 'emoji': '🐟'},
+    {'si': 'ගජා', 'ta': 'யானை', 'en': 'Elephant', 'emoji': '🐘'},
+    {'si': 'සිංහ', 'ta': 'சிங்கம்', 'en': 'Lion', 'emoji': '🦁'},
+  ],
+  'fruits_vegatables': [
+    {'si': 'ඇපල්', 'ta': 'ஆப்பிள்', 'en': 'Apple', 'emoji': '🍎'},
+    {'si': 'අරවි', 'ta': 'ஆரஞ்சு', 'en': 'Orange', 'emoji': '🍊'},
+    {'si': 'ගම්මිරිස', 'ta': 'வாழை', 'en': 'Banana', 'emoji': '🍌'},
+    {
+      'si': 'ස්ට්‍රෝබෙරි',
+      'ta': 'ஸ்ட்ராபெரி',
+      'en': 'Strawberry',
+      'emoji': '🍓'
+    },
+    {'si': 'ගෙඩි', 'ta': 'திராட்சை', 'en': 'Grape', 'emoji': '🍇'},
+    {'si': 'පයිනැපල්', 'ta': 'அன்னாசி', 'en': 'Pineapple', 'emoji': '🍍'},
+    {'si': 'වට්ටක්කා', 'ta': 'தர்பூசணி', 'en': 'Watermelon', 'emoji': '🍉'},
+    {'si': 'කජු', 'ta': 'கேரட்', 'en': 'Carrot', 'emoji': '🥕'},
+  ],
+  'objects': [
+    {'si': 'පොත', 'ta': 'புத்தகம்', 'en': 'Book', 'emoji': '📚'},
+    {'si': 'බෝල', 'ta': 'பந்து', 'en': 'Ball', 'emoji': '⚽'},
+    {'si': 'කුඩ', 'ta': 'குடை', 'en': 'Cup', 'emoji': '☕'},
+    {'si': 'පැන්සල්', 'ta': 'பென்சில்', 'en': 'Pencil', 'emoji': '✏️'},
+    {'si': 'තුවාලුකු', 'ta': 'மெழுகுவர்த்தி', 'en': 'Candle', 'emoji': '🕯️'},
+    {'si': 'දිලි', 'ta': 'விளக்கு', 'en': 'Light', 'emoji': '💡'},
+    {'si': 'සිටුවම්', 'ta': 'நாற்காலி', 'en': 'Chair', 'emoji': '🪑'},
+    {'si': 'මේස', 'ta': 'மேज்', 'en': 'Table', 'emoji': '🪑'},
+  ],
+  'colors_numbers': [
+    {'si': 'රතු', 'ta': 'சிவப்பு', 'en': 'Red', 'emoji': '🔴'},
+    {'si': 'නිල්', 'ta': 'நீலம்', 'en': 'Blue', 'emoji': '🔵'},
+    {'si': 'කහ', 'ta': 'மஞ்சள்', 'en': 'Yellow', 'emoji': '🟡'},
+    {'si': 'ගිරවෙ', 'ta': 'பச்சை', 'en': 'Green', 'emoji': '🟢'},
+    {'si': 'එක', 'ta': 'ஒன்று', 'en': 'One', 'emoji': '1️⃣'},
+    {'si': 'දෙක', 'ta': 'இரண்டு', 'en': 'Two', 'emoji': '2️⃣'},
+    {'si': 'තුන', 'ta': 'மூன்று', 'en': 'Three', 'emoji': '3️⃣'},
+    {'si': 'හතර', 'ta': 'நான்கு', 'en': 'Four', 'emoji': '4️⃣'},
+  ],
+  'feelings': [
+    {'si': 'සතුටුයි', 'ta': 'மகிழ்ச்சி', 'en': 'Happy', 'emoji': '😊'},
+    {'si': 'දුකයි', 'ta': 'சோகம்', 'en': 'Sad', 'emoji': '😢'},
+    {'si': 'කෝපයි', 'ta': 'கோபம்', 'en': 'Angry', 'emoji': '😠'},
+    {'si': 'බයයි', 'ta': 'பயம்', 'en': 'Scared', 'emoji': '😨'},
+    {'si': 'තෙහෙට්ටුයි', 'ta': 'சோர்வு', 'en': 'Tired', 'emoji': '😴'},
+    {'si': 'ශීතල', 'ta': 'குளிர்', 'en': 'Cold', 'emoji': '❄️'},
+    {'si': 'උණුසුම්', 'ta': 'வெப்பம்', 'en': 'Hot', 'emoji': '🔥'},
+    {'si': 'කර්පණ්‍යතා', 'ta': 'பசி', 'en': 'Hungry', 'emoji': '😋'},
+  ],
+  'actions': [
+    {'si': 'දිවීම', 'ta': 'ஓடுதல்', 'en': 'Running', 'emoji': '🏃'},
+    {'si': 'ගමනය', 'ta': 'நடத்தல்', 'en': 'Walking', 'emoji': '🚶'},
+    {'si': 'පැනීම', 'ta': 'கூதல்', 'en': 'Jumping', 'emoji': '🤸'},
+    {'si': 'නැටීම', 'ta': 'நாட்டம்', 'en': 'Dancing', 'emoji': '💃'},
+    {'si': 'ටිකෙරුම', 'ta': 'விளையாட்டு', 'en': 'Playing', 'emoji': '🎮'},
+    {'si': 'කිම්බීම', 'ta': 'ஏறுதல்', 'en': 'Climbing', 'emoji': '🧗'},
+    {'si': 'පිම්පීම', 'ta': 'நீச்சல்', 'en': 'Swimming', 'emoji': '🏊'},
+    {'si': 'නින්දා යෑම', 'ta': 'உறங்குதல்', 'en': 'Sleeping', 'emoji': '😴'},
+  ],
+  'sounds_music': [
+    {'si': 'සිංගීතය', 'ta': 'இசை', 'en': 'Music', 'emoji': '🎵'},
+    {'si': 'ගිටාරය', 'ta': 'கிதார்', 'en': 'Guitar', 'emoji': '🎸'},
+    {'si': 'පියානෝ', 'ta': 'பியानோ', 'en': 'Piano', 'emoji': '🎹'},
+    {'si': 'බෙල්ල', 'ta': 'மணி', 'en': 'Bell', 'emoji': '🔔'},
+    {'si': 'ඩ‍ගම්', 'ta': 'முரளி', 'en': 'Drum', 'emoji': '🥁'},
+    {'si': 'සීතීම', 'ta': 'விசிறி', 'en': 'Whistle', 'emoji': '🎶'},
+    {'si': 'කතා නොවීම', 'ta': 'மௌனம்', 'en': 'Silence', 'emoji': '🤐'},
+    {'si': 'හඩ', 'ta': 'சப்தம்', 'en': 'Sound', 'emoji': '🔊'},
+  ],
+};
+
+// Legacy categories for compatibility
 final Map<String, Map<String, dynamic>> categories = {
   'Food | ආහාර | உணவு': {
     'icon': Icons.restaurant,
