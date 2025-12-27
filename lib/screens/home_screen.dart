@@ -597,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const categoryKeyMap = {
       'ශරීරයේ දෙ': 'body_parts',
       'සතුන්': 'animals',
-      'ඉතුරු දරුවන්': 'fruits_vegatables',
+      'ඉතුරු දරුවන්': 'fruits_vegetables',
       'කෑම': 'food',
       'ගෙදර දේ': 'household',
       'වර්ණ': 'colors',
