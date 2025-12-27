@@ -51,10 +51,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void dispose() {
     _pageController.dispose();
-    // Restore system UI when leaving screen
+    // Don't restore - let HomeScreen control the system UI
+    // Just hide the nav again when returning
     SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.edgeToEdge,
-      overlays: SystemUiOverlay.values,
+      SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top],
     );
     super.dispose();
   }

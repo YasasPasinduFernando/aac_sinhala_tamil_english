@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/storage_service.dart';
@@ -43,6 +44,12 @@ class _HomeScreenState extends State<HomeScreen>
     _scrollController = ScrollController(keepScrollOffset: false);
     _scrollController.addListener(_onScroll);
     _initialize();
+
+    // Hide system navigation bar
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top],
+    );
   }
 
   Future<void> _initialize() async {
@@ -62,12 +69,25 @@ class _HomeScreenState extends State<HomeScreen>
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     flutterTts.stop();
+
+    // Restore system UI when leaving screen
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: SystemUiOverlay.values,
+    );
+
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
+      // Hide system nav again when returning to home screen
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.immersiveSticky,
+        overlays: [SystemUiOverlay.top],
+      );
+
       Future.delayed(const Duration(milliseconds: 100), () {
         if (mounted) {
           setState(() {});
@@ -181,19 +201,15 @@ class _HomeScreenState extends State<HomeScreen>
     const siCategories = [
       {'name': 'ශරීරයේ දෙ', 'emoji': '👤', 'desc': 'හස, පා, මුහුණ...'},
       {'name': 'සතුන්', 'emoji': '🐶', 'desc': 'බඩවුන්, බිතුන්, පූසා...'},
-      {'name': 'ඉතුරු දරුවන්', 'emoji': '🍎', 'desc': 'පළතුරු, එළුම්කොළ...'},
+      {'name': 'පළතුරු', 'emoji': '🍎', 'desc': 'ඩෝඩම්, තලමුඩු, ඇට...'},
       {'name': 'කෑම', 'emoji': '🍽️', 'desc': 'බත්, පාන්, දුඩ්ඩු...'},
       {'name': 'ගෙදර දේ', 'emoji': '🏠', 'desc': 'පොත, මේස, අඩ්ඩ...'},
       {'name': 'වර්ණ', 'emoji': '🎨', 'desc': 'රතු, නිල්, කහ...'},
       {'name': 'අංක', 'emoji': '🔢', 'desc': '1, 2, 3, 4, 5...'},
       {'name': 'සිතුවම්', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
+      {'name': 'ක්‍රියාකාරකම්', 'emoji': '⚽', 'desc': 'දිවීම, ගමනය, නැටීම...'},
       {
-        'name': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
-        'emoji': '⚽',
-        'desc': 'දිවීම, ගමනය, නැටීම...'
-      },
-      {
-        'name': 'ගිණුම් සැකසීම්',
+        'name': 'සංගීතය සහ ශබ්ද',
         'emoji': '🎵',
         'desc': 'සංගීතය, නර්තනය, හඬ...'
       },
@@ -286,6 +302,64 @@ class _HomeScreenState extends State<HomeScreen>
           title: const Text('🎉 AAC - කතා කරමු'),
           centerTitle: true,
           actions: [
+            RepaintBoundary(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FavouriteScreen(
+                            language: selectedLanguage,
+                            onWordSelected: _addToSentence,
+                            onSpeak: _speak,
+                            isGirl: isGirl,
+                          ),
+                        ),
+                      ).then((_) {
+                        if (mounted) {
+                          setState(() => _showSentencePanel = true);
+                        }
+                      });
+                    },
+                    child: const Text(
+                      '❤️',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            RepaintBoundary(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(
+                            language: selectedLanguage,
+                            isGirl: isGirl,
+                          ),
+                        ),
+                      ).then((_) {
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      });
+                    },
+                    child: const Text(
+                      '⚙️',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             RepaintBoundary(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -578,145 +652,36 @@ class _HomeScreenState extends State<HomeScreen>
             );
           },
         ),
-        bottomNavigationBar: RepaintBoundary(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: AppTheme.getGradient(isGirl),
-              boxShadow: [
-                BoxShadow(
-                  color: colors['primary']!.withValues(alpha: 0.3),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildBottomNavItem(
-                      icon: Icons.home,
-                      label: 'ගෙදර',
-                      isActive: true,
-                      onTap: () {},
-                    ),
-                    _buildBottomNavItem(
-                      icon: Icons.favorite,
-                      label: 'ප්‍රිය',
-                      isActive: false,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FavouriteScreen(
-                              language: selectedLanguage,
-                              onWordSelected: _addToSentence,
-                              onSpeak: _speak,
-                              isGirl: isGirl,
-                            ),
-                          ),
-                        ).then((_) {
-                          if (mounted) {
-                            setState(() => _showSentencePanel = true);
-                          }
-                        });
-                      },
-                    ),
-                    _buildBottomNavItem(
-                      icon: Icons.settings,
-                      label: 'සැකසුම්',
-                      isActive: false,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SettingsScreen(
-                              language: selectedLanguage,
-                              isGirl: isGirl,
-                            ),
-                          ),
-                        ).then((_) {
-                          if (mounted) {
-                            setState(() {});
-                          }
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavItem({
-    required IconData icon,
-    required String label,
-    required bool isActive,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isActive
-              ? Colors.white.withValues(alpha: 0.3)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.white, size: 24),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 11,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        bottomNavigationBar: null,
       ),
     );
   }
 
   void _openCategory(String categoryName) {
-    // Find the index of clicked category
-    final categoryIndex =
-        _categories.indexWhere((cat) => cat['name'] == categoryName);
-    if (categoryIndex == -1) return;
+    debugPrint(
+        '🔍 Opening category: $categoryName, Language: $selectedLanguage');
 
     // Prepare all categories with their data
     const categoryKeyMap = {
+      // Sinhala
       'ශරීරයේ දෙ': 'body_parts',
       'සතුන්': 'animals',
-      'ඉතුරු දරුවන්': 'fruits_vegetables',
+      'පළතුරු': 'fruits_vegetables',
       'කෑම': 'food',
       'ගෙදර දේ': 'household',
       'වර්ණ': 'colors',
       'අංක': 'numbers',
       'සිතුවම්': 'feelings',
-      'ක්‍රීඩා හා ක්‍රියාකාරකම්': 'actions',
-      'ගිණුම් සැකසීම්': 'sounds_music',
+      'ක්‍රියාකාරකම්': 'actions',
+      'සංගීතය සහ ශබ්ද': 'sounds_music',
       'පවුල': 'family_words',
       'ස්ථාන': 'places',
       'අවශ්‍යතා': 'needs',
       'වාක්‍ය': 'sentences',
-      'උටල් පාසල': 'nursery',
-      'වර්ණ සහ අංක': 'colors_numbers',
       // Tamil
       'உடல் பாகங்கள்': 'body_parts',
       'விலங்குகள்': 'animals',
-      'பழங்கள்': 'fruits_vegatables',
+      'பழங்கள்': 'fruits_vegetables',
       'உணவு': 'food',
       'வீட்டுப் பொருட்கள்': 'household',
       'நிறங்கள்': 'colors',
@@ -731,7 +696,7 @@ class _HomeScreenState extends State<HomeScreen>
       // English
       'Body Parts': 'body_parts',
       'Animals': 'animals',
-      'Fruits': 'fruits_vegatables',
+      'Fruits': 'fruits_vegetables',
       'Food': 'food',
       'Household': 'household',
       'Colors': 'colors',
@@ -745,11 +710,20 @@ class _HomeScreenState extends State<HomeScreen>
       'Sentences': 'sentences',
     };
 
-    // Build all categories data
+    // Get the data key for this category
+    final categoryKey = categoryKeyMap[categoryName];
+    debugPrint('📚 Category key: $categoryKey');
+    if (categoryKey == null) {
+      debugPrint(
+          '❌ Category key is null! Available categories: ${categoryKeyMap.keys.toList()}');
+      return;
+    }
+
+    // Build all categories data in order
     final allCategoriesData = _categories.map((category) {
-      final categoryKey = categoryKeyMap[category['name']];
-      final items = categoryKey != null
-          ? (wordData[categoryKey]?.cast<Map<String, dynamic>>() ??
+      final key = categoryKeyMap[category['name']];
+      final items = key != null
+          ? (wordData[key]?.cast<Map<String, dynamic>>() ??
               <Map<String, dynamic>>[])
           : <Map<String, dynamic>>[];
 
@@ -760,12 +734,22 @@ class _HomeScreenState extends State<HomeScreen>
       };
     }).toList();
 
+    debugPrint(
+        '📋 All categories: ${allCategoriesData.map((c) => c['name']).toList()}');
+
+    // Find the index of the selected category in the built data
+    final initialIndex =
+        allCategoriesData.indexWhere((cat) => cat['name'] == categoryName);
+
+    debugPrint(
+        '✅ Initial index for "$categoryName": $initialIndex (out of ${allCategoriesData.length})');
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CategoryScreen(
           allCategories: allCategoriesData,
-          initialCategoryIndex: categoryIndex,
+          initialCategoryIndex: initialIndex,
           language: selectedLanguage,
           onWordSelected: _addToSentence,
           onSpeak: _speak,

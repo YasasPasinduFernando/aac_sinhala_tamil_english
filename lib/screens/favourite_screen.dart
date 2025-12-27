@@ -107,10 +107,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   void dispose() {
     _pageController.dispose();
-    // Restore system UI
+    // Don't restore - let HomeScreen control the system UI
+    // Just hide the nav again when returning
     SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.edgeToEdge,
-      overlays: SystemUiOverlay.values,
+      SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top],
     );
     super.dispose();
   }
