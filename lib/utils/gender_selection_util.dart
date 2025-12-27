@@ -8,9 +8,11 @@ import '../screens/theme/gender_selection_screen.dart';
 /// Parameters:
 /// - [context]: BuildContext for navigation
 /// - [onGenderChanged]: Callback function that receives the selected gender (true for girl, false for boy)
+/// - [language]: The selected language for the popup
 Future<void> showGenderSelectionPopup(
   BuildContext context, {
   required Function(bool) onGenderChanged,
+  String language = 'si-LK',
 }) {
   return showDialog(
     context: context,
@@ -19,6 +21,7 @@ Future<void> showGenderSelectionPopup(
         onGenderChanged(gender);
         Navigator.pop(context);
       },
+      language: language,
     ),
   );
 }

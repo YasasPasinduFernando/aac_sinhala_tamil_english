@@ -176,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen>
           setState(() => isGirl = gender);
         }
       },
+      language: selectedLanguage,
     );
   }
 
@@ -190,6 +191,158 @@ class _HomeScreenState extends State<HomeScreen>
       default:
         return '🌍';
     }
+  }
+
+  String _getLanguageText() {
+    switch (selectedLanguage) {
+      case 'si-LK':
+        return 'සිංහල';
+      case 'ta-IN':
+        return 'தமிழ்';
+      case 'en-US':
+        return 'English';
+      default:
+        return 'Language';
+    }
+  }
+
+  String _getHeaderTitle() {
+    switch (selectedLanguage) {
+      case 'si-LK':
+        return 'කතා කරමු';
+      case 'ta-IN':
+        return 'பேச வேண்டும்';
+      case 'en-US':
+        return 'Let\'s Talk';
+      default:
+        return 'Talk';
+    }
+  }
+
+  String _getGenderText() {
+    switch (selectedLanguage) {
+      case 'si-LK':
+        return '👧 ගැහැණු / 👦 පුරුষ';
+      case 'ta-IN':
+        return '👧 பெண் / 👦 ஆண்';
+      case 'en-US':
+        return '👧 Girl / 👦 Boy';
+      default:
+        return 'Gender';
+    }
+  }
+
+  void _showLanguageSelector() {
+    final colors = AppTheme.getThemeColors(isGirl);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              colors['background']!,
+              colors['accent']!.withOpacity(0.3),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 16),
+            Container(
+              width: 50,
+              height: 5,
+              decoration: BoxDecoration(
+                color: colors['textColor']!.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              '🌍 භාෂාව තෝරන්න',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: colors['textColor'],
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildLanguageOption('si-LK', '🇱🇰', 'සිංහල', colors),
+            _buildLanguageOption('ta-IN', '🇮🇳', 'தமிழ்', colors),
+            _buildLanguageOption('en-US', '🇺🇸', 'English', colors),
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(
+      String code, String flag, String name, Map<String, Color> colors) {
+    final isSelected = selectedLanguage == code;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: GestureDetector(
+        onTap: () {
+          setState(() => selectedLanguage = code);
+          _initTts();
+          Navigator.pop(context);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          decoration: BoxDecoration(
+            gradient: isSelected ? AppTheme.getGradient(isGirl) : null,
+            color: isSelected ? null : colors['background']!.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isSelected
+                  ? Colors.transparent
+                  : colors['primary']!.withOpacity(0.3),
+              width: 2,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: colors['primary']!.withOpacity(0.4),
+                      blurRadius: 15,
+                      spreadRadius: 2,
+                    ),
+                  ]
+                : [],
+          ),
+          child: Row(
+            children: [
+              Text(
+                flag,
+                style: const TextStyle(fontSize: 32),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                name,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.white : colors['textColor'],
+                ),
+              ),
+              const Spacer(),
+              if (isSelected)
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.white,
+                  size: 28,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   List<Map<String, dynamic>> get _categories {
@@ -281,9 +434,35 @@ class _HomeScreenState extends State<HomeScreen>
       return Theme(
         data: AppTheme.getThemeData(isGirl),
         child: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(colors['primary']!),
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: AppTheme.getGradient(isGirl),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '🎉',
+                    style: const TextStyle(fontSize: 80),
+                  ),
+                  const SizedBox(height: 20),
+                  CircularProgressIndicator(
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 5,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Loading...',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -293,107 +472,6 @@ class _HomeScreenState extends State<HomeScreen>
     return Theme(
       data: AppTheme.getThemeData(isGirl),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('🎉 AAC - කතා කරමු'),
-          centerTitle: true,
-          actions: [
-            RepaintBoundary(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FavouriteScreen(
-                            language: selectedLanguage,
-                            onWordSelected: _addToSentence,
-                            onSpeak: _speak,
-                            isGirl: isGirl,
-                          ),
-                        ),
-                      ).then((_) {
-                        if (mounted) {
-                          setState(() => _showSentencePanel = true);
-                        }
-                      });
-                    },
-                    child: const Text(
-                      '❤️',
-                      style: TextStyle(fontSize: 22),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            RepaintBoundary(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SettingsScreen(
-                            language: selectedLanguage,
-                            isGirl: isGirl,
-                          ),
-                        ),
-                      ).then((_) {
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      });
-                    },
-                    child: const Text(
-                      '⚙️',
-                      style: TextStyle(fontSize: 22),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            RepaintBoundary(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Center(
-                  child: PopupMenuButton<String>(
-                    icon: Text(
-                      _getLanguageFlag(),
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                    onSelected: (String value) {
-                      setState(() => selectedLanguage = value);
-                      _initTts();
-                    },
-                    itemBuilder: (BuildContext context) => const [
-                      PopupMenuItem(value: 'si-LK', child: Text('🇱🇰 සිංහල')),
-                      PopupMenuItem(value: 'ta-IN', child: Text('🇮🇳 தமிழ்')),
-                      PopupMenuItem(
-                          value: 'en-US', child: Text('🇺🇸 English')),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            RepaintBoundary(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: _changeGender,
-                    child: Text(
-                      isGirl ? '👧' : '👦',
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
         body: StreamBuilder<bool>(
           stream: OfflineService().getConnectivityStream(),
           initialData: OfflineService().isOnline,
@@ -402,15 +480,113 @@ class _HomeScreenState extends State<HomeScreen>
 
             return Column(
               children: [
+                // Beautiful Header with Gradient
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: AppTheme.getGradient(isGirl),
+                    boxShadow: [
+                      BoxShadow(
+                        color: colors['primary']!.withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: Row(
+                        children: [
+                          // App Logo
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              '💬',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          // Title
+                          Expanded(
+                            child: Text(
+                              _getHeaderTitle(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          // Action Buttons
+                          _buildHeaderButton('❤️', () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FavouriteScreen(
+                                  language: selectedLanguage,
+                                  onWordSelected: _addToSentence,
+                                  onSpeak: _speak,
+                                  isGirl: isGirl,
+                                ),
+                              ),
+                            ).then((_) {
+                              if (mounted) {
+                                setState(() => _showSentencePanel = true);
+                              }
+                            });
+                          }),
+                          const SizedBox(width: 4),
+                          _buildHeaderButton('⚙️', () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SettingsScreen(
+                                  language: selectedLanguage,
+                                  isGirl: isGirl,
+                                ),
+                              ),
+                            ).then((_) {
+                              if (mounted) {
+                                setState(() {});
+                              }
+                            });
+                          }),
+                          const SizedBox(width: 4),
+                          _buildHeaderButton(
+                              _getLanguageFlag(), _showLanguageSelector),
+                          const SizedBox(width: 4),
+                          _buildHeaderButton(
+                              isGirl ? '👧' : '👦', _changeGender),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Offline Banner
                 if (!isOnline)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      color: Colors.orange.shade700,
-                      border: Border(
-                        bottom:
-                            BorderSide(color: Colors.orange.shade900, width: 2),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.orange.shade400,
+                          Colors.orange.shade600,
+                        ],
                       ),
                     ),
                     child: Row(
@@ -428,36 +604,68 @@ class _HomeScreenState extends State<HomeScreen>
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 13,
                           ),
                         ),
                       ],
                     ),
                   ),
+
+                // Sentence Panel
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   height: _showSentencePanel ? null : 0,
                   child: _showSentencePanel
                       ? RepaintBoundary(
                           child: Container(
+                            margin: const EdgeInsets.all(12),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              gradient: AppTheme.getGradient(isGirl),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white,
+                                  colors['accent']!.withOpacity(0.1),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(25),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: colors['primary']!.withOpacity(0.3),
+                                  blurRadius: 15,
+                                  spreadRadius: 2,
+                                ),
+                              ],
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  children: const [
-                                    Icon(Icons.chat_bubble,
-                                        color: Colors.white, size: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      '📢 ඔබේ කතනය',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        gradient: AppTheme.getGradient(isGirl),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Icon(
+                                        Icons.chat_bubble,
                                         color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      selectedLanguage == 'si-LK'
+                                          ? '📢 ඔබේ කතාව'
+                                          : selectedLanguage == 'ta-IN'
+                                              ? '📢 உங்கள் செய்தி'
+                                              : '📢 Your Message',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: colors['textColor'],
                                       ),
                                     ),
                                   ],
@@ -466,33 +674,35 @@ class _HomeScreenState extends State<HomeScreen>
                                 Container(
                                   width: double.infinity,
                                   constraints:
-                                      const BoxConstraints(minHeight: 60),
-                                  padding: const EdgeInsets.all(16),
+                                      const BoxConstraints(minHeight: 50),
+                                  padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(16),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: colors['primary']!
-                                            .withValues(alpha: 0.2),
-                                        blurRadius: 10,
-                                      ),
-                                    ],
+                                    border: Border.all(
+                                      color:
+                                          colors['primary']!.withOpacity(0.3),
+                                      width: 2,
+                                    ),
                                   ),
                                   child: sentence.isEmpty
                                       ? Center(
                                           child: Text(
-                                            '✏️ වචන තෝරා ගන්න...',
+                                            selectedLanguage == 'si-LK'
+                                                ? '✏️ වචන තෝරන්න...'
+                                                : selectedLanguage == 'ta-IN'
+                                                    ? '✏️ சொற்களை தேர்ந்தெடுக்கவும்...'
+                                                    : '✏️ Select words...',
                                             style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               color: colors['textColor']!
-                                                  .withValues(alpha: 0.5),
+                                                  .withOpacity(0.5),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         )
                                       : Wrap(
-                                          spacing: 10,
+                                          spacing: 8,
                                           runSpacing: 8,
                                           children: sentence
                                               .asMap()
@@ -507,18 +717,24 @@ class _HomeScreenState extends State<HomeScreen>
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                  horizontal: 14,
+                                                  horizontal: 12,
                                                   vertical: 8,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      colors['gradient1']!,
-                                                      colors['gradient2']!,
-                                                    ],
-                                                  ),
+                                                  gradient:
+                                                      AppTheme.getGradient(
+                                                          isGirl),
                                                   borderRadius:
                                                       BorderRadius.circular(12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: colors['primary']!
+                                                          .withOpacity(0.3),
+                                                      blurRadius: 5,
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                    ),
+                                                  ],
                                                 ),
                                                 child: Row(
                                                   mainAxisSize:
@@ -527,7 +743,7 @@ class _HomeScreenState extends State<HomeScreen>
                                                     Text(
                                                       entry.value,
                                                       style: const TextStyle(
-                                                        fontSize: 16,
+                                                        fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white,
@@ -544,9 +760,16 @@ class _HomeScreenState extends State<HomeScreen>
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(2),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white
+                                                              .withOpacity(0.3),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
                                                         child: const Icon(
                                                           Icons.close,
-                                                          size: 16,
+                                                          size: 14,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -562,22 +785,30 @@ class _HomeScreenState extends State<HomeScreen>
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: GradientButton(
-                                        text: '🔊 කියන්න',
+                                      child: _buildActionButton(
+                                        icon: Icons.volume_up,
+                                        label: selectedLanguage == 'si-LK'
+                                            ? 'කියන්න'
+                                            : selectedLanguage == 'ta-IN'
+                                                ? 'பேசு'
+                                                : 'Speak',
                                         onPressed: sentence.isEmpty
-                                            ? () {}
+                                            ? null
                                             : _speakSentence,
-                                        isGirl: isGirl,
-                                        fontSize: 16,
+                                        colors: colors,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     Expanded(
-                                      child: GradientButton(
-                                        text: '🗑️ ඉවත් කරන්න',
+                                      child: _buildActionButton(
+                                        icon: Icons.delete_outline,
+                                        label: selectedLanguage == 'si-LK'
+                                            ? 'මකන්න'
+                                            : selectedLanguage == 'ta-IN'
+                                                ? 'நீக்கு'
+                                                : 'Clear',
                                         onPressed: _clearSentence,
-                                        isGirl: isGirl,
-                                        fontSize: 16,
+                                        colors: colors,
                                       ),
                                     ),
                                   ],
@@ -588,66 +819,191 @@ class _HomeScreenState extends State<HomeScreen>
                         )
                       : const SizedBox.shrink(),
                 ),
+
+                // Categories Section
                 Expanded(
-                  child: CustomScrollView(
-                    controller: _scrollController,
-                    cacheExtent: 1000,
-                    slivers: [
-                      SliverPadding(
-                        padding: const EdgeInsets.all(16),
-                        sliver: SliverToBoxAdapter(
-                          child: Text(
-                            '📚 වර්ගීකරණ තෝරන්න:',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: colors['textColor'],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          colors['background']!,
+                          colors['accent']!.withOpacity(0.1),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      cacheExtent: 1000,
+                      slivers: [
+                        SliverPadding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          sliver: SliverToBoxAdapter(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 16),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    colors['primary']!.withOpacity(0.1),
+                                    colors['accent']!.withOpacity(0.1),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: colors['primary']!.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      gradient: AppTheme.getGradient(isGirl),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Text('📚',
+                                        style: TextStyle(fontSize: 20)),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    selectedLanguage == 'si-LK'
+                                        ? 'වර්ගීකරණ තෝරන්න'
+                                        : selectedLanguage == 'ta-IN'
+                                            ? 'வகைகளை தேர்ந்தெடுக்கவும்'
+                                            : 'Choose Categories',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: colors['textColor'],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: 0.85,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final category = _categories[index];
-                              return RepaintBoundary(
-                                key: ValueKey(
-                                    'card_${category['emoji']}_$index'),
-                                child: AnimatedCategoryCard(
-                                  key: ValueKey('${category['name']}_$index'),
-                                  categoryName: category['name'],
-                                  emoji: category['emoji'],
-                                  description: category['desc'],
-                                  onTap: () => _openCategory(category['name']),
-                                  isGirl: isGirl,
-                                  index: index,
-                                ),
-                              );
-                            },
-                            childCount: _categories.length,
-                            addAutomaticKeepAlives: true,
-                            addRepaintBoundaries: false,
+                        SliverPadding(
+                          padding: const EdgeInsets.all(16),
+                          sliver: SliverGrid(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio: 0.85,
+                            ),
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final category = _categories[index];
+                                return RepaintBoundary(
+                                  key: ValueKey(
+                                      'card_${category['emoji']}_$index'),
+                                  child: AnimatedCategoryCard(
+                                    key: ValueKey('${category['name']}_$index'),
+                                    categoryName: category['name'],
+                                    emoji: category['emoji'],
+                                    description: category['desc'],
+                                    onTap: () =>
+                                        _openCategory(category['name']),
+                                    isGirl: isGirl,
+                                    index: index,
+                                  ),
+                                );
+                              },
+                              childCount: _categories.length,
+                              addAutomaticKeepAlives: true,
+                              addRepaintBoundaries: false,
+                            ),
                           ),
                         ),
-                      ),
-                      const SliverPadding(padding: EdgeInsets.only(bottom: 20)),
-                    ],
+                        const SliverPadding(
+                            padding: EdgeInsets.only(bottom: 20)),
+                      ],
+                    ),
                   ),
                 ),
               ],
             );
           },
         ),
-        bottomNavigationBar: null,
+      ),
+    );
+  }
+
+  Widget _buildHeaderButton(String emoji, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.3),
+            width: 2,
+          ),
+        ),
+        child: Text(
+          emoji,
+          style: const TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback? onPressed,
+    required Map<String, Color> colors,
+  }) {
+    final isDisabled = onPressed == null;
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: Opacity(
+        opacity: isDisabled ? 0.5 : 1.0,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            gradient: isDisabled
+                ? LinearGradient(
+                    colors: [
+                      Colors.grey.shade400,
+                      Colors.grey.shade500,
+                    ],
+                  )
+                : AppTheme.getGradient(isGirl),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: isDisabled
+                ? []
+                : [
+                    BoxShadow(
+                      color: colors['primary']!.withOpacity(0.4),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -656,7 +1012,6 @@ class _HomeScreenState extends State<HomeScreen>
     debugPrint(
         '🔍 Opening category: $categoryName, Language: $selectedLanguage');
 
-    // Prepare all categories with their data
     const categoryKeyMap = {
       // Sinhala
       'ශරීරයේ දෙ': 'body_parts',
@@ -705,7 +1060,6 @@ class _HomeScreenState extends State<HomeScreen>
       'Sentences': 'sentences',
     };
 
-    // Get the data key for this category
     final categoryKey = categoryKeyMap[categoryName];
     debugPrint('📚 Category key: $categoryKey');
     if (categoryKey == null) {
@@ -714,7 +1068,6 @@ class _HomeScreenState extends State<HomeScreen>
       return;
     }
 
-    // Build all categories data in order
     final allCategoriesData = _categories.map((category) {
       final key = categoryKeyMap[category['name']];
       final items = key != null
@@ -732,7 +1085,6 @@ class _HomeScreenState extends State<HomeScreen>
     debugPrint(
         '📋 All categories: ${allCategoriesData.map((c) => c['name']).toList()}');
 
-    // Find the index of the selected category in the built data
     final initialIndex =
         allCategoriesData.indexWhere((cat) => cat['name'] == categoryName);
 
@@ -756,5 +1108,53 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() => _showSentencePanel = true);
       }
     });
+  }
+}
+
+class GradientButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final bool isGirl;
+  final double fontSize;
+
+  const GradientButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    required this.isGirl,
+    this.fontSize = 16,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: AppTheme.getGradient(isGirl),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

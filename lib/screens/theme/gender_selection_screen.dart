@@ -4,10 +4,12 @@ import 'app_theme.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
   final Function(bool) onGenderSelected;
+  final String language;
 
   const GenderSelectionScreen({
     Key? key,
     required this.onGenderSelected,
+    this.language = 'si-LK',
   }) : super(key: key);
 
   @override
@@ -36,6 +38,58 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
     super.dispose();
   }
 
+  String _getGreetingText() {
+    switch (widget.language) {
+      case 'si-LK':
+        return '👋 ඔබ කවුද?';
+      case 'ta-IN':
+        return '👋 நீங்கள் யார்?';
+      case 'en-US':
+        return '👋 Who Are You?';
+      default:
+        return '👋 Who Are You?';
+    }
+  }
+
+  String _getSubtitleText() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'ඔබේ සිතුමම මතකට ගිය වර්ණ තෝරා ගන්න!';
+      case 'ta-IN':
+        return 'உங்கள் விருப்பமான வண்ணத் தேர்வு செய்யுங்கள்!';
+      case 'en-US':
+        return 'Choose Your Favorite Color!';
+      default:
+        return 'Choose Your Favorite Color!';
+    }
+  }
+
+  String _getGirlText() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'ගැහැනු\nළමයා';
+      case 'ta-IN':
+        return 'பெண்\nவள்ளி';
+      case 'en-US':
+        return 'Girl';
+      default:
+        return 'Girl';
+    }
+  }
+
+  String _getBoyText() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'පිරිමි\nළමයා';
+      case 'ta-IN':
+        return 'ஆண்\nவள்ளி';
+      case 'en-US':
+        return 'Boy';
+      default:
+        return 'Boy';
+    }
+  }
+
   void _selectGender(bool isGirl) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isGirl', isGirl);
@@ -62,11 +116,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
             children: [
               ScaleTransition(
                 scale: _animation,
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(20),
                   child: Text(
-                    '👋 ඔබ කවුද?',
-                    style: TextStyle(
+                    _getGreetingText(),
+                    style: const TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -78,11 +132,11 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
               const SizedBox(height: 20),
               ScaleTransition(
                 scale: _animation,
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'ඔබේ සිතුමම මතකට ගිය වර්ණ තෝරා ගන්න!',
-                    style: TextStyle(
+                    _getSubtitleText(),
+                    style: const TextStyle(
                       fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
@@ -98,14 +152,14 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
                   // ගිරු දරුවු තෝරන බටන්
                   _buildGenderCard(
                     emoji: '👧',
-                    title: 'ගිරු\nදරුවු',
+                    title: _getGirlText(),
                     subtitle: '(Pink Theme)',
                     isGirl: true,
                   ),
                   // පිරිමු දරුවු තෝරන බටන්
                   _buildGenderCard(
                     emoji: '👦',
-                    title: 'පිරිමු\nදරුවු',
+                    title: _getBoyText(),
                     subtitle: '(Blue Theme)',
                     isGirl: false,
                   ),
