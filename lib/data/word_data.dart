@@ -15,6 +15,8 @@ import 'word_data/colors.dart';
 import 'word_data/numbers.dart';
 import 'word_data/needs.dart';
 import 'word_data/sentences.dart';
+import 'word_data/family_words.dart';
+import 'word_data/places.dart';
 
 /// Main word data map that combines all categories
 /// This map is used throughout the app to access vocabulary data
@@ -33,6 +35,8 @@ final Map<String, List<Map<String, dynamic>>> wordData = {
   'numbers': numbers,
   'needs': needs,
   'sentences': sentences,
+  'family_words': familyWords,
+  'places': places,
 };
 
 // Legacy categories for compatibility
