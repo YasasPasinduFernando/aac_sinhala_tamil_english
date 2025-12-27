@@ -1070,10 +1070,12 @@ class _HomeScreenState extends State<HomeScreen>
 
     final allCategoriesData = _categories.map((category) {
       final key = categoryKeyMap[category['name']];
+      debugPrint('   Processing category "${category['name']}" -> key: $key');
       final items = key != null
           ? (wordData[key]?.cast<Map<String, dynamic>>() ??
               <Map<String, dynamic>>[])
           : <Map<String, dynamic>>[];
+      debugPrint('      Found ${items.length} items for key "$key"');
 
       return {
         'name': category['name'],
@@ -1085,11 +1087,18 @@ class _HomeScreenState extends State<HomeScreen>
     debugPrint(
         '📋 All categories: ${allCategoriesData.map((c) => c['name']).toList()}');
 
-    final initialIndex =
+    var initialIndex =
         allCategoriesData.indexWhere((cat) => cat['name'] == categoryName);
 
     debugPrint(
         '✅ Initial index for "$categoryName": $initialIndex (out of ${allCategoriesData.length})');
+
+    // If category not found, default to 0
+    if (initialIndex < 0) {
+      debugPrint(
+          '⚠️ Category "$categoryName" not found in list! Defaulting to index 0');
+      initialIndex = 0;
+    }
 
     Navigator.push(
       context,
