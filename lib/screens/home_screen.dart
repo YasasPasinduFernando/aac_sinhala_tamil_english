@@ -205,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((cat) => {
               'name': cat['name'],
               'emoji': cat['emoji'],
-              'description': cat['desc']
+              'desc': cat['desc']  // Changed 'description' to 'desc' to match UI expectations
             })
         .toList();
   }
