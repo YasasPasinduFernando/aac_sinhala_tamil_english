@@ -353,8 +353,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         child: InkWell(
                           onTap: () {
                             widget.onWordSelected(actionText);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                            widget.onSpeak(actionText);
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -372,10 +371,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             child: Row(
                               children: [
                                 Text(
-                                  '✓',
-                                  style: TextStyle(
+                                  action['emoji'] ?? '✓',
+                                  style: const TextStyle(
                                     fontSize: 20,
-                                    color: colors['buttonText'],
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -468,7 +466,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     language: widget.language,
                     onTap: () {
                       widget.onWordSelected(text);
-                      Navigator.pop(context);
+                      widget.onSpeak(text);
                     },
                     onSpeak: () => widget.onSpeak(text),
                   ),
