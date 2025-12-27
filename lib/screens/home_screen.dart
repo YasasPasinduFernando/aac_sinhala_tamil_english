@@ -658,6 +658,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _openCategory(String categoryName) {
+    // Find the index of clicked category
+    final categoryIndex =
+        _categories.indexWhere((cat) => cat['name'] == categoryName);
+    if (categoryIndex == -1) return;
+
+    // Prepare all categories with their data
     const categoryKeyMap = {
       'ශරීරයේ දෙ': 'body_parts',
       'සතුන්': 'animals',
@@ -666,7 +672,6 @@ class _HomeScreenState extends State<HomeScreen>
       'ගෙදර දේ': 'household',
       'වර්ණ': 'colors',
       'අංක': 'numbers',
-      'වර්ණ සහ අංක': 'colors_numbers',
       'සිතුවම්': 'feelings',
       'ක්‍රීඩා හා ක්‍රියාකාරකම්': 'actions',
       'ගිණුම් සැකසීම්': 'sounds_music',
@@ -674,6 +679,9 @@ class _HomeScreenState extends State<HomeScreen>
       'ස්ථාන': 'places',
       'අවශ්‍යතා': 'needs',
       'වාක්‍ය': 'sentences',
+      'උටල් පාසල': 'nursery',
+      'වර්ණ සහ අංක': 'colors_numbers',
+      // Tamil
       'உடல் பாகங்கள்': 'body_parts',
       'விலங்குகள்': 'animals',
       'பழங்கள்': 'fruits_vegatables',
@@ -681,7 +689,6 @@ class _HomeScreenState extends State<HomeScreen>
       'வீட்டுப் பொருட்கள்': 'household',
       'நிறங்கள்': 'colors',
       'எண்கள்': 'numbers',
-      'நிறங்கள் & எண்கள்': 'colors_numbers',
       'உணர்வுகள்': 'feelings',
       'செயல்கள்': 'actions',
       'இசை & ஒலிகள்': 'sounds_music',
@@ -689,6 +696,7 @@ class _HomeScreenState extends State<HomeScreen>
       'இடங்கள்': 'places',
       'தேவைகள்': 'needs',
       'வாக்கியங்கள்': 'sentences',
+      // English
       'Body Parts': 'body_parts',
       'Animals': 'animals',
       'Fruits': 'fruits_vegatables',
@@ -696,7 +704,6 @@ class _HomeScreenState extends State<HomeScreen>
       'Household': 'household',
       'Colors': 'colors',
       'Numbers': 'numbers',
-      'Colors & Numbers': 'colors_numbers',
       'Feelings': 'feelings',
       'Actions': 'actions',
       'Music & Sounds': 'sounds_music',
@@ -706,20 +713,27 @@ class _HomeScreenState extends State<HomeScreen>
       'Sentences': 'sentences',
     };
 
-    final categoryKey = categoryKeyMap[categoryName];
-    final items = categoryKey != null
-        ? (wordData[categoryKey]?.cast<Map<String, dynamic>>() ??
-            <Map<String, dynamic>>[])
-        : <Map<String, dynamic>>[];
+    // Build all categories data
+    final allCategoriesData = _categories.map((category) {
+      final categoryKey = categoryKeyMap[category['name']];
+      final items = categoryKey != null
+          ? (wordData[categoryKey]?.cast<Map<String, dynamic>>() ??
+              <Map<String, dynamic>>[])
+          : <Map<String, dynamic>>[];
 
-    if (items.isEmpty) return;
+      return {
+        'name': category['name'],
+        'emoji': category['emoji'],
+        'items': items,
+      };
+    }).toList();
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CategoryScreen(
-          category: categoryName,
-          items: items,
+          allCategories: allCategoriesData,
+          initialCategoryIndex: categoryIndex,
           language: selectedLanguage,
           onWordSelected: _addToSentence,
           onSpeak: _speak,
