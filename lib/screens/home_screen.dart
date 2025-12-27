@@ -8,6 +8,8 @@ import '../services/offline_service.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../data/word_data.dart';
 import 'category_screen.dart';
+import 'favourite_screen.dart';
+import 'settings.dart';
 import 'theme/app_theme.dart';
 import 'theme/gender_selection_screen.dart';
 import 'theme/custom_card_widget.dart';
@@ -604,13 +606,43 @@ class _HomeScreenState extends State<HomeScreen>
                       icon: Icons.favorite,
                       label: 'ප්‍රිය',
                       isActive: false,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FavouriteScreen(
+                              language: selectedLanguage,
+                              onWordSelected: _addToSentence,
+                              onSpeak: _speak,
+                              isGirl: isGirl,
+                            ),
+                          ),
+                        ).then((_) {
+                          if (mounted) {
+                            setState(() => _showSentencePanel = true);
+                          }
+                        });
+                      },
                     ),
                     _buildBottomNavItem(
                       icon: Icons.settings,
                       label: 'සැකසුම්',
                       isActive: false,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsScreen(
+                              language: selectedLanguage,
+                              isGirl: isGirl,
+                            ),
+                          ),
+                        ).then((_) {
+                          if (mounted) {
+                            setState(() {});
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),
