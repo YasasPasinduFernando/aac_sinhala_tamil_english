@@ -48,7 +48,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Future<void> _loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
     final savedName = prefs.getString('userName') ?? '';
-    
+
     if (mounted) {
       setState(() {
         userName = savedName;
@@ -78,7 +78,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         child: Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [colors['gradient1']!, colors['gradient2']!],
@@ -86,32 +86,63 @@ class _CategoryScreenState extends State<CategoryScreen> {
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: colors['primary']!.withOpacity(0.5),
+                blurRadius: 30,
+                spreadRadius: 5,
+              ),
+            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: colors['primary']!.withOpacity(0.3),
-                      blurRadius: 20,
-                      spreadRadius: 5,
+              // Animated cute avatar
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0.8, end: 1.0),
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.elasticOut,
+                builder: (context, double value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: Container(
+                      width: 110,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withOpacity(0.6),
+                            blurRadius: 25,
+                            spreadRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.isGirl ? '👧' : '👦',
+                          style: const TextStyle(fontSize: 65),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    widget.isGirl ? '👧' : '👦',
-                    style: const TextStyle(fontSize: 60),
-                  ),
-                ),
+                  );
+                },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
+              // Sparkles decoration
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('✨', style: TextStyle(fontSize: 20)),
+                  SizedBox(width: 8),
+                  Text('✨', style: TextStyle(fontSize: 16)),
+                  SizedBox(width: 8),
+                  Text('✨', style: TextStyle(fontSize: 20)),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Question with wave animation
               Text(
                 widget.language == 'si-LK'
                     ? '👋 ඔයාගේ නම මොකද්ද?'
@@ -119,50 +150,77 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ? '👋 உங்கள் பெயர் என்ன?'
                         : '👋 What is your name?',
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 26,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
-                child: TextField(
-                  controller: nameController,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: colors['textColor'],
-                  ),
-                  decoration: InputDecoration(
-                    hintText: widget.language == 'si-LK'
-                        ? 'නම ලියන්න...'
-                        : widget.language == 'ta-IN'
-                            ? 'பெயரை எழுதுங்கள்...'
-                            : 'Type your name...',
-                    hintStyle: TextStyle(
-                      color: colors['textColor']!.withOpacity(0.4),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 28),
+              // Input field with icon
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
                     ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 16,
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        '✏️',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: colors['primary'],
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: TextField(
+                        controller: nameController,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: colors['textColor'],
+                        ),
+                        decoration: InputDecoration(
+                          hintText: widget.language == 'si-LK'
+                              ? 'නම ලියන්න...'
+                              : widget.language == 'ta-IN'
+                                  ? 'பெயரை எழுதுங்கள்...'
+                                  : 'Type your name...',
+                          hintStyle: TextStyle(
+                            color: colors['textColor']!.withOpacity(0.4),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
+              // OK Button with gradient
               GestureDetector(
                 onTap: () {
                   final name = nameController.text.trim();
@@ -173,7 +231,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     });
                     _saveUserName(name);
                     Navigator.pop(context);
-                    
+
                     final greeting = widget.language == 'si-LK'
                         ? 'හෙලෝ $name'
                         : widget.language == 'ta-IN'
@@ -184,15 +242,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Colors.white.withOpacity(0.95)],
+                    ),
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.white.withOpacity(0.4),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
@@ -202,11 +262,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       Text(
                         '✅',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 28,
                           color: colors['primary'],
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 12),
                       Text(
                         widget.language == 'si-LK'
                             ? 'හරි!'
@@ -214,7 +274,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ? 'சரி!'
                                 : 'OK!',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: colors['primary'],
                         ),
@@ -232,13 +292,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   void _speakGreeting() {
     if (userName.isEmpty) return;
-    
+
     final greeting = widget.language == 'si-LK'
         ? 'හෙලෝ $userName'
         : widget.language == 'ta-IN'
             ? 'வணக்கம் $userName'
             : 'Hello $userName';
-    
+
     widget.onSpeak(greeting);
   }
 
@@ -466,35 +526,80 @@ class _CategoryScreenState extends State<CategoryScreen> {
       data: AppTheme.getThemeData(widget.isGirl),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            currentCategory['name'],
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, size: 28),
-            onPressed: () => Navigator.pop(context),
-          ),
-          actions: [
-            if (hasAskedName && userName.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: IconButton(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.volume_up, size: 28),
-                  ),
-                  onPressed: _speakGreeting,
-                  tooltip: 'Say Hello',
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                currentCategory['name'],
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              if (hasAskedName && userName.isNotEmpty)
+                Text(
+                  'Hello $userName! 👋',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white.withOpacity(0.9),
+                  ),
+                ),
+            ],
+          ),
+          centerTitle: true,
+          elevation: 0,
+          leading: hasAskedName && userName.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: IconButton(
+                    icon: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withOpacity(0.4),
+                            blurRadius: 8,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.volume_up,
+                          size: 24, color: Colors.white),
+                    ),
+                    onPressed: _speakGreeting,
+                    tooltip: 'Say Hello',
+                  ),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, size: 28),
+                  onPressed: () => Navigator.pop(context),
+                ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: IconButton(
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.2),
+                        blurRadius: 8,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.settings, size: 24),
+                ),
+                onPressed: () => _showNameDialog(),
+                tooltip: 'Settings',
+              ),
+            ),
           ],
         ),
         body: PageView.builder(
@@ -514,40 +619,57 @@ class _CategoryScreenState extends State<CategoryScreen> {
             gradient: AppTheme.getGradient(widget.isGirl),
             boxShadow: [
               BoxShadow(
-                color: colors['primary']!.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, -2),
+                color: colors['primary']!.withOpacity(0.4),
+                blurRadius: 15,
+                offset: const Offset(0, -3),
               ),
             ],
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Previous Category Button
                   _buildNavButton(
-                    icon: Icons.arrow_back_rounded,
+                    icon: Icons.arrow_back_ios_rounded,
+                    label: widget.language == 'si-LK'
+                        ? 'පෙර'
+                        : widget.language == 'ta-IN'
+                            ? 'முந்தைய'
+                            : 'Prev',
                     onTap: currentCategoryIndex > 0
                         ? () => _navigateToCategory(currentCategoryIndex - 1)
                         : null,
                     enabled: currentCategoryIndex > 0,
                   ),
-                  // Home Button
+                  // Home Button (Larger & Center)
                   _buildNavButton(
                     icon: Icons.home_rounded,
+                    label: widget.language == 'si-LK'
+                        ? 'ගෙදර'
+                        : widget.language == 'ta-IN'
+                            ? 'வீடு'
+                            : 'Home',
                     onTap: () => Navigator.pop(context),
                     isHome: true,
-                    size: 40,
+                    size: 50,
                   ),
                   // Next Category Button
                   _buildNavButton(
-                    icon: Icons.arrow_forward_rounded,
-                    onTap: currentCategoryIndex < widget.allCategories.length - 1
+                    icon: Icons.arrow_forward_ios_rounded,
+                    label: widget.language == 'si-LK'
+                        ? 'ඊළඟ'
+                        : widget.language == 'ta-IN'
+                            ? 'அடுத்த'
+                            : 'Next',
+                    onTap: currentCategoryIndex <
+                            widget.allCategories.length - 1
                         ? () => _navigateToCategory(currentCategoryIndex + 1)
                         : null,
-                    enabled: currentCategoryIndex < widget.allCategories.length - 1,
+                    enabled:
+                        currentCategoryIndex < widget.allCategories.length - 1,
                   ),
                 ],
               ),
@@ -560,41 +682,74 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget _buildNavButton({
     required IconData icon,
+    String? label,
     required VoidCallback? onTap,
     bool enabled = true,
     bool isHome = false,
-    double size = 32,
+    double size = 28,
   }) {
     final colors = AppTheme.getThemeColors(widget.isGirl);
-    
+
     return GestureDetector(
       onTap: enabled ? onTap : null,
-      child: Container(
-        width: isHome ? 70 : 60,
-        height: isHome ? 70 : 60,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(
+          horizontal: isHome ? 20 : 16,
+          vertical: isHome ? 16 : 12,
+        ),
         decoration: BoxDecoration(
-          color: enabled
-              ? (isHome 
-                  ? Colors.white 
-                  : Colors.white.withOpacity(0.3))
-              : Colors.white.withOpacity(0.1),
-          shape: BoxShape.circle,
-          boxShadow: enabled && isHome
+          gradient: enabled
+              ? (isHome
+                  ? LinearGradient(
+                      colors: [Colors.white, Colors.white.withOpacity(0.95)],
+                    )
+                  : LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.3),
+                        Colors.white.withOpacity(0.2),
+                      ],
+                    ))
+              : null,
+          color: enabled ? null : Colors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(isHome ? 25 : 20),
+          boxShadow: enabled
               ? [
                   BoxShadow(
-                    color: Colors.white.withOpacity(0.5),
-                    blurRadius: 15,
-                    spreadRadius: 2,
+                    color: isHome
+                        ? Colors.white.withOpacity(0.6)
+                        : Colors.black.withOpacity(0.15),
+                    blurRadius: isHome ? 20 : 8,
+                    spreadRadius: isHome ? 3 : 0,
+                    offset: Offset(0, isHome ? 3 : 2),
                   ),
                 ]
               : null,
         ),
-        child: Icon(
-          icon,
-          size: size,
-          color: enabled
-              ? (isHome ? colors['primary'] : Colors.white)
-              : Colors.white.withOpacity(0.3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: size,
+              color: enabled
+                  ? (isHome ? colors['primary'] : Colors.white)
+                  : Colors.white.withOpacity(0.3),
+            ),
+            if (label != null && label.isNotEmpty) ...[
+              const SizedBox(height: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: isHome ? 16 : 13,
+                  fontWeight: isHome ? FontWeight.bold : FontWeight.w600,
+                  color: enabled
+                      ? (isHome ? colors['primary'] : Colors.white)
+                      : Colors.white.withOpacity(0.3),
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
