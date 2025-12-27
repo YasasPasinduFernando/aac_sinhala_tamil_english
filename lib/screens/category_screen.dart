@@ -569,12 +569,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onPageChanged: (index) {
             setState(() {
               // Calculate actual category index using modulo for infinite loop
-              currentCategoryIndex = index % widget.allCategories.length;
+              // The index from onPageChanged is relative to the starting position,
+              // so we need to ensure it properly maps to our category list
+              int calculatedIndex = index % widget.allCategories.length;
+              // Handle negative modulo results
+              if (calculatedIndex < 0) {
+                calculatedIndex += widget.allCategories.length;
+              }
+              currentCategoryIndex = calculatedIndex;
             });
           },
           itemBuilder: (context, index) {
             // Get the actual category using modulo for infinite scrolling
-            final categoryIndex = index % widget.allCategories.length;
+            int categoryIndex = index % widget.allCategories.length;
+            // Handle negative modulo results
+            if (categoryIndex < 0) {
+              categoryIndex += widget.allCategories.length;
+            }
             return _buildCategoryPage(widget.allCategories[categoryIndex]);
           },
         ),
