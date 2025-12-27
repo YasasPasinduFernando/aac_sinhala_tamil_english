@@ -4,27 +4,21 @@ import 'theme/app_theme.dart';
 import 'theme/custom_card_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
-  final String category;
-  final List<Map<String, dynamic>> items;
+  final List<Map<String, dynamic>> allCategories;
+  final int initialCategoryIndex;
   final String language;
   final Function(String) onWordSelected;
   final Function(String) onSpeak;
   final bool isGirl;
-  final int currentCategoryIndex;
-  final int totalCategories;
-  final Function(int)? onNavigateToCategory;
 
   const CategoryScreen({
     Key? key,
-    required this.category,
-    required this.items,
+    required this.allCategories,
+    required this.initialCategoryIndex,
     required this.language,
     required this.onWordSelected,
     required this.onSpeak,
     required this.isGirl,
-    this.currentCategoryIndex = 0,
-    this.totalCategories = 14,
-    this.onNavigateToCategory,
   }) : super(key: key);
 
   @override
@@ -32,41 +26,59 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  late PageController _pageController;
+  late int currentCategoryIndex;
   String userName = '';
+  bool hasAskedName = false;
 
   @override
   void initState() {
     super.initState();
+    currentCategoryIndex = widget.initialCategoryIndex;
+    _pageController = PageController(initialPage: currentCategoryIndex);
     _loadUserName();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedName = prefs.getString('user_name');
+    final savedName = prefs.getString('userName') ?? '';
     
-    if (savedName == null || savedName.isEmpty) {
-      // නම නැත්නම් අහන්න
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showNameDialog();
+    if (mounted) {
+      setState(() {
+        userName = savedName;
+        hasAskedName = savedName.isNotEmpty;
       });
-    } else {
-      setState(() => userName = savedName);
-      _speakGreeting(savedName);
+
+      if (savedName.isEmpty) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (mounted) _showNameDialog();
+        });
+      }
     }
   }
 
-  Future<void> _showNameDialog() async {
-    final TextEditingController nameController = TextEditingController();
-    final colors = AppTheme.getThemeColors(widget.isGirl);
+  Future<void> _saveUserName(String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userName', name);
+  }
 
-    final result = await showDialog<String>(
+  void _showNameDialog() {
+    final colors = AppTheme.getThemeColors(widget.isGirl);
+    final TextEditingController nameController = TextEditingController();
+
+    showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         child: Container(
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [colors['gradient1']!, colors['gradient2']!],
@@ -75,23 +87,39 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             borderRadius: BorderRadius.circular(30),
           ),
-          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                '👋',
-                style: TextStyle(fontSize: 60),
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: colors['primary']!.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    widget.isGirl ? '👧' : '👦',
+                    style: const TextStyle(fontSize: 60),
+                  ),
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Text(
                 widget.language == 'si-LK'
-                    ? 'ඔබේ නම මොකක්ද?'
+                    ? '👋 ඔයාගේ නම මොකද්ද?'
                     : widget.language == 'ta-IN'
-                        ? 'உங்கள் பெயர் என்ன?'
-                        : 'What is your name?',
+                        ? '👋 உங்கள் பெயர் என்ன?'
+                        : '👋 What is your name?',
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -101,18 +129,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 10,
-                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
                 child: TextField(
                   controller: nameController,
-                  autofocus: true,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20,
@@ -124,56 +150,77 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ? 'නම ලියන්න...'
                         : widget.language == 'ta-IN'
                             ? 'பெயரை எழுதுங்கள்...'
-                            : 'Enter name...',
+                            : 'Type your name...',
+                    hintStyle: TextStyle(
+                      color: colors['textColor']!.withOpacity(0.4),
+                    ),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(16),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
                   ),
-                  onSubmitted: (value) {
-                    if (value.isNotEmpty) {
-                      Navigator.pop(context, value);
-                    }
-                  },
                 ),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (nameController.text.isNotEmpty) {
-                    Navigator.pop(context, nameController.text);
+              GestureDetector(
+                onTap: () {
+                  final name = nameController.text.trim();
+                  if (name.isNotEmpty) {
+                    setState(() {
+                      userName = name;
+                      hasAskedName = true;
+                    });
+                    _saveUserName(name);
+                    Navigator.pop(context);
+                    
+                    final greeting = widget.language == 'si-LK'
+                        ? 'හෙලෝ $name'
+                        : widget.language == 'ta-IN'
+                            ? 'வணக்கம் $name'
+                            : 'Hello $name';
+                    widget.onSpeak(greeting);
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: colors['primary'],
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 16,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 5,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      '✓',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      widget.language == 'si-LK'
-                          ? 'හරි'
-                          : widget.language == 'ta-IN'
-                              ? 'சரி'
-                              : 'OK',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '✅',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: colors['primary'],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        widget.language == 'si-LK'
+                            ? 'හරි!'
+                            : widget.language == 'ta-IN'
+                                ? 'சரி!'
+                                : 'OK!',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: colors['primary'],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -181,22 +228,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       ),
     );
-
-    if (result != null && result.isNotEmpty) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user_name', result);
-      setState(() => userName = result);
-      _speakGreeting(result);
-    }
   }
 
-  void _speakGreeting(String name) {
+  void _speakGreeting() {
+    if (userName.isEmpty) return;
+    
     final greeting = widget.language == 'si-LK'
-        ? 'හෙලෝ $name'
+        ? 'හෙලෝ $userName'
         : widget.language == 'ta-IN'
-            ? 'வணக்கம் $name'
-            : 'Hello $name';
+            ? 'வணக்கம் $userName'
+            : 'Hello $userName';
+    
     widget.onSpeak(greeting);
+  }
+
+  void _navigateToCategory(int index) {
+    if (index >= 0 && index < widget.allCategories.length) {
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   String _getText(Map<String, dynamic> item) {
@@ -333,281 +386,168 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
+  Widget _buildCategoryPage(Map<String, dynamic> categoryData) {
+    final colors = AppTheme.getThemeColors(widget.isGirl);
+    final items = categoryData['items'] as List<Map<String, dynamic>>;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            colors['background']!,
+            colors['accent']!.withOpacity(0.3),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: items.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '😢',
+                    style: TextStyle(fontSize: 60),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'කිසිදු දේ නැත',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: colors['textColor'],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.9,
+              ),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                final text = _getText(item);
+                final actions = item['actions'] as List<dynamic>? ?? [];
+
+                return GestureDetector(
+                  onLongPress: actions.isNotEmpty
+                      ? () => _showActionsBottomSheet(context, text, actions)
+                      : null,
+                  child: CustomWordCard(
+                    text: text,
+                    emoji: item['emoji'],
+                    isGirl: widget.isGirl,
+                    language: widget.language,
+                    onTap: () {
+                      widget.onWordSelected(text);
+                      Navigator.pop(context);
+                    },
+                    onSpeak: () => widget.onSpeak(text),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = AppTheme.getThemeColors(widget.isGirl);
+    final currentCategory = widget.allCategories[currentCategoryIndex];
 
     return Theme(
       data: AppTheme.getThemeData(widget.isGirl),
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              // Sound button
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.volume_up, size: 28),
-                  color: Colors.white,
-                  onPressed: () {
-                    if (userName.isNotEmpty) {
-                      _speakGreeting(userName);
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Greeting text
-              Expanded(
-                child: GestureDetector(
-                  onTap: _showNameDialog,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      userName.isEmpty
-                          ? (widget.language == 'si-LK'
-                              ? 'හෙලෝ'
-                              : widget.language == 'ta-IN'
-                                  ? 'வணக்கம்'
-                                  : 'Hello')
-                          : (widget.language == 'si-LK'
-                              ? 'හෙලෝ $userName'
-                              : widget.language == 'ta-IN'
-                                  ? 'வணக்கம் $userName'
-                                  : 'Hello $userName'),
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Settings button
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.settings, size: 28),
-                  color: Colors.white,
-                  onPressed: _showNameDialog,
-                ),
-              ),
-            ],
+          title: Text(
+            currentCategory['name'],
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           elevation: 0,
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                colors['background']!,
-                colors['accent']!.withOpacity(0.3),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, size: 28),
+            onPressed: () => Navigator.pop(context),
           ),
-          child: Column(
-            children: [
-              // Category title
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [colors['gradient1']!, colors['gradient2']!],
-                  ),
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: colors['primary']!.withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
+          actions: [
+            if (hasAskedName && userName.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.3),
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-                child: Text(
-                  widget.category,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    child: const Icon(Icons.volume_up, size: 28),
                   ),
-                  textAlign: TextAlign.center,
+                  onPressed: _speakGreeting,
+                  tooltip: 'Say Hello',
                 ),
               ),
-              
-              // Content
-              Expanded(
-                child: widget.items.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              '😢',
-                              style: TextStyle(fontSize: 60),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              widget.language == 'si-LK'
-                                  ? 'කිසිදු දේ නැත'
-                                  : widget.language == 'ta-IN'
-                                      ? 'எதுவும் இல்லை'
-                                      : 'Nothing here',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: colors['textColor'],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 0.9,
-                        ),
-                        itemCount: widget.items.length,
-                        itemBuilder: (context, index) {
-                          final item = widget.items[index];
-                          final text = _getText(item);
-                          final actions =
-                              item['actions'] as List<dynamic>? ?? [];
-
-                          return GestureDetector(
-                            onLongPress: actions.isNotEmpty
-                                ? () => _showActionsBottomSheet(
-                                    context, text, actions)
-                                : null,
-                            child: CustomWordCard(
-                              text: text,
-                              emoji: item['emoji'],
-                              isGirl: widget.isGirl,
-                              language: widget.language,
-                              onTap: () {
-                                widget.onWordSelected(text);
-                                Navigator.pop(context);
-                              },
-                              onSpeak: () => widget.onSpeak(text),
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
+          ],
         ),
-        // Bottom navigation
+        body: PageView.builder(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              currentCategoryIndex = index;
+            });
+          },
+          itemCount: widget.allCategories.length,
+          itemBuilder: (context, index) {
+            return _buildCategoryPage(widget.allCategories[index]);
+          },
+        ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [colors['gradient1']!, colors['gradient2']!],
-            ),
+            gradient: AppTheme.getGradient(widget.isGirl),
             boxShadow: [
               BoxShadow(
                 color: colors['primary']!.withOpacity(0.3),
                 blurRadius: 10,
-                offset: const Offset(0, -3),
+                offset: const Offset(0, -2),
               ),
             ],
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Previous button
+                  // Previous Category Button
                   _buildNavButton(
-                    icon: Icons.arrow_back,
-                    label: widget.language == 'si-LK'
-                        ? 'පෙර'
-                        : widget.language == 'ta-IN'
-                            ? 'பின்'
-                            : 'Prev',
-                    onPressed: widget.currentCategoryIndex > 0
-                        ? () {
-                            if (widget.onNavigateToCategory != null) {
-                              widget.onNavigateToCategory!(
-                                  widget.currentCategoryIndex - 1);
-                            }
-                          }
+                    icon: Icons.arrow_back_rounded,
+                    onTap: currentCategoryIndex > 0
+                        ? () => _navigateToCategory(currentCategoryIndex - 1)
                         : null,
-                    colors: colors,
+                    enabled: currentCategoryIndex > 0,
                   ),
-                  
-                  // Home button (larger)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.home, size: 36),
-                      color: Colors.white,
-                      onPressed: () => Navigator.pop(context),
-                      padding: const EdgeInsets.all(16),
-                    ),
-                  ),
-                  
-                  // Next button
+                  // Home Button
                   _buildNavButton(
-                    icon: Icons.arrow_forward,
-                    label: widget.language == 'si-LK'
-                        ? 'ඊළඟ'
-                        : widget.language == 'ta-IN'
-                            ? 'அடுத்தது'
-                            : 'Next',
-                    onPressed: widget.currentCategoryIndex <
-                            widget.totalCategories - 1
-                        ? () {
-                            if (widget.onNavigateToCategory != null) {
-                              widget.onNavigateToCategory!(
-                                  widget.currentCategoryIndex + 1);
-                            }
-                          }
+                    icon: Icons.home_rounded,
+                    onTap: () => Navigator.pop(context),
+                    isHome: true,
+                    size: 40,
+                  ),
+                  // Next Category Button
+                  _buildNavButton(
+                    icon: Icons.arrow_forward_rounded,
+                    onTap: currentCategoryIndex < widget.allCategories.length - 1
+                        ? () => _navigateToCategory(currentCategoryIndex + 1)
                         : null,
-                    colors: colors,
+                    enabled: currentCategoryIndex < widget.allCategories.length - 1,
                   ),
                 ],
               ),
@@ -620,51 +560,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Widget _buildNavButton({
     required IconData icon,
-    required String label,
-    required VoidCallback? onPressed,
-    required Map<String, Color> colors,
+    required VoidCallback? onTap,
+    bool enabled = true,
+    bool isHome = false,
+    double size = 32,
   }) {
-    final isEnabled = onPressed != null;
+    final colors = AppTheme.getThemeColors(widget.isGirl);
     
-    return Container(
-      decoration: BoxDecoration(
-        color: isEnabled
-            ? Colors.blue
-            : Colors.grey.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: isEnabled
-            ? [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : [],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, color: Colors.white, size: 24),
-                const SizedBox(width: 8),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+    return GestureDetector(
+      onTap: enabled ? onTap : null,
+      child: Container(
+        width: isHome ? 70 : 60,
+        height: isHome ? 70 : 60,
+        decoration: BoxDecoration(
+          color: enabled
+              ? (isHome 
+                  ? Colors.white 
+                  : Colors.white.withOpacity(0.3))
+              : Colors.white.withOpacity(0.1),
+          shape: BoxShape.circle,
+          boxShadow: enabled && isHome
+              ? [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.5),
+                    blurRadius: 15,
+                    spreadRadius: 2,
                   ),
-                ),
-              ],
-            ),
-          ),
+                ]
+              : null,
+        ),
+        child: Icon(
+          icon,
+          size: size,
+          color: enabled
+              ? (isHome ? colors['primary'] : Colors.white)
+              : Colors.white.withOpacity(0.3),
         ),
       ),
     );
