@@ -27,6 +27,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   late int currentCategoryIndex;
   List<String> favoriteCategoryKeys = [];
   bool _isProcessingTap = false;
+  bool _isPinned = false; // Track pin state
 
   // Prevent multiple rapid taps from being processed
   Future<void> _processWordTap(String text) async {
@@ -65,7 +66,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     'food': {'si': 'කෑම', 'ta': 'உணவு', 'en': 'Food', 'emoji': '🍽️'},
     'household': {
       'si': 'ගෙදර දේ',
-      'ta': 'வீட්టுப் பொருட்கள්',
+      'ta': 'வீட்டுப் பொருட்கள்',
       'en': 'Household',
       'emoji': '🏠'
     },
@@ -79,13 +80,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     },
     'actions': {
       'si': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
-      'ta': 'செயல்கள්',
+      'ta': 'செயல்கள்',
       'en': 'Actions',
       'emoji': '⚽'
     },
     'sounds_music': {
       'si': 'ගිණුම් සැකසීම්',
-      'ta': 'இசை & ஒலிகள්',
+      'ta': 'இசை & ஒலிகள்',
       'en': 'Music & Sounds',
       'emoji': '🎵'
     },
@@ -95,11 +96,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       'en': 'Family',
       'emoji': '👨‍👩‍👧‍👦'
     },
-    'places': {'si': 'ස්ථාන', 'ta': 'இடங்கள්', 'en': 'Places', 'emoji': '🌍'},
+    'places': {'si': 'ස්ථාන', 'ta': 'இடங்கள்', 'en': 'Places', 'emoji': '🌍'},
     'needs': {'si': 'අවශ්‍යතා', 'ta': 'தேவைகள்', 'en': 'Needs', 'emoji': '🙏'},
     'sentences': {
       'si': 'වාක්‍ය',
-      'ta': 'வாக්கியங்கள්',
+      'ta': 'வாக்கியங்கள்',
       'en': 'Sentences',
       'emoji': '💬'
     },
@@ -123,11 +124,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   void dispose() {
     _pageController.dispose();
-    // Don't restore - let HomeScreen control the system UI
-    // Just hide the nav again when returning
+    // Restore system UI when leaving
     SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-      overlays: [SystemUiOverlay.top],
+      SystemUiMode.edgeToEdge,
     );
     super.dispose();
   }
@@ -143,6 +142,49 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             : categoryMap.keys.toList(); // Default to all if empty
       });
     }
+  }
+
+  void _togglePin() {
+    setState(() {
+      _isPinned = !_isPinned;
+    });
+
+    if (_isPinned) {
+      // Lock the screen - disable back button and hide system UI completely
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.immersive,
+        overlays: [],
+      );
+    } else {
+      // Unlock - restore system UI
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.immersiveSticky,
+        overlays: [SystemUiOverlay.top],
+      );
+    }
+  }
+
+  Future<bool> _onWillPop() async {
+    // Prevent back navigation if pinned
+    if (_isPinned) {
+      // Show message that screen is pinned
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            widget.language == 'si-LK'
+                ? 'තිරය අගුළු දමා ඇත. අගුළු ඇරීමට pin බොත්තම ඔබන්න'
+                : widget.language == 'ta-IN'
+                    ? 'திரை பூட்டப்பட்டுள்ளது. திறக்க pin பொத்தானை அழுத்தவும்'
+                    : 'Screen is locked. Press pin button to unlock',
+            textAlign: TextAlign.center,
+          ),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return false;
+    }
+    return true;
   }
 
   String _getCategoryName(String key) {
@@ -303,7 +345,97 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     final colors = AppTheme.getThemeColors(widget.isGirl);
 
     if (favoriteCategoryKeys.isEmpty) {
-      return Theme(
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Theme(
+          data: AppTheme.getThemeData(widget.isGirl),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                widget.language == 'si-LK'
+                    ? '❤️ ප්‍රිය'
+                    : widget.language == 'ta-IN'
+                        ? '❤️ விருப்பமான'
+                        : '❤️ Favorites',
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
+              backgroundColor: colors['primary'],
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    _isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                    color: _isPinned ? Colors.orange : Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: _togglePin,
+                  tooltip: _isPinned ? 'Unpin' : 'Pin',
+                ),
+              ],
+            ),
+            backgroundColor: colors['background'],
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '📭',
+                    style: TextStyle(fontSize: 80),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    widget.language == 'si-LK'
+                        ? 'ප්‍රිය වර්ගයන් තෝරා ගැනීමට සැකසුම් වෙත යන්න'
+                        : widget.language == 'ta-IN'
+                            ? 'விருப்பமான வகைகளைத் தேர்ந்தெடுக்க அமைப்புகளுக்குச் செல்லவும்'
+                            : 'Go to settings to select your favorite categories',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: colors['textColor'],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: _isPinned ? null : () => Navigator.pop(context),
+                    child: Opacity(
+                      opacity: _isPinned ? 0.5 : 1.0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: AppTheme.getGradient(widget.isGirl),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Text(
+                          widget.language == 'si-LK'
+                              ? 'ගෙදරට යාමට'
+                              : widget.language == 'ta-IN'
+                                  ? 'வீட்டுக்குத் திரும்பவும்'
+                                  : 'Go Home',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Theme(
         data: AppTheme.getThemeData(widget.isGirl),
         child: Scaffold(
           appBar: AppBar(
@@ -317,327 +449,276 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             ),
             centerTitle: true,
             backgroundColor: colors['primary'],
+            elevation: 0,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  icon: Icon(
+                    _isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                    color: _isPinned ? Colors.orange : Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: _togglePin,
+                  tooltip: _isPinned ? 'Unpin' : 'Pin',
+                ),
+              ),
+            ],
           ),
           backgroundColor: colors['background'],
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '📭',
-                  style: const TextStyle(fontSize: 80),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  widget.language == 'si-LK'
-                      ? 'ප්‍රිය වර්ගයන් තෝරා ගැනීමට සැකසුම් වෙත යන්න'
-                      : widget.language == 'ta-IN'
-                          ? 'விருப்பமான வகைகளைத் தேர்ந்தெடுக்க அமைப்புகளுக்குச் செல்லவும்'
-                          : 'Go to settings to select your favorite categories',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: colors['textColor'],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: AppTheme.getGradient(widget.isGirl),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Text(
-                      widget.language == 'si-LK'
-                          ? 'ගෙදරට යාමට'
-                          : widget.language == 'ta-IN'
-                              ? 'வீட்டுக்குத் திரும்பவும்'
-                              : 'Go Home',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Theme(
-      data: AppTheme.getThemeData(widget.isGirl),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.language == 'si-LK'
-                ? '❤️ ප්‍රිය'
-                : widget.language == 'ta-IN'
-                    ? '❤️ விருப්பமான'
-                    : '❤️ Favorites',
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          backgroundColor: colors['primary'],
-          elevation: 0,
-        ),
-        backgroundColor: colors['background'],
-        body: PageView.builder(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              int calculatedIndex = index % favoriteCategoryKeys.length;
-              if (calculatedIndex < 0) {
-                calculatedIndex += favoriteCategoryKeys.length;
+          body: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                int calculatedIndex = index % favoriteCategoryKeys.length;
+                if (calculatedIndex < 0) {
+                  calculatedIndex += favoriteCategoryKeys.length;
+                }
+                currentCategoryIndex = calculatedIndex;
+              });
+            },
+            itemBuilder: (context, index) {
+              int categoryIndex = index % favoriteCategoryKeys.length;
+              if (categoryIndex < 0) {
+                categoryIndex += favoriteCategoryKeys.length;
               }
-              currentCategoryIndex = calculatedIndex;
-            });
-          },
-          itemBuilder: (context, index) {
-            int categoryIndex = index % favoriteCategoryKeys.length;
-            if (categoryIndex < 0) {
-              categoryIndex += favoriteCategoryKeys.length;
-            }
 
-            final categoryKey = favoriteCategoryKeys[categoryIndex];
-            final categoryName = _getCategoryName(categoryKey);
-            final categoryEmoji = _getCategoryEmoji(categoryKey);
-            final words = _getCategoryWords(categoryKey);
+              final categoryKey = favoriteCategoryKeys[categoryIndex];
+              final categoryName = _getCategoryName(categoryKey);
+              final categoryEmoji = _getCategoryEmoji(categoryKey);
+              final words = _getCategoryWords(categoryKey);
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Category Header
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      gradient: AppTheme.getGradient(widget.isGirl),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          categoryEmoji,
-                          style: const TextStyle(fontSize: 60),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          categoryName,
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Words Grid
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1.1,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Category Header
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: AppTheme.getGradient(widget.isGirl),
                       ),
-                      itemCount: words.length,
-                      itemBuilder: (context, index) {
-                        final word = words[index];
-                        final text = _getText(word);
-                        final emoji = word['emoji'] ?? '';
-
-                        return GestureDetector(
-                          onTap: () {
-                            _processWordTap(text);
-                          },
-                          onLongPress: word['actions'] != null &&
-                                  (word['actions'] as List).isNotEmpty
-                              ? () => _showActionsBottomSheet(
-                                  context, text, word['actions'] as List)
-                              : null,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  colors['gradient1']!.withOpacity(0.8),
-                                  colors['gradient2']!.withOpacity(0.8),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: colors['primary']!.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  emoji,
-                                  style: const TextStyle(fontSize: 40),
-                                ),
-                                const SizedBox(height: 8),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Text(
-                                    text,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Icon(
-                                    Icons.volume_up,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
+                      child: Column(
+                        children: [
+                          Text(
+                            categoryEmoji,
+                            style: const TextStyle(fontSize: 60),
                           ),
-                        );
-                      },
+                          const SizedBox(height: 12),
+                          Text(
+                            categoryName,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Words Grid
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemCount: words.length,
+                        itemBuilder: (context, index) {
+                          final word = words[index];
+                          final text = _getText(word);
+                          final emoji = word['emoji'] ?? '';
+
+                          return GestureDetector(
+                            onTap: () {
+                              _processWordTap(text);
+                            },
+                            onLongPress: word['actions'] != null &&
+                                    (word['actions'] as List).isNotEmpty
+                                ? () => _showActionsBottomSheet(
+                                    context, text, word['actions'] as List)
+                                : null,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    colors['gradient1']!.withOpacity(0.8),
+                                    colors['gradient2']!.withOpacity(0.8),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: colors['primary']!.withOpacity(0.3),
+                                    blurRadius: 10,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    emoji,
+                                    style: const TextStyle(fontSize: 40),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(
+                                      Icons.volume_up,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            },
+          ),
+          bottomNavigationBar: Container(
+            height: 100,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.pink.shade200,
+                  Colors.pink.shade300,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Previous Category Button
+                  GestureDetector(
+                    onTap: () {
+                      _pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.5),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 40,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  // Home Button (disabled when pinned)
+                  GestureDetector(
+                    onTap: _isPinned ? null : () => Navigator.pop(context),
+                    child: Opacity(
+                      opacity: _isPinned ? 0.5 : 1.0,
+                      child: Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: _isPinned ? Colors.grey : Colors.red,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: (_isPinned ? Colors.grey : Colors.red)
+                                  .withOpacity(0.6),
+                              blurRadius: 20,
+                              spreadRadius: 3,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.home,
+                          color: Colors.white,
+                          size: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Next Category Button
+                  GestureDetector(
+                    onTap: () {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.blue.withOpacity(0.5),
+                            blurRadius: 15,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            );
-          },
-        ),
-        bottomNavigationBar: Container(
-          height: 100,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.pink.shade200,
-                Colors.pink.shade300,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Previous Category Button
-                GestureDetector(
-                  onTap: () {
-                    _pageController.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blue.withOpacity(0.5),
-                          blurRadius: 15,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-                ),
-                // Home Button
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withOpacity(0.6),
-                          blurRadius: 20,
-                          spreadRadius: 3,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-                  ),
-                ),
-                // Next Category Button
-                GestureDetector(
-                  onTap: () {
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blue.withOpacity(0.5),
-                          blurRadius: 15,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ),
