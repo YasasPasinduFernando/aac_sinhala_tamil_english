@@ -31,6 +31,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
   late int currentCategoryIndex;
   String userName = '';
   bool hasAskedName = false;
+  bool _isProcessingTap = false;
+
+  // Prevent multiple rapid taps from being processed
+  Future<void> _processWordTap(String text) async {
+    if (_isProcessingTap) return;
+
+    _isProcessingTap = true;
+    try {
+      widget.onWordSelected(text);
+      widget.onSpeak(text);
+    } finally {
+      // Reset after a short delay
+      await Future.delayed(const Duration(milliseconds: 300));
+      _isProcessingTap = false;
+    }
+  }
 
   @override
   void initState() {
@@ -352,8 +368,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () {
-                            widget.onWordSelected(actionText);
-                            widget.onSpeak(actionText);
+                            _processWordTap(actionText);
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -465,8 +480,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     isGirl: widget.isGirl,
                     language: widget.language,
                     onTap: () {
-                      widget.onWordSelected(text);
-                      widget.onSpeak(text);
+                      _processWordTap(text);
                     },
                     onSpeak: () => widget.onSpeak(text),
                   ),
