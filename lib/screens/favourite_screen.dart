@@ -46,30 +46,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       'en': 'Fruits',
       'emoji': '🍎'
     },
-    'food': {
-      'si': 'කෑම',
-      'ta': 'உணவு',
-      'en': 'Food',
-      'emoji': '🍽️'
-    },
+    'food': {'si': 'කෑම', 'ta': 'உணவு', 'en': 'Food', 'emoji': '🍽️'},
     'household': {
       'si': 'ගෙදර දේ',
       'ta': 'வீட්టுப் பொருட்கள්',
       'en': 'Household',
       'emoji': '🏠'
     },
-    'colors': {
-      'si': 'වර්ණ',
-      'ta': 'நிறங்கள்',
-      'en': 'Colors',
-      'emoji': '🎨'
-    },
-    'numbers': {
-      'si': 'අංක',
-      'ta': 'எண்கள்',
-      'en': 'Numbers',
-      'emoji': '🔢'
-    },
+    'colors': {'si': 'වර්ණ', 'ta': 'நிறங்கள்', 'en': 'Colors', 'emoji': '🎨'},
+    'numbers': {'si': 'අංක', 'ta': 'எண்கள்', 'en': 'Numbers', 'emoji': '🔢'},
     'feelings': {
       'si': 'සිතුවම්',
       'ta': 'உணர்வுகள்',
@@ -94,18 +79,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       'en': 'Family',
       'emoji': '👨‍👩‍👧‍👦'
     },
-    'places': {
-      'si': 'ස්ථාන',
-      'ta': 'இடங்கள්',
-      'en': 'Places',
-      'emoji': '🌍'
-    },
-    'needs': {
-      'si': 'අවශ්‍යතා',
-      'ta': 'தேவைகள்',
-      'en': 'Needs',
-      'emoji': '🙏'
-    },
+    'places': {'si': 'ස්ථාන', 'ta': 'இடங்கள්', 'en': 'Places', 'emoji': '🌍'},
+    'needs': {'si': 'අවශ්‍යතා', 'ta': 'தேவைகள்', 'en': 'Needs', 'emoji': '🙏'},
     'sentences': {
       'si': 'වාක්‍ය',
       'ta': 'வாக්கியங்கள්',
@@ -368,8 +343,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color:
-                                      colors['primary']!.withOpacity(0.3),
+                                  color: colors['primary']!.withOpacity(0.3),
                                   blurRadius: 10,
                                   spreadRadius: 2,
                                 ),

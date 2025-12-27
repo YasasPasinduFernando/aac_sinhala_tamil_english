@@ -41,30 +41,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'en': 'Fruits',
       'emoji': '🍎'
     },
-    'food': {
-      'si': 'කෑම',
-      'ta': 'உணவு',
-      'en': 'Food',
-      'emoji': '🍽️'
-    },
+    'food': {'si': 'කෑම', 'ta': 'உணவு', 'en': 'Food', 'emoji': '🍽️'},
     'household': {
       'si': 'ගෙදර දේ',
       'ta': 'வீட்டுப் பொருட்கள்',
       'en': 'Household',
       'emoji': '🏠'
     },
-    'colors': {
-      'si': 'වර්ණ',
-      'ta': 'நிறங்கள்',
-      'en': 'Colors',
-      'emoji': '🎨'
-    },
-    'numbers': {
-      'si': 'අංක',
-      'ta': 'எண்கள்',
-      'en': 'Numbers',
-      'emoji': '🔢'
-    },
+    'colors': {'si': 'වර්ණ', 'ta': 'நிறங்கள்', 'en': 'Colors', 'emoji': '🎨'},
+    'numbers': {'si': 'අංක', 'ta': 'எண்கள்', 'en': 'Numbers', 'emoji': '🔢'},
     'feelings': {
       'si': 'සිතුවම්',
       'ta': 'உணர்வுகள்',
@@ -89,18 +74,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'en': 'Family',
       'emoji': '👨‍👩‍👧‍👦'
     },
-    'places': {
-      'si': 'ස්ථාන',
-      'ta': 'இடங்கள்',
-      'en': 'Places',
-      'emoji': '🌍'
-    },
-    'needs': {
-      'si': 'අවශ්‍යතා',
-      'ta': 'தேவைகள்',
-      'en': 'Needs',
-      'emoji': '🙏'
-    },
+    'places': {'si': 'ස්ථාන', 'ta': 'இடங்கள்', 'en': 'Places', 'emoji': '🌍'},
+    'needs': {'si': 'අවශ්‍යතා', 'ta': 'தேவைகள்', 'en': 'Needs', 'emoji': '🙏'},
     'sentences': {
       'si': 'වාක්‍ය',
       'ta': 'வாக்கியங்கள்',
@@ -261,8 +236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
 
                   final categoryKey = categoryKeys[categoryIndex];
-                  final isFavorite =
-                      favoriteCategoryKeys.contains(categoryKey);
+                  final isFavorite = favoriteCategoryKeys.contains(categoryKey);
 
                   return SingleChildScrollView(
                     child: Padding(
@@ -338,8 +312,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       color: isFavorite
                                           ? Colors.white
                                           : Colors.grey.shade400,
-                                      borderRadius:
-                                          BorderRadius.circular(25),
+                                      borderRadius: BorderRadius.circular(25),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.black.withOpacity(0.2),
@@ -348,7 +321,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       ],
                                     ),
                                     child: Text(
-                                      isFavorite ? '❤️ ප්‍රිය' : '🤍 ප්‍රිය නොවේ',
+                                      isFavorite
+                                          ? '❤️ ප්‍රිය'
+                                          : '🤍 ප්‍රිය නොවේ',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
