@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final FlutterTts flutterTts = FlutterTts();
   String selectedLanguage = 'si-LK';
   List<String> sentence = [];
@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _scrollController = ScrollController(keepScrollOffset: false);
     _scrollController.addListener(_onScroll);
     _initTts();
@@ -41,10 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     flutterTts.stop();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // App එක unlock/resume වූ විට UI refresh කරන්න
+      setState(() {});
+    }
   }
 
   void _onScroll() {
@@ -205,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .map((cat) => {
               'name': cat['name'],
               'emoji': cat['emoji'],
-              'desc': cat['desc']  // Changed 'description' to 'desc' to match UI expectations
+              'desc': cat['desc']
             })
         .toList();
   }
@@ -309,8 +319,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 12,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        const SizedBox(width: 8),
                       ],
                     ),
                   ),
@@ -383,26 +391,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .asMap()
                                             .entries
                                             .map((entry) {
-                                          return Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  colors['gradient1']!,
-                                                  colors['gradient2']!,
-                                                ],
+                                          return GestureDetector(
+                                            // වචනය click කරන විට කියවීම
+                                            onTap: () => _speak(entry.value),
+                                            // Long press කරන විට ඉවත් කරීම
+                                            onLongPress: () {
+                                              setState(() => sentence
+                                                  .removeAt(entry.key));
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                                vertical: 8,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: GestureDetector(
-                                              onLongPress: () {
-                                                setState(() => sentence
-                                                    .removeAt(entry.key));
-                                              },
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    colors['gradient1']!,
+                                                    colors['gradient2']!,
+                                                  ],
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -416,10 +427,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ),
                                                   const SizedBox(width: 6),
-                                                  const Text(
-                                                    '❌',
-                                                    style:
-                                                        TextStyle(fontSize: 12),
+                                                  // Close icon - click කරන විට ඉවත් වේ
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() => sentence
+                                                          .removeAt(entry.key));
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(2),
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                        size: 16,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
