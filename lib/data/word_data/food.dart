@@ -5,20 +5,58 @@ final List<Map<String, dynamic>> food = [
     'en': 'Rice',
     'emoji': '🍚',
     'actions': [
-      {'si': 'බත් කනවා', 'ta': 'சோறு சாப்பிடு', 'en': 'Eat rice'},
-      {'si': 'බත් පිසින්න', 'ta': 'சோறு சமை', 'en': 'Cook rice'},
-      {'si': 'බත් ස්පර්ශ', 'ta': 'சோறு தொடு', 'en': 'Touch rice'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'කිරිබත්',
+    'ta': 'பால் சோறு',
+    'en': 'Milk Rice',
+    'emoji': '🍚',
+    'actions': [
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'ඉඩිආප්ප',
+    'ta': 'இடியாப்பம்',
+    'en': 'String Hoppers',
+    'emoji': '🍜',
+    'actions': [
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
     'si': 'රොටි',
     'ta': 'ரொட்டி',
+    'en': 'Roti',
+    'emoji': '🫓',
+    'actions': [
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'පාන්',
+    'ta': 'பான்',
     'en': 'Bread',
     'emoji': '🍞',
     'actions': [
-      {'si': 'රොටි කනවා', 'ta': 'ரொட்டி சாப்பிடு', 'en': 'Eat bread'},
-      {'si': 'රොටි කෙටි', 'ta': 'ரொட்டி வெட்ட', 'en': 'Cut bread'},
-      {'si': 'රොටි ස්පර්ශ', 'ta': 'ரொட்டி தொடு', 'en': 'Touch bread'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
@@ -27,46 +65,46 @@ final List<Map<String, dynamic>> food = [
     'en': 'Biscuit',
     'emoji': '🍪',
     'actions': [
-      {'si': 'බිස්කට් කනවා', 'ta': 'பிஸ்கட் சாப்பிடு', 'en': 'Eat biscuit'},
-      {
-        'si': 'බිස්කට් කර්පණ්‍ය',
-        'ta': 'பிஸ்கட் சுவையான',
-        'en': 'Tasty biscuit'
-      },
-      {'si': 'බිස්කට් ස්පර්ශ', 'ta': 'பிஸ்கட் தொடு', 'en': 'Touch biscuit'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
-    'si': 'බඩ',
+    'si': 'බිත්තර',
     'ta': 'முட்டை',
     'en': 'Egg',
     'emoji': '🥚',
     'actions': [
-      {'si': 'බඩ පිසින්න', 'ta': 'முட்டை சமை', 'en': 'Cook egg'},
-      {'si': 'බඩ කනවා', 'ta': 'முட்டை சாப்பிடு', 'en': 'Eat egg'},
-      {'si': 'බඩ ස්පර්ශ', 'ta': 'முட்டை தொடு', 'en': 'Touch egg'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
-    'si': 'සුපු',
-    'ta': 'சூப்',
-    'en': 'Soup',
-    'emoji': '🍲',
+    'si': 'මාළු',
+    'ta': 'மீன்',
+    'en': 'Fish',
+    'emoji': '🐟',
     'actions': [
-      {'si': 'සුපු උණුසුම්', 'ta': 'சூப் சூடான', 'en': 'Hot soup'},
-      {'si': 'සුපු පානය', 'ta': 'சூப் குடிக்க', 'en': 'Drink soup'},
-      {'si': 'සුපු ස්පර්ශ', 'ta': 'சூப் தொடு', 'en': 'Touch soup'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
-    'si': 'මාස',
-    'ta': 'மாமிச',
-    'en': 'Meat',
+    'si': 'කුකුල් මස්',
+    'ta': 'கோழி',
+    'en': 'Chicken',
     'emoji': '🍗',
     'actions': [
-      {'si': 'මාස කනවා', 'ta': 'மாமிச சாப்பிடு', 'en': 'Eat meat'},
-      {'si': 'මාස පිසින්න', 'ta': 'மாமிச சமை', 'en': 'Cook meat'},
-      {'si': 'මාස ස්පර්ශ', 'ta': 'மாமிச தொடு', 'en': 'Touch meat'}
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
@@ -75,9 +113,10 @@ final List<Map<String, dynamic>> food = [
     'en': 'Water',
     'emoji': '💧',
     'actions': [
-      {'si': 'වතුර හීස්තින්න', 'ta': 'தண்ணீர் குடிக்க', 'en': 'Drink water'},
-      {'si': 'වතුර ශීතල', 'ta': 'தண்ணீர் குளிர்', 'en': 'Cold water'},
-      {'si': 'වතුර උණුසුම්', 'ta': 'தண்ணீர் சூடான', 'en': 'Hot water'}
+      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
@@ -86,9 +125,58 @@ final List<Map<String, dynamic>> food = [
     'en': 'Milk',
     'emoji': '🥛',
     'actions': [
-      {'si': 'කිරි හීස්තින්න', 'ta': 'பால் குடிக்க', 'en': 'Drink milk'},
-      {'si': 'කිරි උණුසුම්', 'ta': 'பால் சூடான', 'en': 'Warm milk'},
-      {'si': 'කිරි ස්පර්ශ', 'ta': 'பால் தொடு', 'en': 'Touch milk'}
+      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'තේ',
+    'ta': 'தேநீர்',
+    'en': 'Tea',
+    'emoji': '☕',
+    'actions': [
+      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'ජුස්',
+    'ta': 'ஜூஸ்',
+    'en': 'Juice',
+    'emoji': '🧃',
+    'actions': [
+      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'ඇපල්',
+    'ta': 'ஆப்பிள்',
+    'en': 'Apple',
+    'emoji': '🍎',
+    'actions': [
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'කෙසෙල්',
+    'ta': 'வாழைப்பழம்',
+    'en': 'Banana',
+    'emoji': '🍌',
+    'actions': [
+      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
+      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
 ];

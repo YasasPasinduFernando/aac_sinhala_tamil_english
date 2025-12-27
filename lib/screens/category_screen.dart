@@ -8,7 +8,7 @@ class CategoryScreen extends StatefulWidget {
   final List<Map<String, dynamic>> allCategories;
   final int initialCategoryIndex;
   final String language;
-  final Function(String) onWordSelected;
+  final Function(String, {String emoji}) onWordSelected;
   final Function(String) onSpeak;
   final bool isGirl;
 
@@ -34,12 +34,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool _isProcessingTap = false;
 
   // Prevent multiple rapid taps from being processed
-  Future<void> _processWordTap(String text) async {
+  Future<void> _processWordTap(String text, {String emoji = ''}) async {
     if (_isProcessingTap) return;
 
     _isProcessingTap = true;
     try {
-      widget.onWordSelected(text);
+      widget.onWordSelected(text, emoji: emoji);
       widget.onSpeak(text);
     } finally {
       // Reset after a short delay
@@ -469,6 +469,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 final item = items[index];
                 final text = _getText(item);
                 final actions = item['actions'] as List<dynamic>? ?? [];
+                final emoji = item['emoji'] as String? ?? '';
 
                 return GestureDetector(
                   onLongPress: actions.isNotEmpty
@@ -480,7 +481,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     isGirl: widget.isGirl,
                     language: widget.language,
                     onTap: () {
-                      _processWordTap(text);
+                      _processWordTap(text, emoji: emoji);
                     },
                     onSpeak: () => widget.onSpeak(text),
                   ),

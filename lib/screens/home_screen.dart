@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
   final FlutterTts flutterTts = FlutterTts();
   String selectedLanguage = 'si-LK';
-  List<String> sentence = [];
+  List<Map<String, String>> sentence = [];
   bool isPremium = false;
   bool isGirl = true;
   late ScrollController _scrollController;
@@ -154,13 +154,14 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
-  void _addToSentence(String word) {
-    setState(() => sentence.add(word));
+  void _addToSentence(String word, {String emoji = ''}) {
+    setState(() => sentence.add({'word': word, 'emoji': emoji}));
   }
 
   void _speakSentence() {
     if (sentence.isNotEmpty) {
-      _speak(sentence.join(' '));
+      final words = sentence.map((item) => item['word']).join(' ');
+      _speak(words);
     }
   }
 
@@ -673,8 +674,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 const SizedBox(height: 12),
                                 Container(
                                   width: double.infinity,
-                                  constraints:
-                                      const BoxConstraints(minHeight: 50),
+                                  height: 70,
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -701,84 +701,99 @@ class _HomeScreenState extends State<HomeScreen>
                                             ),
                                           ),
                                         )
-                                      : Wrap(
-                                          spacing: 8,
-                                          runSpacing: 8,
-                                          children: sentence
-                                              .asMap()
-                                              .entries
-                                              .map((entry) {
-                                            return GestureDetector(
-                                              onTap: () => _speak(entry.value),
-                                              onLongPress: () {
-                                                setState(() => sentence
-                                                    .removeAt(entry.key));
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 12,
-                                                  vertical: 8,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  gradient:
-                                                      AppTheme.getGradient(
-                                                          isGirl),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: colors['primary']!
-                                                          .withOpacity(0.3),
-                                                      blurRadius: 5,
-                                                      offset:
-                                                          const Offset(0, 2),
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: sentence
+                                                .asMap()
+                                                .entries
+                                                .map((entry) {
+                                              final wordData = entry.value;
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 8),
+                                                child: GestureDetector(
+                                                  onTap: () => _speak(
+                                                      wordData['word'] ?? ''),
+                                                  onLongPress: () {
+                                                    setState(() => sentence
+                                                        .removeAt(entry.key));
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 8,
                                                     ),
-                                                  ],
-                                                ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                      entry.value,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 6),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() =>
-                                                            sentence.removeAt(
-                                                                entry.key));
-                                                      },
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white
-                                                              .withOpacity(0.3),
-                                                          shape:
-                                                              BoxShape.circle,
+                                                    decoration: BoxDecoration(
+                                                      gradient:
+                                                          AppTheme.getGradient(
+                                                              isGirl),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color:
+                                                              colors['primary']!
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                          blurRadius: 5,
+                                                          offset: const Offset(
+                                                              0, 2),
                                                         ),
-                                                        child: const Icon(
-                                                          Icons.close,
-                                                          size: 14,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          wordData['emoji'] ??
+                                                              '📝',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 6),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            setState(() =>
+                                                                sentence.removeAt(
+                                                                    entry.key));
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(2),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Colors
+                                                                  .white
+                                                                  .withOpacity(
+                                                                      0.3),
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.close,
+                                                              size: 14,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          }).toList(),
+                                              );
+                                            }).toList(),
+                                          ),
                                         ),
                                 ),
                                 const SizedBox(height: 12),
