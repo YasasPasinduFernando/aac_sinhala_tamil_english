@@ -68,6 +68,12 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  # Noto Color Emoji Font - Stable emoji rendering
+  fonts:
+    - family: NotoColorEmoji
+      fonts:
+        - asset: assets/fonts/NotoColorEmoji.ttf
+
   # App Icon Configuration
   # Run: flutter pub run flutter_launcher_icons
 

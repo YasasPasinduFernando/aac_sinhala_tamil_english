@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
+import '../../widgets/emoji_text.dart';
 
 class AnimatedCategoryCard extends StatefulWidget {
   final String categoryName;
@@ -24,147 +25,123 @@ class AnimatedCategoryCard extends StatefulWidget {
 }
 
 class _AnimatedCategoryCardState extends State<AnimatedCategoryCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<Offset> _slideAnimation;
+    with AutomaticKeepAliveClientMixin {
+  late final String _memoizedEmoji;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.9, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-
-    if (mounted) _controller.forward();
+    // Memoize emoji to prevent re-rendering issues
+    _memoizedEmoji = widget.emoji;
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final colors = AppTheme.getThemeColors(widget.isGirl);
 
-    return SlideTransition(
-      position: _slideAnimation,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: GestureDetector(
-          onTap: widget.onTap,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  colors['gradient1']!,
-                  colors['gradient2']!,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: colors['primary']!.withOpacity(0.4),
-                  blurRadius: 15,
-                  spreadRadius: 3,
-                ),
+    return RepaintBoundary(
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                colors['gradient1']!,
+                colors['gradient2']!,
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Stack(
-              children: [
-                // Background decoration
-                Positioned(
-                  right: -20,
-                  top: -20,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: colors['primary']!.withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 3,
+              ),
+            ],
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                right: -20,
+                top: -20,
+                child: RepaintBoundary(
                   child: Opacity(
                     opacity: 0.1,
-                    child: Text(
-                      widget.emoji,
-                      style: const TextStyle(fontSize: 100),
+                    child: EmojiText(
+                      _memoizedEmoji,
+                      fontSize: 80,
                     ),
                   ),
                 ),
-                // Main content
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Category emoji
-                      Text(
-                        widget.emoji,
-                        style: const TextStyle(fontSize: 50),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RepaintBoundary(
+                      child: EmojiText(
+                        _memoizedEmoji,
+                        fontSize: 50,
                       ),
-                      const SizedBox(height: 12),
-                      // Category name
-                      Text(
-                        widget.categoryName,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      widget.categoryName,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.description,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.5),
+                          width: 1,
                         ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 8),
-                      // Description
-                      Text(
-                        widget.description,
+                      child: const Text(
+                        '👆 ඉසින්න',
                         style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white.withOpacity(0.9),
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 12),
-                      // Tap indicator
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.5),
-                            width: 1,
-                          ),
-                        ),
-                        child: const Text(
-                          '👆 ඉසින්න',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          fontSize: 11,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -172,7 +149,7 @@ class _AnimatedCategoryCardState extends State<AnimatedCategoryCard>
   }
 }
 
-class CategoryGridView extends StatelessWidget {
+class CategoryGridView extends StatefulWidget {
   final List<Map<String, dynamic>> categories;
   final Function(String) onCategorySelected;
   final bool isGirl;
@@ -185,24 +162,39 @@ class CategoryGridView extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CategoryGridView> createState() => _CategoryGridViewState();
+}
+
+class _CategoryGridViewState extends State<CategoryGridView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return GridView.builder(
       padding: const EdgeInsets.all(16),
+      cacheExtent: 500,
+      addAutomaticKeepAlives: true,
+      addRepaintBoundaries: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
         childAspectRatio: 0.85,
       ),
-      itemCount: categories.length,
+      itemCount: widget.categories.length,
       itemBuilder: (context, index) {
-        final category = categories[index];
+        final category = widget.categories[index];
         return AnimatedCategoryCard(
+          key: ValueKey('${category['name']}_$index'),
           categoryName: category['name'],
           emoji: category['emoji'],
           description: category['description'] ?? 'සිටින්න!',
-          onTap: () => onCategorySelected(category['name']),
-          isGirl: isGirl,
+          onTap: () => widget.onCategorySelected(category['name']),
+          isGirl: widget.isGirl,
           index: index,
         );
       },
