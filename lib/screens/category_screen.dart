@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_theme.dart';
 import 'theme/custom_card_widget.dart';
@@ -35,13 +36,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     currentCategoryIndex = widget.initialCategoryIndex;
-    _pageController = PageController(initialPage: currentCategoryIndex);
+    // Use a very large initial page to enable infinite scrolling
+    final initialPage = 1000000 + widget.initialCategoryIndex;
+    _pageController = PageController(initialPage: initialPage);
     _loadUserName();
+
+    // Hide system navigation bar and make full screen
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [SystemUiOverlay.top],
+    );
   }
 
   @override
   void dispose() {
     _pageController.dispose();
+    // Restore system UI when leaving screen
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: SystemUiOverlay.values,
+    );
     super.dispose();
   }
 
@@ -78,7 +92,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         child: Container(
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [colors['gradient1']!, colors['gradient2']!],
@@ -86,63 +100,34 @@ class _CategoryScreenState extends State<CategoryScreen> {
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: colors['primary']!.withOpacity(0.5),
-                blurRadius: 30,
-                spreadRadius: 5,
-              ),
-            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Animated cute avatar
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0.8, end: 1.0),
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.elasticOut,
-                builder: (context, double value, child) {
-                  return Transform.scale(
-                    scale: value,
-                    child: Container(
-                      width: 110,
-                      height: 110,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.6),
-                            blurRadius: 25,
-                            spreadRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          widget.isGirl ? '👧' : '👦',
-                          style: const TextStyle(fontSize: 65),
-                        ),
-                      ),
+              // Cute avatar
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: colors['primary']!.withOpacity(0.3),
+                      blurRadius: 20,
+                      spreadRadius: 5,
                     ),
-                  );
-                },
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    widget.isGirl ? '👧' : '👦',
+                    style: const TextStyle(fontSize: 60),
+                  ),
+                ),
               ),
-              const SizedBox(height: 24),
-              // Sparkles decoration
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('✨', style: TextStyle(fontSize: 20)),
-                  SizedBox(width: 8),
-                  Text('✨', style: TextStyle(fontSize: 16)),
-                  SizedBox(width: 8),
-                  Text('✨', style: TextStyle(fontSize: 20)),
-                ],
-              ),
-              const SizedBox(height: 16),
-              // Question with wave animation
+              const SizedBox(height: 20),
+              // Question
               Text(
                 widget.language == 'si-LK'
                     ? '👋 ඔයාගේ නම මොකද්ද?'
@@ -150,77 +135,52 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         ? '👋 உங்கள் பெயர் என்ன?'
                         : '👋 What is your name?',
                 style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black26,
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 28),
-              // Input field with icon
+              const SizedBox(height: 24),
+              // Input field
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
                     ),
                   ],
                 ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        '✏️',
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: colors['primary'],
-                        ),
-                      ),
+                child: TextField(
+                  controller: nameController,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: colors['textColor'],
+                  ),
+                  decoration: InputDecoration(
+                    hintText: widget.language == 'si-LK'
+                        ? 'නම ලියන්න...'
+                        : widget.language == 'ta-IN'
+                            ? 'பெயரை எழுதுங்கள்...'
+                            : 'Type your name...',
+                    hintStyle: TextStyle(
+                      color: colors['textColor']!.withOpacity(0.4),
                     ),
-                    Expanded(
-                      child: TextField(
-                        controller: nameController,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: colors['textColor'],
-                        ),
-                        decoration: InputDecoration(
-                          hintText: widget.language == 'si-LK'
-                              ? 'නම ලියන්න...'
-                              : widget.language == 'ta-IN'
-                                  ? 'பெயரை எழுதுங்கள்...'
-                                  : 'Type your name...',
-                          hintStyle: TextStyle(
-                            color: colors['textColor']!.withOpacity(0.4),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 18,
-                          ),
-                        ),
-                      ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
                     ),
-                  ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 28),
-              // OK Button with gradient
+              const SizedBox(height: 24),
+              // OK Button
               GestureDetector(
                 onTap: () {
                   final name = nameController.text.trim();
@@ -242,17 +202,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.white, Colors.white.withOpacity(0.95)],
-                    ),
-                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.4),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -262,11 +220,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       Text(
                         '✅',
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 24,
                           color: colors['primary'],
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 8),
                       Text(
                         widget.language == 'si-LK'
                             ? 'හරි!'
@@ -274,7 +232,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ? 'சரி!'
                                 : 'OK!',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: colors['primary'],
                         ),
@@ -302,10 +260,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
     widget.onSpeak(greeting);
   }
 
-  void _navigateToCategory(int index) {
-    if (index >= 0 && index < widget.allCategories.length) {
+  void _navigateToCategory(int direction) {
+    // direction: -1 for previous, +1 for next
+    if (_pageController.hasClients) {
+      final currentPage = _pageController.page?.round() ?? 0;
       _pageController.animateToPage(
-        index,
+        currentPage + direction,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -526,153 +486,187 @@ class _CategoryScreenState extends State<CategoryScreen> {
       data: AppTheme.getThemeData(widget.isGirl),
       child: Scaffold(
         appBar: AppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                currentCategory['name'],
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (hasAskedName && userName.isNotEmpty)
-                Text(
-                  'Hello $userName! 👋',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white.withOpacity(0.9),
-                  ),
-                ),
-            ],
-          ),
-          centerTitle: true,
-          elevation: 0,
-          leading: hasAskedName && userName.isNotEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: IconButton(
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.red.withOpacity(0.4),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(Icons.volume_up,
-                          size: 24, color: Colors.white),
-                    ),
-                    onPressed: _speakGreeting,
-                    tooltip: 'Say Hello',
-                  ),
-                )
-              : IconButton(
-                  icon: const Icon(Icons.arrow_back_ios, size: 28),
-                  onPressed: () => Navigator.pop(context),
-                ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                icon: Container(
-                  padding: const EdgeInsets.all(8),
+              // Speaker Button (Left)
+              GestureDetector(
+                onTap: _speakGreeting,
+                child: Container(
+                  width: 60,
+                  height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.red,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.red.withOpacity(0.4),
+                        blurRadius: 10,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.volume_up,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
+              ),
+              // Title (Center)
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      hasAskedName && userName.isNotEmpty
+                          ? 'Hello $userName'
+                          : currentCategory['name'],
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              // Settings Button (Right)
+              GestureDetector(
+                onTap: () => _showNameDialog(),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.settings, size: 24),
+                  child: const Icon(
+                    Icons.settings,
+                    color: Colors.black,
+                    size: 32,
+                  ),
                 ),
-                onPressed: () => _showNameDialog(),
-                tooltip: 'Settings',
               ),
-            ),
-          ],
+            ],
+          ),
+          backgroundColor: colors['background'],
+          elevation: 0,
+          toolbarHeight: 100,
+          automaticallyImplyLeading: false,
         ),
         body: PageView.builder(
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {
-              currentCategoryIndex = index;
+              // Calculate actual category index using modulo for infinite loop
+              currentCategoryIndex = index % widget.allCategories.length;
             });
           },
-          itemCount: widget.allCategories.length,
           itemBuilder: (context, index) {
-            return _buildCategoryPage(widget.allCategories[index]);
+            // Get the actual category using modulo for infinite scrolling
+            final categoryIndex = index % widget.allCategories.length;
+            return _buildCategoryPage(widget.allCategories[categoryIndex]);
           },
         ),
         bottomNavigationBar: Container(
+          height: 100,
           decoration: BoxDecoration(
-            gradient: AppTheme.getGradient(widget.isGirl),
-            boxShadow: [
-              BoxShadow(
-                color: colors['primary']!.withOpacity(0.4),
-                blurRadius: 15,
-                offset: const Offset(0, -3),
-              ),
-            ],
+            gradient: LinearGradient(
+              colors: [
+                Colors.pink.shade200,
+                Colors.pink.shade300,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
           child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Previous Category Button
-                  _buildNavButton(
-                    icon: Icons.arrow_back_ios_rounded,
-                    label: widget.language == 'si-LK'
-                        ? 'පෙර'
-                        : widget.language == 'ta-IN'
-                            ? 'முந்தைய'
-                            : 'Prev',
-                    onTap: currentCategoryIndex > 0
-                        ? () => _navigateToCategory(currentCategoryIndex - 1)
-                        : null,
-                    enabled: currentCategoryIndex > 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Previous Category Button (Blue Circle)
+                GestureDetector(
+                  onTap: () => _navigateToCategory(-1),
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
-                  // Home Button (Larger & Center)
-                  _buildNavButton(
-                    icon: Icons.home_rounded,
-                    label: widget.language == 'si-LK'
-                        ? 'ගෙදර'
-                        : widget.language == 'ta-IN'
-                            ? 'வீடு'
-                            : 'Home',
-                    onTap: () => Navigator.pop(context),
-                    isHome: true,
-                    size: 50,
+                ),
+                // Home Button (Large Red Circle)
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.red.withOpacity(0.6),
+                          blurRadius: 20,
+                          spreadRadius: 3,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.home,
+                      color: Colors.white,
+                      size: 50,
+                    ),
                   ),
-                  // Next Category Button
-                  _buildNavButton(
-                    icon: Icons.arrow_forward_ios_rounded,
-                    label: widget.language == 'si-LK'
-                        ? 'ඊළඟ'
-                        : widget.language == 'ta-IN'
-                            ? 'அடுத்த'
-                            : 'Next',
-                    onTap: currentCategoryIndex <
-                            widget.allCategories.length - 1
-                        ? () => _navigateToCategory(currentCategoryIndex + 1)
-                        : null,
-                    enabled:
-                        currentCategoryIndex < widget.allCategories.length - 1,
+                ),
+                // Next Category Button (Blue Circle)
+                GestureDetector(
+                  onTap: () => _navigateToCategory(1),
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.5),
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -695,14 +689,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(
-          horizontal: isHome ? 20 : 16,
-          vertical: isHome ? 16 : 12,
+          horizontal: isHome ? 24 : 14,
+          vertical: isHome ? 12 : 10,
         ),
         decoration: BoxDecoration(
           gradient: enabled
               ? (isHome
                   ? LinearGradient(
-                      colors: [Colors.white, Colors.white.withOpacity(0.95)],
+                      colors: [Colors.red.shade400, Colors.red.shade500],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     )
                   : LinearGradient(
                       colors: [
@@ -712,40 +708,49 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ))
               : null,
           color: enabled ? null : Colors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(isHome ? 25 : 20),
+          borderRadius: BorderRadius.circular(isHome ? 30 : 18),
           boxShadow: enabled
               ? [
                   BoxShadow(
                     color: isHome
-                        ? Colors.white.withOpacity(0.6)
+                        ? Colors.red.withOpacity(0.5)
                         : Colors.black.withOpacity(0.15),
-                    blurRadius: isHome ? 20 : 8,
-                    spreadRadius: isHome ? 3 : 0,
-                    offset: Offset(0, isHome ? 3 : 2),
+                    blurRadius: isHome ? 15 : 8,
+                    spreadRadius: isHome ? 2 : 0,
+                    offset: Offset(0, isHome ? 4 : 2),
                   ),
                 ]
               : null,
         ),
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              size: size,
+              size: isHome ? 32 : size,
               color: enabled
-                  ? (isHome ? colors['primary'] : Colors.white)
+                  ? (isHome ? Colors.white : Colors.white)
                   : Colors.white.withOpacity(0.3),
             ),
-            if (label != null && label.isNotEmpty) ...[
+            if (label != null && label.isNotEmpty && isHome) ...[
+              const SizedBox(width: 10),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+            if (label != null && label.isNotEmpty && !isHome) ...[
               const SizedBox(height: 6),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: isHome ? 16 : 13,
-                  fontWeight: isHome ? FontWeight.bold : FontWeight.w600,
-                  color: enabled
-                      ? (isHome ? colors['primary'] : Colors.white)
-                      : Colors.white.withOpacity(0.3),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: enabled ? Colors.white : Colors.white.withOpacity(0.3),
                 ),
               ),
             ],
