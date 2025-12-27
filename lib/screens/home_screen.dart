@@ -8,11 +8,11 @@ import '../services/ads_service.dart';
 import '../services/offline_service.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../data/word_data.dart';
+import '../utils/gender_selection_util.dart';
 import 'category_screen.dart';
 import 'favourite_screen.dart';
 import 'settings.dart';
 import 'theme/app_theme.dart';
-import 'theme/gender_selection_screen.dart';
 import 'theme/custom_card_widget.dart';
 import 'theme/animated_category_card.dart';
 
@@ -169,18 +169,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _changeGender() {
-    showDialog(
-      context: context,
-      builder: (context) => GenderSelectionScreen(
-        onGenderSelected: (gender) async {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setBool('isGirl', gender);
-          if (mounted) {
-            setState(() => isGirl = gender);
-            Navigator.pop(context);
-          }
-        },
-      ),
+    showGenderSelectionPopup(
+      context,
+      onGenderChanged: (gender) {
+        if (mounted) {
+          setState(() => isGirl = gender);
+        }
+      },
     );
   }
 
