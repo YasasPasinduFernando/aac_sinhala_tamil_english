@@ -26,6 +26,22 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   late PageController _pageController;
   late int currentCategoryIndex;
   List<String> favoriteCategoryKeys = [];
+  bool _isProcessingTap = false;
+
+  // Prevent multiple rapid taps from being processed
+  Future<void> _processWordTap(String text) async {
+    if (_isProcessingTap) return;
+
+    _isProcessingTap = true;
+    try {
+      widget.onWordSelected(text);
+      widget.onSpeak(text);
+    } finally {
+      // Reset after a short delay
+      await Future.delayed(const Duration(milliseconds: 300));
+      _isProcessingTap = false;
+    }
+  }
 
   final Map<String, Map<String, String>> categoryMap = {
     'body_parts': {
@@ -156,6 +172,123 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       default:
         return item['si'] ?? '';
     }
+  }
+
+  String _getActionText(Map<String, dynamic> action) {
+    switch (widget.language) {
+      case 'si-LK':
+        return action['si'] ?? '';
+      case 'ta-IN':
+        return action['ta'] ?? '';
+      case 'en-US':
+        return action['en'] ?? '';
+      default:
+        return action['si'] ?? '';
+    }
+  }
+
+  void _showActionsBottomSheet(
+      BuildContext context, String itemText, List<dynamic> actions) {
+    final colors = AppTheme.getThemeColors(widget.isGirl);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: colors['background'],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                colors['background']!,
+                colors['accent']!.withOpacity(0.2),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  itemText,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: colors['textColor'],
+                  ),
+                ),
+              ),
+              const Divider(),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: actions.length,
+                  itemBuilder: (context, index) {
+                    final action = actions[index] as Map<String, dynamic>;
+                    final actionText = _getActionText(action);
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            _processWordTap(actionText);
+                          },
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 16),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  colors['primary']!,
+                                  colors['accent']!,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  action['emoji'] ?? '✓',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    actionText,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: colors['buttonText'],
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   List<Map<String, dynamic>> _getCategoryWords(String categoryKey) {
@@ -328,9 +461,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
                         return GestureDetector(
                           onTap: () {
-                            widget.onWordSelected(text);
-                            widget.onSpeak(text);
+                            _processWordTap(text);
                           },
+                          onLongPress: word['actions'] != null &&
+                                  (word['actions'] as List).isNotEmpty
+                              ? () => _showActionsBottomSheet(
+                                  context, text, word['actions'] as List)
+                              : null,
                           child: Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
