@@ -420,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen>
       {'name': 'අංක', 'emoji': '🔢', 'desc': '1, 2, 3, 4, 5...'},
       {'name': 'සිතුවිලි', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
       {
-        'name': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
+        'name': 'ක්‍රියාකාරකම්',
         'emoji': '⚽',
         'desc': 'දිවීම, ගමනය, නැටීම...'
       },

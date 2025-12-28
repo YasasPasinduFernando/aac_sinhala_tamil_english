@@ -57,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'emoji': '😊'
     },
     'actions': {
-      'si': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
+      'si': 'ක්‍රියාකාරකම්',
       'ta': 'செயல்கள்',
       'en': 'Actions',
       'emoji': '⚽'
