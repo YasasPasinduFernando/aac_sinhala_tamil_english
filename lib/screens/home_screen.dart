@@ -12,6 +12,7 @@ import '../utils/gender_selection_util.dart';
 import 'category_screen.dart';
 import 'favourite_screen.dart';
 import 'settings.dart';
+import 'donation_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/custom_card_widget.dart';
 import 'theme/animated_category_card.dart';
@@ -239,6 +240,7 @@ class _HomeScreenState extends State<HomeScreen>
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -251,33 +253,37 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 16),
-            Container(
-              width: 50,
-              height: 5,
-              decoration: BoxDecoration(
-                color: colors['textColor']!.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 16),
+              Container(
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: colors['textColor']!.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              '🌍 භාෂාව තෝරන්න',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: colors['textColor'],
+              const SizedBox(height: 20),
+              Text(
+                '🌍 භාෂාව තෝරන්න',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: colors['textColor'],
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            _buildLanguageOption('si-LK', '🇱🇰', 'සිංහල', colors),
-            _buildLanguageOption('ta-IN', '🇮🇳', 'தமிழ்', colors),
-            _buildLanguageOption('en-US', '🇺🇸', 'English', colors),
-            const SizedBox(height: 30),
-          ],
+              const SizedBox(height: 24),
+              _buildLanguageOption('si-LK', '🇱🇰', 'සිංහල', colors),
+              _buildLanguageOption('ta-IN', '🇮🇳', 'தமிழ்', colors),
+              _buildLanguageOption('en-US', '🇺🇸', 'English', colors),
+              const SizedBox(height: 30),
+              _buildDonateButton(colors),
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
     );
@@ -346,6 +352,63 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  Widget _buildDonateButton(Map<String, Color> colors) {
+    final String donateText = selectedLanguage == 'si-LK'
+        ? '☕ අපට ඩොනේට් කරන්න'
+        : selectedLanguage == 'ta-IN'
+            ? '☕ எங்களுக்கு நன்கொடை'
+            : '☕ Support Us';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DonationScreen(
+                language: selectedLanguage,
+                isGirl: isGirl,
+              ),
+            ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          decoration: BoxDecoration(
+            gradient: AppTheme.getGradient(isGirl),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: colors['primary']!.withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                donateText,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: colors['textColor'],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '❤️',
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   List<Map<String, dynamic>> get _categories {
     const siCategories = [
       {'name': 'ශරීරයේ දෙ', 'emoji': '👤', 'desc': 'හස, පා, මුහුණ...'},
@@ -356,7 +419,11 @@ class _HomeScreenState extends State<HomeScreen>
       {'name': 'වර්ණ', 'emoji': '🎨', 'desc': 'රතු, නිල්, කහ...'},
       {'name': 'අංක', 'emoji': '🔢', 'desc': '1, 2, 3, 4, 5...'},
       {'name': 'සිතුවිලි', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
-      {'name': 'ක්‍රීඩා හා ක්‍රියාකාරකම්', 'emoji': '⚽', 'desc': 'දිවීම, ගමනය, නැටීම...'},
+      {
+        'name': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
+        'emoji': '⚽',
+        'desc': 'දිවීම, ගමනය, නැටීම...'
+      },
       {
         'name': 'සංගීතය සහ ශබ්ද',
         'emoji': '🎵',
