@@ -355,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen>
       {'name': 'ගෙදර දේ', 'emoji': '🏠', 'desc': 'පොත, මේස, අඩ්ඩ...'},
       {'name': 'වර්ණ', 'emoji': '🎨', 'desc': 'රතු, නිල්, කහ...'},
       {'name': 'අංක', 'emoji': '🔢', 'desc': '1, 2, 3, 4, 5...'},
-      {'name': 'සිතුවම්', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
+      {'name': 'සිතුවිලි', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
       {'name': 'ක්‍රියාකාරකම්', 'emoji': '⚽', 'desc': 'දිවීම, ගමනය, නැටීම...'},
       {
         'name': 'සංගීතය සහ ශබ්ද',
@@ -1054,7 +1054,7 @@ class _HomeScreenState extends State<HomeScreen>
       'ගෙදර දේ': 'household',
       'වර්ණ': 'colors',
       'අංක': 'numbers',
-      'සිතුවම්': 'feelings',
+      'සිතුවිලි': 'feelings',
       'ක්‍රියාකාරකම්': 'actions',
       'සංගීතය සහ ශබ්ද': 'sounds_music',
       'පවුල': 'family_words',

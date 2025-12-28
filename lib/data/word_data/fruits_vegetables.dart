@@ -242,7 +242,7 @@ final List<Map<String, dynamic>> fruitsVegetables = [
     ]
   },
   {
-    'si': 'වට්ටක්කා',
+    'si': 'වම්බටු',
     'ta': 'கத்தரிக்காய்',
     'en': 'Brinjal',
     'emoji': '🍆',

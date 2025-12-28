@@ -73,7 +73,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     'colors': {'si': 'වර්ණ', 'ta': 'நிறங்கள்', 'en': 'Colors', 'emoji': '🎨'},
     'numbers': {'si': 'අංක', 'ta': 'எண்கள்', 'en': 'Numbers', 'emoji': '🔢'},
     'feelings': {
-      'si': 'සිතුවම්',
+      'si': 'සිතුවිලි',
       'ta': 'உணர்வுகள்',
       'en': 'Feelings',
       'emoji': '😊'

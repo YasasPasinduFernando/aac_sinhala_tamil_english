@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'en_desc': '1, 2, 3, 4, 5...',
       },
       'feelings': {
-        'si': 'සිතුවම්',
+        'si': 'සිතුවිලි',
         'ta': 'உணர்வுகள்',
         'en': 'Feelings',
         'emoji': '😊',
@@ -671,7 +671,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'වර්ණ': 'colors',
       'අංක': 'numbers',
       'වර්ණ සහ අංක': 'colors_numbers',
-      'සිතුවම්': 'feelings',
+      'සිතුවිලි': 'feelings',
       'ක්‍රීඩා හා ක්‍රියාකාරකම්': 'actions',
       'ගිණුම් සැකසීම්': 'sounds_music',
       'පවුල': 'family',
