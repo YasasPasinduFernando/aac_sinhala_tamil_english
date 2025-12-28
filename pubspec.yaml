@@ -80,12 +80,12 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon/app_icon.png"
+  image_path: "assets/app_icon.png"
+  remove_alpha_ios: true
   adaptive_icon_background: "#2196F3"
-  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  adaptive_icon_foreground: "assets/app_icon.png"
 
-# To generate icons, create assets/icon/app_icon.png (512x512)
-# Then run: flutter pub run flutter_launcher_icons
+# To generate icons, run: flutter pub run flutter_launcher_icons
 
   # To add assets to your application, add an assets section, like this:
   # assets:
