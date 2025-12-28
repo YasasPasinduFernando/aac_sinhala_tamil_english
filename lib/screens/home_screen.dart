@@ -189,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen>
       case 'ta-IN':
         return '🔱';
       case 'en-US':
-        return 'uk';
+        return '🇬🇧';
       default:
         return '🌍';
     }
