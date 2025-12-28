@@ -44,7 +44,7 @@ final List<Map<String, dynamic>> food = [
     ]
   },
   {
-    'si': 'ඉඩිආප්ප',
+    'si': 'ඉදි ආප්ප',
     'ta': 'இடியாப்பம்',
     'en': 'String Hoppers',
     'emoji': '🥢',
@@ -114,6 +114,28 @@ final List<Map<String, dynamic>> food = [
     'ta': 'கொத்து',
     'en': 'Kottu',
     'emoji': '🥘',
+    'actions': [
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'පීසා',
+    'ta': 'பீட்சா',
+    'en': 'Pizza',
+    'emoji': '🍕',
     'actions': [
       {
         'si': 'කන්න ඕන',
