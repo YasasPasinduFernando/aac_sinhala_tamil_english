@@ -79,13 +79,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       'emoji': '😊'
     },
     'actions': {
-      'si': 'ක්‍රීඩා හා ක්‍රියාකාරකම්',
+      'si': 'ක්‍රියාකාරකම්',
       'ta': 'செயல்கள்',
       'en': 'Actions',
       'emoji': '⚽'
     },
     'sounds_music': {
-      'si': 'ගිණුම් සැකසීම්',
+      'si': 'සංගීතය සහ ශබ්ද',
       'ta': 'இசை & ஒலிகள்',
       'en': 'Music & Sounds',
       'emoji': '🎵'
