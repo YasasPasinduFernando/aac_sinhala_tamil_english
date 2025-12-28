@@ -16,13 +16,6 @@ final List<Map<String, dynamic>> needs = [
         'ta': 'சாப்பிட கொடு',
         'en': 'Give food',
         'emoji': '🍴'
-      },
-      {'si': 'කෑම ඕන', 'ta': 'உணவு வேண்டும்', 'en': 'Need food', 'emoji': '🍱'},
-      {
-        'si': 'දැන් කන්න',
-        'ta': 'இப்போது சாப்பிடு',
-        'en': 'Eat now',
-        'emoji': '⏰'
       }
     ]
   },
@@ -32,7 +25,12 @@ final List<Map<String, dynamic>> needs = [
     'en': 'Want to drink',
     'emoji': '🥤',
     'actions': [
-      {'si': 'පිපාසයි', 'ta': 'தாகமாக', 'en': 'I am thirsty', 'emoji': '😓'},
+      {
+        'si': 'තිබහයි',
+        'ta': 'தாகமாக',
+        'en': 'I am thirsty',
+        'emoji': '😓'
+      },
       {
         'si': 'වතුර දෙන්න',
         'ta': 'தண்ணீர் கொடு',
@@ -65,9 +63,24 @@ final List<Map<String, dynamic>> needs = [
         'en': 'Need toilet',
         'emoji': '🚽'
       },
-      {'si': 'ඉක්මනින්', 'ta': 'விரைவாக', 'en': 'Quickly', 'emoji': '⚡'},
-      {'si': 'දැන් යන්න', 'ta': 'இப்போது போ', 'en': 'Go now', 'emoji': '⏰'},
-      {'si': 'උදව් ඕන', 'ta': 'உதவி வேண்டும்', 'en': 'Need help', 'emoji': '🤝'}
+      {
+        'si': 'ඉක්මනින් වැසිකිලි යන්න ඕන',
+        'ta': 'விரைவாக',
+        'en': 'Quickly',
+        'emoji': '⚡'
+      },
+      {
+        'si': 'දැන් යන්න',
+        'ta': 'இப்போது போ',
+        'en': 'Go now',
+        'emoji': '⏰'
+      },
+      {
+        'si': 'උදව් ඕන',
+        'ta': 'உதவி வேண்டும்',
+        'en': 'Need help',
+        'emoji': '🤝'
+      }
     ]
   },
   {
@@ -77,25 +90,25 @@ final List<Map<String, dynamic>> needs = [
     'emoji': '🛁',
     'actions': [
       {
-        'si': 'නානවන්න ඕන',
+        'si': 'නාන්න ඕන',
         'ta': 'குளிக்க வேண்டும்',
         'en': 'Want to bath',
         'emoji': '🛁'
       },
       {
-        'si': 'නානවන්න එපා',
+        'si': 'නාන්න එපා',
         'ta': 'குளிக்க வேண்டாம்',
         'en': 'Don\'t want bath',
         'emoji': '🚫'
       },
       {
-        'si': 'උණුසුම් වතුර',
+        'si': 'උණු වතුරෙන් නාන්න ඕන',
         'ta': 'சூடான தண்ணீர்',
         'en': 'Warm water',
         'emoji': '🔥'
       },
       {
-        'si': 'සීතල වතුර',
+        'si': 'සීතල වතුරෙන් නාන්න',
         'ta': 'குளிர் தண்ணீர்',
         'en': 'Cold water',
         'emoji': '❄️'
@@ -114,7 +127,12 @@ final List<Map<String, dynamic>> needs = [
         'en': 'Want to sleep',
         'emoji': '😴'
       },
-      {'si': 'වෙහෙසයි', 'ta': 'சோர்வாக', 'en': 'Tired', 'emoji': '🥱'},
+      {
+        'si': 'මහන්සියි',
+        'ta': 'சோர்வாக',
+        'en': 'Tired',
+        'emoji': '🥱'
+      },
       {
         'si': 'නිදාගන්න යනවා',
         'ta': 'தூங்க போகிறேன்',
@@ -142,22 +160,16 @@ final List<Map<String, dynamic>> needs = [
         'emoji': '🆘'
       },
       {
-        'si': 'මට කරන්න බෑ',
+        'si': 'මට උදව් කරන්න බෑ',
         'ta': 'என்னால் முடியாது',
         'en': 'I can\'t do',
         'emoji': '😣'
       },
       {
-        'si': 'කරුණාකර උදව්',
+        'si': 'කරුණාකර උදව් කරන්න',
         'ta': 'தயவுசெய்து உதவி',
         'en': 'Please help',
         'emoji': '🙏'
-      },
-      {
-        'si': 'කරලා දෙන්න',
-        'ta': 'செய்து கொடு',
-        'en': 'Do it for me',
-        'emoji': '🤝'
       }
     ]
   },
@@ -180,12 +192,17 @@ final List<Map<String, dynamic>> needs = [
         'emoji': '👔'
       },
       {
-        'si': 'ඇඳුම් වෙනස් කරන්න',
+        'si': 'වෙන ඇඳුමක් අඳින්න ඕන',
         'ta': 'உடை மாற்று',
         'en': 'Change clothes',
         'emoji': '🔄'
       },
-      {'si': 'උදව් ඕන', 'ta': 'உதவி வேண்டும்', 'en': 'Need help', 'emoji': '🤝'}
+      {
+        'si': 'අඳින්න උදව් ඕන',
+        'ta': 'உதவி வேண்டும்',
+        'en': 'Need help',
+        'emoji': '🤝'
+      }
     ]
   },
   {
@@ -194,19 +211,17 @@ final List<Map<String, dynamic>> needs = [
     'en': 'Want to stay',
     'emoji': '🛑',
     'actions': [
-      {'si': 'මෙතන ඉන්න', 'ta': 'இங்கே இரு', 'en': 'Stay here', 'emoji': '🛑'},
+      {
+        'si': 'මෙතන ඉන්න',
+        'ta': 'இங்கே இரு',
+        'en': 'Stay here',
+        'emoji': '🛑'
+      },
       {
         'si': 'යන්න එපා',
         'ta': 'போக வேண்டாம்',
         'en': 'Don\'t go',
         'emoji': '🚫'
-      },
-      {'si': 'තවත් ඉන්න', 'ta': 'இன்னும் இரு', 'en': 'Stay more', 'emoji': '⏰'},
-      {
-        'si': 'එක්ක ඉන්න',
-        'ta': 'கூடவே இரு',
-        'en': 'Stay with me',
-        'emoji': '🤝'
       }
     ]
   },
@@ -222,42 +237,46 @@ final List<Map<String, dynamic>> needs = [
         'en': 'Want to go',
         'emoji': '🚶'
       },
-      {'si': 'දැන් යන්න', 'ta': 'இப்போது போ', 'en': 'Go now', 'emoji': '⏰'},
+      {
+        'si': 'දැන් යන්න',
+        'ta': 'இப்போது போ',
+        'en': 'Go now',
+        'emoji': '⏰'
+      },
       {
         'si': 'ගෙදර යන්න',
         'ta': 'வீட்டுக்கு போ',
         'en': 'Go home',
         'emoji': '🏠'
       },
-      {'si': 'එක්ක යන්න', 'ta': 'கூடவே போ', 'en': 'Go with me', 'emoji': '🤝'}
+      {
+        'si': 'මාවත් එක්ක යන්න',
+        'ta': 'கூடவே போ',
+        'en': 'Go with me',
+        'emoji': '🤝'
+      }
     ]
   },
   {
-    'si': 'ක්‍රීඩා කරන්න',
+    'si': 'සෙල්ලම් කරන්න',
     'ta': 'விளையாட',
     'en': 'Play',
     'emoji': '🎮',
     'actions': [
       {
-        'si': 'ක්‍රීඩා කරන්න ඕන',
+        'si': 'සෙල්ලම් කරන්න ඕන',
         'ta': 'விளையாட வேண்டும்',
         'en': 'Want to play',
         'emoji': '🎮'
       },
       {
-        'si': 'එක්ක ක්‍රීඩා',
-        'ta': 'கூடவே விளையாடு',
-        'en': 'Play with me',
-        'emoji': '🤝'
-      },
-      {
-        'si': 'ක්‍රීඩා කරන්න එපා',
+        'si': 'සෙල්ලම් කරන්න එපා',
         'ta': 'விளையாட வேண்டாம்',
         'en': 'Don\'t want to play',
         'emoji': '🚫'
       },
       {
-        'si': 'දැන් ක්‍රීඩා',
+        'si': 'දැන් සෙල්ලම් කරන්න',
         'ta': 'இப்போது விளையாடு',
         'en': 'Play now',
         'emoji': '⏰'
@@ -275,19 +294,6 @@ final List<Map<String, dynamic>> needs = [
         'ta': 'டிவி பார்க்க வேண்டும்',
         'en': 'Want to watch TV',
         'emoji': '📺'
-      },
-      {'si': 'TV දාන්න', 'ta': 'டிவி போடு', 'en': 'Turn on TV', 'emoji': '▶️'},
-      {
-        'si': 'TV නවතින්න',
-        'ta': 'டிவி நிறுத்து',
-        'en': 'Turn off TV',
-        'emoji': '⏹️'
-      },
-      {
-        'si': 'channel වෙනස්',
-        'ta': 'சேனல் மாற்று',
-        'en': 'Change channel',
-        'emoji': '🔄'
       }
     ]
   },
@@ -309,8 +315,18 @@ final List<Map<String, dynamic>> needs = [
         'en': 'Go to park',
         'emoji': '🏞️'
       },
-      {'si': 'එළියට', 'ta': 'வெளியே', 'en': 'Outside', 'emoji': '🌳'},
-      {'si': 'ඇවිදින්න', 'ta': 'நடக்க', 'en': 'Walk', 'emoji': '🚶'}
+      {
+        'si': 'එළියට',
+        'ta': 'வெளியே',
+        'en': 'Outside',
+        'emoji': '🌳'
+      },
+      {
+        'si': 'ඇවිදින්න',
+        'ta': 'நடக்க',
+        'en': 'Walk',
+        'emoji': '🚶'
+      }
     ]
-  },
+  }
 ];

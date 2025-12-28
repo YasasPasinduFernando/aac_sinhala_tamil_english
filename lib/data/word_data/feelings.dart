@@ -38,8 +38,13 @@ final List<Map<String, dynamic>> feelings = [
         'en': 'Very sad',
         'emoji': '😭'
       },
-      {'si': 'අඬනවා', 'ta': 'அழுகிறேன்', 'en': 'Crying', 'emoji': '😿'},
-      {'si': 'උදව් ඕන', 'ta': 'உதவி வேண்டும்', 'en': 'Need help', 'emoji': '🆘'}
+      {'si': 'මම අඬනවා', 'ta': 'அழுகிறேன்', 'en': 'Crying', 'emoji': '😿'},
+      {
+        'si': 'මට උදව් ඕන',
+        'ta': 'உதவி வேண்டும்',
+        'en': 'Need help',
+        'emoji': '🆘'
+      }
     ]
   },
   {
@@ -55,7 +60,7 @@ final List<Map<String, dynamic>> feelings = [
         'emoji': '😠'
       },
       {
-        'si': 'ගොඩක් තරහයි',
+        'si': 'මට ගොඩක් තරහයි',
         'ta': 'மிகவும் கோபம்',
         'en': 'Very angry',
         'emoji': '😡'
@@ -65,12 +70,6 @@ final List<Map<String, dynamic>> feelings = [
         'ta': 'கோபம் நிறுத்து',
         'en': 'Stop making angry',
         'emoji': '🛑'
-      },
-      {
-        'si': 'හුස්ම ගන්නවා',
-        'ta': 'மூச்சு விடு',
-        'en': 'Take breath',
-        'emoji': '🫁'
       }
     ]
   },
@@ -87,49 +86,36 @@ final List<Map<String, dynamic>> feelings = [
         'emoji': '😨'
       },
       {
-        'si': 'ගොඩක් බයයි',
+        'si': 'මට ගොඩක් බයයි',
         'ta': 'மிகவும் பயம்',
         'en': 'Very scared',
         'emoji': '😱'
       },
       {
-        'si': 'බය එපා කරන්න',
+        'si': 'මාව බයකරන්න එපා',
         'ta': 'பயம் நிறுத்து',
         'en': 'Stop scaring',
         'emoji': '🛑'
-      },
-      {'si': 'රැකගන්න', 'ta': 'பாதுகாப்பு', 'en': 'Keep safe', 'emoji': '🤗'}
+      }
     ]
   },
   {
-    'si': 'වෙහෙසයි',
+    'si': 'මහන්සියි',
     'ta': 'சோர்வு',
     'en': 'Tired',
     'emoji': '😴',
     'actions': [
       {
-        'si': 'මට වෙහෙසයි',
+        'si': 'මට මහන්සියි',
         'ta': 'எனக்கு சோர்வு',
         'en': 'I am tired',
         'emoji': '😴'
       },
       {
-        'si': 'නිදාගන්න ඕන',
+        'si': 'මට නිදාගන්න ඕන',
         'ta': 'உறங்க வேண்டும்',
         'en': 'Want to sleep',
         'emoji': '💤'
-      },
-      {
-        'si': 'විවේක ගන්නවා',
-        'ta': 'ஓய்வு எடு',
-        'en': 'Take rest',
-        'emoji': '🛌'
-      },
-      {
-        'si': 'තව වැඩ එපා',
-        'ta': 'வேலை வேண்டாம்',
-        'en': 'No more work',
-        'emoji': '🚫'
       }
     ]
   },
@@ -146,19 +132,19 @@ final List<Map<String, dynamic>> feelings = [
         'emoji': '🥶'
       },
       {
-        'si': 'ගොඩක් සීතලයි',
+        'si': 'මට ගොඩක් සීතලයි',
         'ta': 'மிகவும் குளிர்',
         'en': 'Very cold',
         'emoji': '❄️'
       },
       {
-        'si': 'උණුසුම් ඕන',
+        'si': 'මට උණුසුම ඕන',
         'ta': 'சூடு வேண்டும்',
         'en': 'Want warm',
         'emoji': '🔥'
       },
       {
-        'si': 'ඇඳුම් ඕන',
+        'si': 'මට ඇඳුම් ඕන',
         'ta': 'உடை வேண்டும்',
         'en': 'Want clothes',
         'emoji': '🧥'
@@ -166,34 +152,22 @@ final List<Map<String, dynamic>> feelings = [
     ]
   },
   {
-    'si': 'උණුසුම්',
+    'si': 'රස්නෙයි',
     'ta': 'வெப்பம்',
     'en': 'Hot',
     'emoji': '🥵',
     'actions': [
       {
-        'si': 'මට උණුසුම්',
+        'si': 'මට රස්නෙයි',
         'ta': 'எனக்கு வெப்பம்',
         'en': 'I am hot',
         'emoji': '🥵'
       },
       {
-        'si': 'ගොඩක් උණුසුම්',
+        'si': 'ගොඩක් රස්නෙයි',
         'ta': 'மிகவும் வெப்பம்',
         'en': 'Very hot',
         'emoji': '🔥'
-      },
-      {
-        'si': 'සිසිල් ඕන',
-        'ta': 'குளிர் வேண்டும்',
-        'en': 'Want cool',
-        'emoji': '❄️'
-      },
-      {
-        'si': 'වතුර ඕන',
-        'ta': 'தண்ணீர் வேண்டும்',
-        'en': 'Want water',
-        'emoji': '💧'
       }
     ]
   },
@@ -210,19 +184,19 @@ final List<Map<String, dynamic>> feelings = [
         'emoji': '😋'
       },
       {
-        'si': 'ගොඩක් බඩගිනියි',
+        'si': 'මට ගොඩක් බඩගිනියි',
         'ta': 'மிகவும் பசி',
         'en': 'Very hungry',
         'emoji': '🤤'
       },
       {
-        'si': 'කන්න ඕන',
+        'si': 'මට කන්න ඕන',
         'ta': 'சாப்பிட வேண்டும்',
         'en': 'Want to eat',
         'emoji': '🍽️'
       },
       {
-        'si': 'කන්න දෙන්න',
+        'si': 'මට කන්න දෙන්න',
         'ta': 'சாப்பிட கொடு',
         'en': 'Give food',
         'emoji': '🍴'
@@ -230,25 +204,25 @@ final List<Map<String, dynamic>> feelings = [
     ]
   },
   {
-    'si': 'පිපාසය',
+    'si': 'තිබහයි',
     'ta': 'தாகம்',
     'en': 'Thirsty',
     'emoji': '🥤',
     'actions': [
       {
-        'si': 'මට පිපාසයි',
+        'si': 'මට තිබහයි',
         'ta': 'எனக்கு தாகம்',
         'en': 'I am thirsty',
         'emoji': '😓'
       },
       {
-        'si': 'ගොඩක් පිපාසයි',
+        'si': 'ගොඩක් තිබහයි',
         'ta': 'மிகவும் தாகம்',
         'en': 'Very thirsty',
         'emoji': '🏜️'
       },
       {
-        'si': 'බොන්න ඕන',
+        'si': 'වතුර බොන්න ඕන',
         'ta': 'குடிக்க வேண்டும்',
         'en': 'Want to drink',
         'emoji': '🥤'
@@ -262,7 +236,7 @@ final List<Map<String, dynamic>> feelings = [
     ]
   },
   {
-    'si': 'අමාරුයි',
+    'si': 'මට අමාරුයි',
     'ta': 'கஷ்டம்',
     'en': 'Uncomfortable',
     'emoji': '😣',
@@ -279,48 +253,38 @@ final List<Map<String, dynamic>> feelings = [
         'en': 'Don\'t want that',
         'emoji': '🚫'
       },
-      {'si': 'වෙනස් කරන්න', 'ta': 'மாற்று', 'en': 'Change it', 'emoji': '🔄'},
       {'si': 'උදව් ඕන', 'ta': 'உதவி வேண்டும்', 'en': 'Need help', 'emoji': '🆘'}
     ]
   },
   {
-    'si': 'හඬ අඩුයි',
+    'si': 'හඬ අඩු කරන්න',
     'ta': 'சத்தம் அதிகம்',
     'en': 'Too Loud',
     'emoji': '🔊',
     'actions': [
       {
-        'si': 'හඬ අඩුයි',
-        'ta': 'சத்தம் அதிகம்',
-        'en': 'Too loud',
-        'emoji': '🔊'
-      },
-      {
         'si': 'හඬ අඩු කරන්න',
         'ta': 'சத்தம் குறை',
         'en': 'Lower sound',
         'emoji': '🔉'
-      },
-      {'si': 'නිහඬව', 'ta': 'அமைதி', 'en': 'Quiet', 'emoji': '🤫'},
-      {'si': 'කන් වහනවා', 'ta': 'காது மூடு', 'en': 'Cover ears', 'emoji': '🙉'}
+      }
     ]
   },
   {
-    'si': 'අඳුරුයි',
+    'si': 'කළුවරයි',
     'ta': 'இருட்டு',
     'en': 'Too Dark',
     'emoji': '🌑',
     'actions': [
-      {'si': 'අඳුරුයි', 'ta': 'இருட்டு', 'en': 'Too dark', 'emoji': '🌑'},
-      {'si': 'බයයි', 'ta': 'பயம்', 'en': 'Scared', 'emoji': '😨'},
+      {'si': 'මට බයයි', 'ta': 'பயம்', 'en': 'Scared', 'emoji': '😨'},
       {
-        'si': 'ආලෝකය ඕන',
+        'si': 'ලයිට් ඕන',
         'ta': 'வெளிச்சம் வேண்டும்',
         'en': 'Want light',
         'emoji': '💡'
       },
       {
-        'si': 'ආලෝකය දාන්න',
+        'si': 'ලයිට් දාන්න',
         'ta': 'வெளிச்சம் போடு',
         'en': 'Turn on light',
         'emoji': '🔦'
@@ -345,8 +309,13 @@ final List<Map<String, dynamic>> feelings = [
         'en': 'What happened',
         'emoji': '❓'
       },
-      {'si': 'කතා කරන්න', 'ta': 'பேசு', 'en': 'Talk', 'emoji': '💬'},
-      {'si': 'උදව් ඕන', 'ta': 'உதவி வேண்டும்', 'en': 'Need help', 'emoji': '🆘'}
+      {'si': 'මට කතා කරන්න දෙන්න', 'ta': 'பேசு', 'en': 'Talk', 'emoji': '💬'},
+      {
+        'si': 'මට උදව් ඕන',
+        'ta': 'உதவி வேண்டும்',
+        'en': 'Need help',
+        'emoji': '🆘'
+      }
     ]
-  },
+  }
 ];

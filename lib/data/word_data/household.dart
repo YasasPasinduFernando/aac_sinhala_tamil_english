@@ -44,7 +44,7 @@ final List<Map<String, dynamic>> household = [
         'emoji': '⚽'
       },
       {
-        'si': 'බෝලය ක්‍රීඩා',
+        'si': 'බෝලයෙන් සෙල්ලම් කරමු',
         'ta': 'பந்து விளையாடு',
         'en': 'Play ball',
         'emoji': '🎮'
@@ -123,30 +123,30 @@ final List<Map<String, dynamic>> household = [
     ]
   },
   {
-    'si': 'ආලෝකය',
+    'si': 'ලයිට්',
     'ta': 'விளக்கு',
     'en': 'Light',
     'emoji': '💡',
     'actions': [
       {
-        'si': 'ආලෝකය දාන්න',
+        'si': 'ලයිට් දාන්න',
         'ta': 'விளக்கு போடு',
         'en': 'Turn on light',
         'emoji': '💡'
       },
       {
-        'si': 'ආලෝකය නවතින්න',
+        'si': 'ලයිට් නිවන්න',
         'ta': 'விளக்கு அணை',
         'en': 'Turn off light',
         'emoji': '🌑'
       },
       {
-        'si': 'ආලෝකය ඕන',
+        'si': 'ලයිට් ඕන',
         'ta': 'விளக்கு வேண்டும்',
         'en': 'Want light',
         'emoji': '💡'
       },
-      {'si': 'අඳුරුයි', 'ta': 'இருட்டு', 'en': 'Too dark', 'emoji': '😨'}
+      {'si': 'කළුවරයි', 'ta': 'இருட்டு', 'en': 'Too dark', 'emoji': '😨'}
     ]
   },
   {
@@ -173,7 +173,12 @@ final List<Map<String, dynamic>> household = [
         'en': 'Don\'t want chair',
         'emoji': '🚫'
       },
-      {'si': 'නැගිටින්න', 'ta': 'எழுந்திரு', 'en': 'Stand up', 'emoji': '🧍'}
+      {
+        'si': 'පුටුවෙන් නැගිටින්න',
+        'ta': 'எழுந்திரு',
+        'en': 'Stand up',
+        'emoji': '🧍'
+      }
     ]
   },
   {
@@ -195,16 +200,10 @@ final List<Map<String, dynamic>> household = [
         'emoji': '🚶'
       },
       {
-        'si': 'මේසයෙන් කන්න',
+        'si': 'මේසයේ ඉදන් කන්න',
         'ta': 'மேசையில் சாப்பிடு',
         'en': 'Eat at table',
         'emoji': '🍽️'
-      },
-      {
-        'si': 'මේසයේ දාන්න',
-        'ta': 'மேசையில் வை',
-        'en': 'Put on table',
-        'emoji': '👇'
       }
     ]
   },
@@ -220,14 +219,7 @@ final List<Map<String, dynamic>> household = [
         'en': 'Want to go to bed',
         'emoji': '🛏️'
       },
-      {'si': 'නිදාගන්න', 'ta': 'தூங்கு', 'en': 'Sleep', 'emoji': '😴'},
-      {
-        'si': 'ඇඳ එපා',
-        'ta': 'படுக்கை வேண்டாம்',
-        'en': 'Don\'t want bed',
-        'emoji': '🚫'
-      },
-      {'si': 'තවත් ඉන්න', 'ta': 'இன்னும் இரு', 'en': 'Stay more', 'emoji': '⏰'}
+      {'si': 'ඇදෙන් නිදාගන්න', 'ta': 'தூங்கு', 'en': 'Sleep', 'emoji': '😴'}
     ]
   },
   {
@@ -241,12 +233,6 @@ final List<Map<String, dynamic>> household = [
         'ta': 'தொலைபேசி வேண்டும்',
         'en': 'Want phone',
         'emoji': '📱'
-      },
-      {
-        'si': 'දුරකථනය ක්‍රීඩා',
-        'ta': 'தொலைபேசி விளையாடு',
-        'en': 'Play phone',
-        'emoji': '🎮'
       },
       {
         'si': 'දුරකථනය එපා',
@@ -263,14 +249,14 @@ final List<Map<String, dynamic>> household = [
     ]
   },
   {
-    'si': 'TV',
+    'si': 'ටීවි එක',
     'ta': 'டிவி',
     'en': 'TV',
     'emoji': '📺',
     'actions': [
       {'si': 'TV දාන්න', 'ta': 'டிவி போடு', 'en': 'Turn on TV', 'emoji': '▶️'},
       {
-        'si': 'TV නවතින්න',
+        'si': 'TV නවත්තන්න',
         'ta': 'டிவி நிறுத்து',
         'en': 'Turn off TV',
         'emoji': '⏹️'
@@ -280,12 +266,6 @@ final List<Map<String, dynamic>> household = [
         'ta': 'டிவி பார்க்க வேண்டும்',
         'en': 'Want to watch TV',
         'emoji': '📺'
-      },
-      {
-        'si': 'channel වෙනස්',
-        'ta': 'சேனல் மாற்று',
-        'en': 'Change channel',
-        'emoji': '🔄'
       }
     ]
   },
@@ -300,12 +280,6 @@ final List<Map<String, dynamic>> household = [
         'ta': 'பொம்மை வேண்டும்',
         'en': 'Want toy',
         'emoji': '🧸'
-      },
-      {
-        'si': 'සෙල්ලම් බඩු ක්‍රීඩා',
-        'ta': 'பொம்மை விளையாடு',
-        'en': 'Play with toy',
-        'emoji': '🎮'
       },
       {
         'si': 'සෙල්ලම් බඩු එපා',
@@ -328,7 +302,7 @@ final List<Map<String, dynamic>> household = [
     'emoji': '🎒',
     'actions': [
       {'si': 'බෑගය ඕන', 'ta': 'பை வேண்டும்', 'en': 'Want bag', 'emoji': '🎒'},
-      {'si': 'බෑගය අරන්න', 'ta': 'பை எடு', 'en': 'Take bag', 'emoji': '🤲'},
+      {'si': 'බෑගය අරින්න', 'ta': 'பை எடு', 'en': 'Take bag', 'emoji': '🤲'},
       {
         'si': 'බෑගය එපා',
         'ta': 'பை வேண்டாம்',
@@ -344,29 +318,22 @@ final List<Map<String, dynamic>> household = [
     ]
   },
   {
-    'si': 'පංකාව',
+    'si': 'ෆෑන්',
     'ta': 'விசிறி',
     'en': 'Fan',
     'emoji': '🌀',
     'actions': [
       {
-        'si': 'පංකාව දාන්න',
+        'si': 'ෆෑන් දාන්න',
         'ta': 'விசிறி போடு',
         'en': 'Turn on fan',
         'emoji': '💨'
       },
       {
-        'si': 'පංකාව නවතින්න',
+        'si': 'ෆෑන් නවත්තන්න',
         'ta': 'விசிறி நிறுத்து',
         'en': 'Turn off fan',
         'emoji': '🛑'
-      },
-      {'si': 'උණුසුම්', 'ta': 'வெப்பம்', 'en': 'Hot', 'emoji': '🥵'},
-      {
-        'si': 'සීතල ඕන',
-        'ta': 'குளிர் வேண்டும்',
-        'en': 'Want cool',
-        'emoji': '❄️'
       }
     ]
   },
@@ -376,25 +343,8 @@ final List<Map<String, dynamic>> household = [
     'en': 'Door',
     'emoji': '🚪',
     'actions': [
-      {
-        'si': 'දොර විවෘත කරන්න',
-        'ta': 'கதவு திற',
-        'en': 'Open door',
-        'emoji': '🚪'
-      },
-      {'si': 'දොර වහන්න', 'ta': 'கதவு மூடு', 'en': 'Close door', 'emoji': '🔒'},
-      {
-        'si': 'දොරෙන් යන්න',
-        'ta': 'கதவு வழி போ',
-        'en': 'Go through door',
-        'emoji': '🚶'
-      },
-      {
-        'si': 'දොර එපා',
-        'ta': 'கதவு வேண்டாம்',
-        'en': 'Don\'t want door',
-        'emoji': '🚫'
-      }
+      {'si': 'දොර අරින්න', 'ta': 'கதவு திற', 'en': 'Open door', 'emoji': '🚪'},
+      {'si': 'දොර වහන්න', 'ta': 'கதவு மூடு', 'en': 'Close door', 'emoji': '🔒'}
     ]
   },
   {
@@ -404,7 +354,7 @@ final List<Map<String, dynamic>> household = [
     'emoji': '🪟',
     'actions': [
       {
-        'si': 'ජනේලය විවෘත කරන්න',
+        'si': 'ජනේලය අරින්න',
         'ta': 'ஜன்னல் திற',
         'en': 'Open window',
         'emoji': '🪟'
@@ -421,12 +371,6 @@ final List<Map<String, dynamic>> household = [
         'en': 'Look out window',
         'emoji': '👀'
       },
-      {
-        'si': 'ජනේලය එපා',
-        'ta': 'ஜன்னல் வேண்டாம்',
-        'en': 'Don\'t want window',
-        'emoji': '🚫'
-      }
     ]
-  },
+  }
 ];

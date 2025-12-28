@@ -22,8 +22,7 @@ final List<Map<String, dynamic>> places = [
         'ta': 'வீட்டுக்கு போக வேண்டாம்',
         'en': 'Don\'t want to go home',
         'emoji': '🚫'
-      },
-      {'si': 'ගෙදරයි', 'ta': 'வீட்டில்', 'en': 'At home', 'emoji': '✅'}
+      }
     ]
   },
   {
@@ -40,12 +39,12 @@ final List<Map<String, dynamic>> places = [
       },
       {
         'si': 'පාසලට යන්න එපා',
-        'ta': 'பள்ளிக்கு போக வேண்டாම்',
+        'ta': 'பள்ளிக்கு போக வேண்டாம்',
         'en': 'Don\'t want to go to school',
         'emoji': '🚫'
       },
       {
-        'si': 'පාසලෙන් ගෙදර',
+        'si': 'පාසලෙන් ගෙදර එන්න',
         'ta': 'பள்ளியிலிருந்து வீடு',
         'en': 'From school to home',
         'emoji': '🏠'
@@ -77,12 +76,17 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🚫'
       },
       {
-        'si': 'රෝහලේ බයයි',
+        'si': 'රෝහලට බයයි',
         'ta': 'மருத்துவமனை பயம்',
         'en': 'Scared of hospital',
         'emoji': '😨'
       },
-      {'si': 'වෛද්‍යවරයා', 'ta': 'மருத்துவர்', 'en': 'Doctor', 'emoji': '👨‍⚕️'}
+      {
+        'si': 'වෛද්‍යවරයා',
+        'ta': 'மருத்துவர்',
+        'en': 'Doctor',
+        'emoji': '👨‍⚕️'
+      }
     ]
   },
   {
@@ -129,7 +133,12 @@ final List<Map<String, dynamic>> places = [
         'en': 'Want to go to park',
         'emoji': '🏞️'
       },
-      {'si': 'ක්‍රීඩා කරන්න', 'ta': 'விளையாடு', 'en': 'Play', 'emoji': '🎮'},
+      {
+        'si': 'සෙල්ලම් කරන්න',
+        'ta': 'விளையாடு',
+        'en': 'Play',
+        'emoji': '🎮'
+      },
       {
         'si': 'උද්‍යානයට යන්න එපා',
         'ta': 'பூங்கா போக வேண்டாம்',
@@ -169,7 +178,7 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🚫'
       },
       {
-        'si': 'ගෙදර කන්න',
+        'si': 'ගෙදර ඉදන් කන්න',
         'ta': 'வீட்டில் சாப்பிடு',
         'en': 'Eat at home',
         'emoji': '🏠'
@@ -183,7 +192,7 @@ final List<Map<String, dynamic>> places = [
     'emoji': '🛒',
     'actions': [
       {
-        'si': 'මාර්කට්ට යන්න ඕන',
+        'si': 'මාර්කට් යන්න ඕන',
         'ta': 'சந்தைக்கு போக வேண்டும்',
         'en': 'Want to go to market',
         'emoji': '🛒'
@@ -195,12 +204,11 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🛍️'
       },
       {
-        'si': 'මාර්කට්ට යන්න එපා',
+        'si': 'මාර්කට් යන්න එපා',
         'ta': 'சந்தை போக வேண்டாம்',
         'en': 'Don\'t want market',
         'emoji': '🚫'
-      },
-      {'si': 'හඬ අඩුයි', 'ta': 'சத்தம் அதிகம்', 'en': 'Too loud', 'emoji': '🔊'}
+      }
     ]
   },
   {
@@ -214,20 +222,7 @@ final List<Map<String, dynamic>> places = [
         'ta': 'உள்ளே போக வேண்டும்',
         'en': 'Want to go inside',
         'emoji': '🚪'
-      },
-      {
-        'si': 'එළියට යන්න ඕන',
-        'ta': 'வெளியே போக வேண்டும்',
-        'en': 'Want to go outside',
-        'emoji': '🌳'
-      },
-      {
-        'si': 'ඉන්න ඕන',
-        'ta': 'இருக்க வேண்டும்',
-        'en': 'Want to stay',
-        'emoji': '🛑'
-      },
-      {'si': 'යන්න ඕන', 'ta': 'போக வேண்டும்', 'en': 'Want to go', 'emoji': '🚶'}
+      }
     ]
   },
   {
@@ -247,14 +242,7 @@ final List<Map<String, dynamic>> places = [
         'ta': 'வாகனத்திலிருந்து இறங்கு',
         'en': 'Get out of car',
         'emoji': '🚪'
-      },
-      {
-        'si': 'වාහනය එපා',
-        'ta': 'வாகனம் வேண்டாம்',
-        'en': 'Don\'t want car',
-        'emoji': '🚫'
-      },
-      {'si': 'ඇවිදිමු', 'ta': 'நடப்போம்', 'en': 'Let\'s walk', 'emoji': '🚶'}
+      }
     ]
   },
   {
@@ -270,7 +258,7 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🏖️'
       },
       {
-        'si': 'වැලි ක්‍රීඩා',
+        'si': 'වැලි සෙල්ලම් කරමු',
         'ta': 'மணல் விளையாடு',
         'en': 'Play with sand',
         'emoji': '🏖️'
@@ -282,7 +270,7 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🚫'
       },
       {
-        'si': 'වතුර ක්‍රීඩා',
+        'si': 'වතුර සෙල්ලම් කරමු',
         'ta': 'தண்ணீர் விளையாடு',
         'en': 'Play in water',
         'emoji': '💦'
@@ -352,5 +340,5 @@ final List<Map<String, dynamic>> places = [
         'emoji': '🏠'
       }
     ]
-  },
+  }
 ];

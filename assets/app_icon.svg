@@ -1,0 +1,38 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#4A90E2" rx="100"/>
+  
+  <!-- Speech bubbles representing communication -->
+  <g id="speech-bubbles">
+    <!-- Large speech bubble (left) -->
+    <path d="M 60 80 Q 40 80 40 100 L 40 260 Q 40 280 60 280 L 200 280 L 200 320 L 160 280 L 60 280 Q 40 280 40 260 L 40 100 Q 40 80 60 80 Z" fill="#FFFFFF" opacity="0.95"/>
+    
+    <!-- Medium speech bubble (top right) -->
+    <path d="M 280 60 Q 260 60 260 80 L 260 160 Q 260 180 280 180 L 360 180 L 360 200 L 340 180 L 280 180 Q 260 180 260 160 L 260 80 Q 260 60 280 60 Z" fill="#FFD700" opacity="0.95"/>
+    
+    <!-- Small speech bubble (right) -->
+    <path d="M 340 240 Q 320 240 320 260 L 320 330 Q 320 350 340 350 L 420 350 L 420 370 L 400 350 L 340 350 Q 320 350 320 330 L 320 260 Q 320 240 340 240 Z" fill="#FF6B6B" opacity="0.95"/>
+  </g>
+  
+  <!-- Text/speech lines inside bubbles -->
+  <g id="text-lines" stroke="#4A90E2" stroke-width="8" stroke-linecap="round" opacity="0.4">
+    <!-- Lines in left bubble -->
+    <line x1="70" y1="120" x2="160" y2="120"/>
+    <line x1="70" y1="155" x2="180" y2="155"/>
+    <line x1="70" y1="190" x2="150" y2="190"/>
+    <line x1="70" y1="225" x2="170" y2="225"/>
+    
+    <!-- Lines in top bubble -->
+    <line x1="280" y1="100" x2="340" y2="100"/>
+    <line x1="280" y1="135" x2="350" y2="135"/>
+    
+    <!-- Lines in right bubble -->
+    <line x1="340" y1="280" x2="400" y2="280"/>
+    <line x1="340" y1="315" x2="410" y2="315"/>
+  </g>
+  
+  <!-- Accessibility symbol (ear/listening) -->
+  <circle cx="420" cy="420" r="70" fill="#FFD700" opacity="0.2"/>
+  <path d="M 420 360 Q 450 370 450 410 Q 450 450 420 460 Q 390 450 390 410 Q 390 370 420 360 Z" fill="none" stroke="#FFFFFF" stroke-width="6" opacity="0.8"/>
+  <path d="M 430 380 Q 448 385 448 410" fill="none" stroke="#FFFFFF" stroke-width="5" opacity="0.8"/>
+</svg>

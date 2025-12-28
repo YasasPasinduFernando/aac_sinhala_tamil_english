@@ -12,25 +12,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'අම්මා කතා',
+        'si': 'අම්මා කතා කරන්න',
         'ta': 'அம்மாவுடன் பேசு',
         'en': 'Talk to mother',
         'emoji': '💬'
       },
       {
-        'si': 'අම්මා උදව්',
+        'si': 'අම්මා උදව් කරන්න',
         'ta': 'அம்மா உதவி',
         'en': 'Mother help',
         'emoji': '🤝'
       },
       {
-        'si': 'අම්මා ආදරෙනවා',
+        'si': 'අම්මා ආදරෙයි',
         'ta': 'அம்மாவை நேசி',
         'en': 'Love mother',
         'emoji': '❤️'
       },
       {
-        'si': 'අම්මා එනවා',
+        'si': 'අම්මා එන්න',
         'ta': 'அம்மா வா',
         'en': 'Mother come',
         'emoji': '👋'
@@ -56,25 +56,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'තාත්තා කතා',
+        'si': 'තාත්තා කතා කරන්න',
         'ta': 'அப்பாவுடன் பேசு',
         'en': 'Talk to father',
         'emoji': '💬'
       },
       {
-        'si': 'තාත්තා උදව්',
+        'si': 'තාත්තා උදව් කරන්න',
         'ta': 'அப்பா உதவி',
         'en': 'Father help',
         'emoji': '🤝'
       },
       {
-        'si': 'තාත්තා ආදරෙනවා',
+        'si': 'තාත්තා ආදරෙයි',
         'ta': 'அப்பாவை நேசி',
         'en': 'Love father',
         'emoji': '❤️'
       },
       {
-        'si': 'තාත්තා එනවා',
+        'si': 'තාත්තා එන්න',
         'ta': 'அப்பா வா',
         'en': 'Father come',
         'emoji': '👋'
@@ -100,25 +100,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'අයියා කතා',
+        'si': 'අයියා කතා කරන්න',
         'ta': 'அண்ணனுடன் பேசு',
         'en': 'Talk to brother',
         'emoji': '💬'
       },
       {
-        'si': 'අයියා උදව්',
+        'si': 'අයියා උදව් කරන්න',
         'ta': 'அண்ணன் உதவி',
         'en': 'Brother help',
         'emoji': '🤝'
       },
       {
-        'si': 'අයියා ක්‍රීඩා',
+        'si': 'අයියා සෙල්ලම් කරමු',
         'ta': 'அண்ணன் விளையாடு',
         'en': 'Play with brother',
         'emoji': '🎮'
       },
       {
-        'si': 'අයියා එනවා',
+        'si': 'අයියා එන්න',
         'ta': 'அண்ணன் வா',
         'en': 'Brother come',
         'emoji': '👋'
@@ -144,25 +144,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'අක්කා කතා',
+        'si': 'අක්කා කතා කරන්න',
         'ta': 'அக்காவுடன் பேசு',
         'en': 'Talk to sister',
         'emoji': '💬'
       },
       {
-        'si': 'අක්කා උදව්',
+        'si': 'අක්කා උදව් කරන්න',
         'ta': 'அக்கா உதவி',
         'en': 'Sister help',
         'emoji': '🤝'
       },
       {
-        'si': 'අක්කා ක්‍රීඩා',
+        'si': 'අක්කා සෙල්ලම් කරමු',
         'ta': 'அக்கா விளையாடு',
         'en': 'Play with sister',
         'emoji': '🎮'
       },
       {
-        'si': 'අක්කා එනවා',
+        'si': 'අක්කා එන්න',
         'ta': 'அக்கா வா',
         'en': 'Sister come',
         'emoji': '👋'
@@ -188,25 +188,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'මල්ලී කතා',
+        'si': 'මල්ලී කතා කරන්න',
         'ta': 'தம்பியுடன் பேசு',
         'en': 'Talk to younger brother',
         'emoji': '💬'
       },
       {
-        'si': 'මල්ලී උදව්',
+        'si': 'මල්ලී උදව් කරන්න',
         'ta': 'தம்பி உதவி',
         'en': 'Younger brother help',
         'emoji': '🤝'
       },
       {
-        'si': 'මල්ලී ක්‍රීඩා',
+        'si': 'මල්ලී සෙල්ලම් කරමු',
         'ta': 'தம்பி விளையாடு',
         'en': 'Play with younger brother',
         'emoji': '🎮'
       },
       {
-        'si': 'මල්ලී එනවා',
+        'si': 'මල්ලී එන්න',
         'ta': 'தம்பி வா',
         'en': 'Younger brother come',
         'emoji': '👋'
@@ -232,25 +232,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'නංගි කතා',
+        'si': 'නංගි කතා කරන්න',
         'ta': 'தங்கையுடன் பேசு',
         'en': 'Talk to younger sister',
         'emoji': '💬'
       },
       {
-        'si': 'නංගි උදව්',
+        'si': 'නංගි උදව් කරන්න',
         'ta': 'தங்கை உதவி',
         'en': 'Younger sister help',
         'emoji': '🤝'
       },
       {
-        'si': 'නංගි ක්‍රීඩා',
+        'si': 'නංගි සෙල්ලම් කරමු',
         'ta': 'தங்கை விளையாடு',
         'en': 'Play with younger sister',
         'emoji': '🎮'
       },
       {
-        'si': 'නංගි එනවා',
+        'si': 'නංගි එන්න',
         'ta': 'தங்கை வா',
         'en': 'Younger sister come',
         'emoji': '👋'
@@ -276,25 +276,25 @@ List<Map<String, dynamic>> familyWords = [
         'emoji': '🙋'
       },
       {
-        'si': 'සීයා කතා',
+        'si': 'සීයා කතා කරන්න',
         'ta': 'தாத்தாவுடன் பேசு',
         'en': 'Talk to grandfather',
         'emoji': '💬'
       },
       {
-        'si': 'සීයා උදව්',
+        'si': 'සීයා උදව් කරන්න',
         'ta': 'தாத்தா உதவி',
         'en': 'Grandfather help',
         'emoji': '🤝'
       },
       {
-        'si': 'සීයා කතාව',
+        'si': 'සීයා කතාවක් කියන්න',
         'ta': 'தாத்தா கதை',
         'en': 'Grandfather story',
         'emoji': '📖'
       },
       {
-        'si': 'සීයා එනවා',
+        'si': 'සීයා එන්න',
         'ta': 'தாத்தா வா',
         'en': 'Grandfather come',
         'emoji': '👋'
@@ -308,43 +308,43 @@ List<Map<String, dynamic>> familyWords = [
     ]
   },
   {
-    'si': 'අච්චි',
+    'si': 'ආච්චි',
     'ta': 'பாட்டி',
     'en': 'Grandmother',
     'emoji': '👵',
     'actions': [
       {
-        'si': 'අච්චි ඕන',
+        'si': 'ආච්චි ඕන',
         'ta': 'பாட்டி வேண்டும்',
         'en': 'Want grandmother',
         'emoji': '🙋'
       },
       {
-        'si': 'අච්චි කතා',
+        'si': 'ආච්චි කතා කරන්න',
         'ta': 'பாட்டியுடன் பேசு',
         'en': 'Talk to grandmother',
         'emoji': '💬'
       },
       {
-        'si': 'අච්චි උදව්',
+        'si': 'ආච්චි උදව් කරන්න',
         'ta': 'பாட்டி உதவி',
         'en': 'Grandmother help',
         'emoji': '🤝'
       },
       {
-        'si': 'අච්චි කතාව',
+        'si': 'ආච්චි කතාවක් කියන්න',
         'ta': 'பாட்டி கதை',
         'en': 'Grandmother story',
         'emoji': '📖'
       },
       {
-        'si': 'අච්චි එනවා',
+        'si': 'ආච්චි එන්න',
         'ta': 'பாட்டி வா',
         'en': 'Grandmother come',
         'emoji': '👋'
       },
       {
-        'si': 'අච්චි කොහෙද',
+        'si': 'ආච්චි කොහෙද',
         'ta': 'பாட்டி எங்கே',
         'en': 'Where is grandmother',
         'emoji': '❓'

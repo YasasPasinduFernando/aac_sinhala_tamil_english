@@ -5,8 +5,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Rice',
     'emoji': '🍚',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -17,8 +27,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Milk Rice',
     'emoji': '🍚',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -27,10 +47,86 @@ final List<Map<String, dynamic>> food = [
     'si': 'ඉඩිආප්ප',
     'ta': 'இடியாப்பம்',
     'en': 'String Hoppers',
+    'emoji': '🥢',
+    'actions': [
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'නූඩ්ල්ස්',
+    'ta': 'நூடுல்ஸ்',
+    'en': 'Noodles',
     'emoji': '🍜',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'ෆ්‍රයිඩ් රයිස්',
+    'ta': 'பொரித்த சோறு',
+    'en': 'Fried Rice',
+    'emoji': '🍛',
+    'actions': [
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
+      {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
+      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+    ]
+  },
+  {
+    'si': 'කොත්තු',
+    'ta': 'கொத்து',
+    'en': 'Kottu',
+    'emoji': '🥘',
+    'actions': [
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -41,8 +137,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Roti',
     'emoji': '🫓',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -53,8 +159,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Bread',
     'emoji': '🍞',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -65,8 +181,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Biscuit',
     'emoji': '🍪',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -77,8 +203,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Egg',
     'emoji': '🥚',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -89,8 +225,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Fish',
     'emoji': '🐟',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -101,8 +247,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Chicken',
     'emoji': '🍗',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -113,8 +269,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Water',
     'emoji': '💧',
     'actions': [
-      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'බොන්න ඕන',
+        'ta': 'குடிக்க வேண்டும்',
+        'en': 'Want to drink',
+        'emoji': '🥤'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -125,8 +291,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Milk',
     'emoji': '🥛',
     'actions': [
-      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'බොන්න ඕන',
+        'ta': 'குடிக்க வேண்டும்',
+        'en': 'Want to drink',
+        'emoji': '🥤'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -137,8 +313,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Tea',
     'emoji': '☕',
     'actions': [
-      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'බොන්න ඕන',
+        'ta': 'குடிக்க வேண்டும்',
+        'en': 'Want to drink',
+        'emoji': '🥤'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -149,8 +335,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Juice',
     'emoji': '🧃',
     'actions': [
-      {'si': 'බොන්න ඕන', 'ta': 'குடிக்க வேண்டும்', 'en': 'Want to drink', 'emoji': '🥤'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'බොන්න ඕන',
+        'ta': 'குடிக்க வேண்டும்',
+        'en': 'Want to drink',
+        'emoji': '🥤'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -161,8 +357,18 @@ final List<Map<String, dynamic>> food = [
     'en': 'Apple',
     'emoji': '🍎',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
@@ -173,10 +379,20 @@ final List<Map<String, dynamic>> food = [
     'en': 'Banana',
     'emoji': '🍌',
     'actions': [
-      {'si': 'කන්න ඕන', 'ta': 'சாப்பிட வேண்டும்', 'en': 'Want to eat', 'emoji': '🍽️'},
-      {'si': 'තව ඕන', 'ta': 'இன்னும் வேண்டும்', 'en': 'Want more', 'emoji': '➕'},
+      {
+        'si': 'කන්න ඕන',
+        'ta': 'சாப்பிட வேண்டும்',
+        'en': 'Want to eat',
+        'emoji': '🍽️'
+      },
+      {
+        'si': 'තව ඕන',
+        'ta': 'இன்னும் வேண்டும்',
+        'en': 'Want more',
+        'emoji': '➕'
+      },
       {'si': 'එපා', 'ta': 'வேண்டாம்', 'en': 'Don\'t want', 'emoji': '🚫'},
       {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
-  },
+  }
 ];

@@ -11,14 +11,12 @@ final List<Map<String, dynamic>> actions = [
         'en': 'Want to run',
         'emoji': '🏃'
       },
-      {'si': 'දුවනවා', 'ta': 'ஓடுகிறேன்', 'en': 'Running now', 'emoji': '▶️'},
       {
         'si': 'දුවන්න එපා',
         'ta': 'ஓட வேண்டாம்',
         'en': 'Don\'t want to run',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -34,18 +32,11 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '🚶'
       },
       {
-        'si': 'ඇවිදිනවා',
-        'ta': 'நடக்கிறேன்',
-        'en': 'Walking now',
-        'emoji': '▶️'
-      },
-      {
         'si': 'ඇවිදින්න එපා',
         'ta': 'நட வேண்டாம்',
         'en': 'Don\'t want to walk',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -61,18 +52,11 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '🤸'
       },
       {
-        'si': 'පනිනවා',
-        'ta': 'குதிக்கிறேன்',
-        'en': 'Jumping now',
-        'emoji': '▶️'
-      },
-      {
         'si': 'පනින්න එපා',
         'ta': 'குதிக்க வேண்டாம்',
-        'en': 'Don\'t want to jump',
+        'en': 'Don\'t jump',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -88,45 +72,31 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '💃'
       },
       {
-        'si': 'නටනවා',
-        'ta': 'நடனம் ஆடுகிறேன்',
-        'en': 'Dancing now',
-        'emoji': '▶️'
-      },
-      {
         'si': 'නටන්න එපා',
         'ta': 'நடனம் வேண்டாம்',
         'en': 'Don\'t want to dance',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
-    'si': 'ක්‍රීඩා කරනවා',
+    'si': 'සෙල්ලම් කරනවා',
     'ta': 'விளையாடுதல்',
     'en': 'Playing',
     'emoji': '🎮',
     'actions': [
       {
-        'si': 'ක්‍රීඩා කරන්න ඕන',
+        'si': 'සෙල්ලම් කරන්න ඕන',
         'ta': 'விளையாட வேண்டும்',
         'en': 'Want to play',
         'emoji': '🎮'
       },
       {
-        'si': 'ක්‍රීඩා කරනවා',
-        'ta': 'விளையாடுகிறேன்',
-        'en': 'Playing now',
-        'emoji': '▶️'
-      },
-      {
-        'si': 'ක්‍රීඩා කරන්න එපා',
+        'si': 'සෙල්ලම් කරන්න එපා',
         'ta': 'விளையாட வேண்டாம்',
         'en': 'Don\'t want to play',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -147,8 +117,7 @@ final List<Map<String, dynamic>> actions = [
         'ta': 'ஏற வேண்டாம்',
         'en': 'Don\'t want to climb',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -174,8 +143,7 @@ final List<Map<String, dynamic>> actions = [
         'ta': 'நீச்சல் வேண்டாம்',
         'en': 'Don\'t want to swim',
         'emoji': '🚫'
-      },
-      {'si': 'නවතින්න', 'ta': 'நிறுத்து', 'en': 'Stop', 'emoji': '✋'}
+      }
     ]
   },
   {
@@ -189,19 +157,6 @@ final List<Map<String, dynamic>> actions = [
         'ta': 'உறங்க வேண்டும்',
         'en': 'Want to sleep',
         'emoji': '😴'
-      },
-      {
-        'si': 'නිදාගන්නවා',
-        'ta': 'உறங்குகிறேன்',
-        'en': 'Sleeping now',
-        'emoji': '💤'
-      },
-      {'si': 'අවදි වෙනවා', 'ta': 'எழுந்திரு', 'en': 'Wake up', 'emoji': '☀️'},
-      {
-        'si': 'තවත් නිදාගන්න',
-        'ta': 'இன்னும் உறங்கு',
-        'en': 'Sleep more',
-        'emoji': '➕'
       }
     ]
   },
@@ -217,14 +172,13 @@ final List<Map<String, dynamic>> actions = [
         'en': 'Want to eat',
         'emoji': '🍽️'
       },
-      {'si': 'කනවා', 'ta': 'சாப்பிடுகிறேன்', 'en': 'Eating now', 'emoji': '▶️'},
       {
         'si': 'කන්න එපා',
         'ta': 'சாப்பிட வேண்டாம்',
         'en': 'Don\'t want to eat',
         'emoji': '🚫'
       },
-      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+      {'si': 'දැන් ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
@@ -240,18 +194,12 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '🥤'
       },
       {
-        'si': 'බොනවා',
-        'ta': 'குடிக்கிறேன்',
-        'en': 'Drinking now',
-        'emoji': '▶️'
-      },
-      {
         'si': 'බොන්න එපා',
         'ta': 'குடிக்க வேண்டாம்',
         'en': 'Don\'t want to drink',
         'emoji': '🚫'
       },
-      {'si': 'ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
+      {'si': 'දැන් ඇති', 'ta': 'போதும்', 'en': 'Enough', 'emoji': '✋'}
     ]
   },
   {
@@ -261,24 +209,17 @@ final List<Map<String, dynamic>> actions = [
     'emoji': '🛁',
     'actions': [
       {
-        'si': 'නානවන්න ඕන',
+        'si': 'නාන්න ඕන',
         'ta': 'குளிக்க வேண்டும்',
         'en': 'Want to bathe',
         'emoji': '🛁'
       },
       {
-        'si': 'නානවනවා',
-        'ta': 'குளிக்கிறேன்',
-        'en': 'Bathing now',
-        'emoji': '▶️'
-      },
-      {
-        'si': 'නානවන්න එපා',
+        'si': 'නාන්න එපා',
         'ta': 'குளிக்க வேண்டாம்',
         'en': 'Don\'t want to bathe',
         'emoji': '🚫'
-      },
-      {'si': 'ඇති', 'ta': 'முடிந்தது', 'en': 'Finished', 'emoji': '✅'}
+      }
     ]
   },
   {
@@ -294,7 +235,7 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '🚶'
       },
       {
-        'si': 'යනවා දැන්',
+        'si': 'දැන් යනවා',
         'ta': 'இப்போது போகிறேன்',
         'en': 'Going now',
         'emoji': '▶️'
@@ -305,12 +246,7 @@ final List<Map<String, dynamic>> actions = [
         'en': 'Don\'t want to go',
         'emoji': '🚫'
       },
-      {
-        'si': 'මෙහෙම ඉන්නවා',
-        'ta': 'இங்கே இரு',
-        'en': 'Stay here',
-        'emoji': '🛑'
-      }
+      {'si': 'මෙතන ඉන්න', 'ta': 'இங்கே இரு', 'en': 'Stay here', 'emoji': '🛑'}
     ]
   },
   {
@@ -326,7 +262,7 @@ final List<Map<String, dynamic>> actions = [
         'emoji': '👋'
       },
       {
-        'si': 'එනවා දැන්',
+        'si': 'දැන් එනවා',
         'ta': 'இப்போது வருகிறேன்',
         'en': 'Coming now',
         'emoji': '▶️'
@@ -336,8 +272,7 @@ final List<Map<String, dynamic>> actions = [
         'ta': 'வர வேண்டாம்',
         'en': 'Don\'t come',
         'emoji': '🚫'
-      },
-      {'si': 'ඉන්න', 'ta': 'இரு', 'en': 'Stay', 'emoji': '🛑'}
+      }
     ]
-  },
+  }
 ];

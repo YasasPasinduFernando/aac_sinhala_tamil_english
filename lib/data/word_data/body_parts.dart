@@ -1,33 +1,27 @@
 final List<Map<String, dynamic>> bodyParts = [
   {
-    'si': 'හිස',
+    'si': 'ඔළුව',
     'ta': 'தலை',
     'en': 'Head',
     'emoji': '🧑',
     'actions': [
       {
-        'si': 'හිස රිදෙනවා',
+        'si': 'ඔළුව රිදෙනවා',
         'ta': 'தலை வலிக்கிறது',
         'en': 'Head hurts',
         'emoji': '😣'
       },
       {
-        'si': 'හිස කැසෙනවා',
+        'si': 'ඔළුව කසනවා',
         'ta': 'தலை அரிக்கிறது',
         'en': 'Head itches',
         'emoji': '🤚'
       },
       {
-        'si': 'හිස අත ගහනවා',
+        'si': 'ඔළුව අත ගාන්න',
         'ta': 'தலை தொடு',
         'en': 'Touch head',
         'emoji': '✋'
-      },
-      {
-        'si': 'හිස එපා',
-        'ta': 'தலை வேண்டாம்',
-        'en': 'Don\'t touch head',
-        'emoji': '🚫'
       }
     ]
   },
@@ -44,17 +38,10 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'ඇස කැසෙනවා',
+        'si': 'ඇස කසනවා',
         'ta': 'கண் அரிக்கிறது',
         'en': 'Eye itches',
         'emoji': '🤚'
-      },
-      {'si': 'ඇස අත ගහනවා', 'ta': 'கண் தொடு', 'en': 'Touch eye', 'emoji': '✋'},
-      {
-        'si': 'ඇස එපා',
-        'ta': 'கண் வேண்டாம்',
-        'en': 'Don\'t touch eye',
-        'emoji': '🚫'
       }
     ]
   },
@@ -71,18 +58,12 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'කන කැසෙනවා',
+        'si': 'කන කසනවා',
         'ta': 'காது அரிக்கிறது',
         'en': 'Ear itches',
         'emoji': '🤚'
       },
-      {'si': 'කන අත ගහනවා', 'ta': 'காது தொடு', 'en': 'Touch ear', 'emoji': '✋'},
-      {
-        'si': 'හඬ අඩුයි',
-        'ta': 'சத்தம் குறைவு',
-        'en': 'Sound too loud',
-        'emoji': '🔊'
-      }
+      {'si': 'කන අත ගාන්න', 'ta': 'காது தொடு', 'en': 'Touch ear', 'emoji': '✋'}
     ]
   },
   {
@@ -98,19 +79,13 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'නාසය කැසෙනවා',
+        'si': 'නාසය කසනවා',
         'ta': 'மூக்கு அரிக்கிறது',
         'en': 'Nose itches',
         'emoji': '🤚'
       },
       {
-        'si': 'නාසය යනවා',
-        'ta': 'மூக்கு ஓடுகிறது',
-        'en': 'Runny nose',
-        'emoji': '💧'
-      },
-      {
-        'si': 'නාසය අත ගහනවා',
+        'si': 'නාසය අත ගාන්න',
         'ta': 'மூக்கு தொடு',
         'en': 'Touch nose',
         'emoji': '✋'
@@ -118,34 +93,22 @@ final List<Map<String, dynamic>> bodyParts = [
     ]
   },
   {
-    'si': 'මුඛය',
+    'si': 'කට',
     'ta': 'வாய்',
     'en': 'Mouth',
     'emoji': '👄',
     'actions': [
       {
-        'si': 'මුඛය රිදෙනවා',
+        'si': 'කට රිදෙනවා',
         'ta': 'வாய் வலிக்கிறது',
         'en': 'Mouth hurts',
         'emoji': '😣'
       },
       {
-        'si': 'මුඛය කැසෙනවා',
+        'si': 'කට කසනවා',
         'ta': 'வாய் அரிக்கிறது',
         'en': 'Mouth itches',
         'emoji': '🤚'
-      },
-      {
-        'si': 'මුඛය වියළී',
-        'ta': 'வாய் உலர்ந்தது',
-        'en': 'Mouth dry',
-        'emoji': '💧'
-      },
-      {
-        'si': 'මුඛය අත ගහනවා',
-        'ta': 'வாய் தொடு',
-        'en': 'Touch mouth',
-        'emoji': '✋'
       }
     ]
   },
@@ -160,24 +123,6 @@ final List<Map<String, dynamic>> bodyParts = [
         'ta': 'பல் வலிக்கிறது',
         'en': 'Tooth hurts',
         'emoji': '😣'
-      },
-      {
-        'si': 'දත් කැසෙනවා',
-        'ta': 'பல் அரிக்கிறது',
-        'en': 'Tooth itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'දත් අත ගහනවා',
-        'ta': 'பல் தொடு',
-        'en': 'Touch tooth',
-        'emoji': '✋'
-      },
-      {
-        'si': 'දත් එපා',
-        'ta': 'பல் வேண்டாம்',
-        'en': 'Don\'t touch tooth',
-        'emoji': '🚫'
       }
     ]
   },
@@ -192,24 +137,6 @@ final List<Map<String, dynamic>> bodyParts = [
         'ta': 'கழுத்து வலிக்கிறது',
         'en': 'Neck hurts',
         'emoji': '😣'
-      },
-      {
-        'si': 'බෙල්ල කැසෙනවා',
-        'ta': 'கழுத்து அரிக்கிறது',
-        'en': 'Neck itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'බෙල්ල අත ගහනවා',
-        'ta': 'கழுத்து தொடு',
-        'en': 'Touch neck',
-        'emoji': '✋'
-      },
-      {
-        'si': 'බෙල්ල එපා',
-        'ta': 'கழுத்து வேண்டாம்',
-        'en': 'Don\'t touch neck',
-        'emoji': '🚫'
       }
     ]
   },
@@ -224,24 +151,6 @@ final List<Map<String, dynamic>> bodyParts = [
         'ta': 'தோள் வலிக்கிறது',
         'en': 'Shoulder hurts',
         'emoji': '😣'
-      },
-      {
-        'si': 'උරහිස කැසෙනවා',
-        'ta': 'தோள் அரிக்கிறது',
-        'en': 'Shoulder itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'උරහිස අත ගහනවා',
-        'ta': 'தோள் தொடு',
-        'en': 'Touch shoulder',
-        'emoji': '✋'
-      },
-      {
-        'si': 'උරහිස එපා',
-        'ta': 'தோள் வேண்டாம்',
-        'en': 'Don\'t touch shoulder',
-        'emoji': '🚫'
       }
     ]
   },
@@ -258,18 +167,12 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'අත කැසෙනවා',
+        'si': 'අත කසනවා',
         'ta': 'கை அரிக்கிறது',
         'en': 'Hand itches',
         'emoji': '🤚'
       },
-      {'si': 'අත අත ගහනවා', 'ta': 'கை தொடு', 'en': 'Touch hand', 'emoji': '✋'},
-      {
-        'si': 'අත එපා',
-        'ta': 'கை வேண்டாம்',
-        'en': 'Don\'t touch hand',
-        'emoji': '🚫'
-      }
+      {'si': 'අත ගාන්න', 'ta': 'கை தொடு', 'en': 'Touch hand', 'emoji': '✋'}
     ]
   },
   {
@@ -285,22 +188,16 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'ඇඟිල්ල කැසෙනවා',
+        'si': 'ඇඟිල්ල කසනවා',
         'ta': 'விரல் அரிக்கிறது',
         'en': 'Finger itches',
         'emoji': '🤚'
       },
       {
-        'si': 'ඇඟිල්ල අත ගහනවා',
+        'si': 'ඇඟිල්ල අත ගාන්න',
         'ta': 'விரல் தொடு',
         'en': 'Touch finger',
         'emoji': '✋'
-      },
-      {
-        'si': 'ඇඟිල්ල එපා',
-        'ta': 'விரல் வேண்டாம்',
-        'en': 'Don\'t touch finger',
-        'emoji': '🚫'
       }
     ]
   },
@@ -317,22 +214,16 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'පපුව කැසෙනවා',
+        'si': 'පපුව කසනවා',
         'ta': 'மார்பு அரிக்கிறது',
         'en': 'Chest itches',
         'emoji': '🤚'
       },
       {
-        'si': 'පපුව අත ගහනවා',
+        'si': 'පපුව අත ගාන්න',
         'ta': 'மார்பு தொடு',
         'en': 'Touch chest',
         'emoji': '✋'
-      },
-      {
-        'si': 'පපුව එපා',
-        'ta': 'மார்பு வேண்டாம்',
-        'en': 'Don\'t touch chest',
-        'emoji': '🚫'
       }
     ]
   },
@@ -347,24 +238,6 @@ final List<Map<String, dynamic>> bodyParts = [
         'ta': 'வயிறு வலிக்கிறது',
         'en': 'Stomach hurts',
         'emoji': '😣'
-      },
-      {
-        'si': 'බඩ කැසෙනවා',
-        'ta': 'வயிறு அரிக்கிறது',
-        'en': 'Stomach itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'බඩ ගිනි අවුලනවා',
-        'ta': 'வயிறு எரிகிறது',
-        'en': 'Stomach burning',
-        'emoji': '🔥'
-      },
-      {
-        'si': 'බඩ අත ගහනවා',
-        'ta': 'வயிறு தொடு',
-        'en': 'Touch stomach',
-        'emoji': '✋'
       }
     ]
   },
@@ -381,136 +254,43 @@ final List<Map<String, dynamic>> bodyParts = [
         'emoji': '😣'
       },
       {
-        'si': 'පිට කැසෙනවා',
+        'si': 'පිට කසනවා',
         'ta': 'முதுகு அரிக்கிறது',
         'en': 'Back itches',
         'emoji': '🤚'
       },
       {
-        'si': 'පිට අත ගහනවා',
+        'si': 'පිට අත ගාන්න',
         'ta': 'முதுகு தொடு',
         'en': 'Touch back',
         'emoji': '✋'
-      },
-      {
-        'si': 'පිට එපා',
-        'ta': 'முதுகு வேண்டாம்',
-        'en': 'Don\'t touch back',
-        'emoji': '🚫'
       }
     ]
   },
   {
-    'si': 'පා',
+    'si': 'කකුල',
     'ta': 'கால்',
     'en': 'Leg',
     'emoji': '🦵',
     'actions': [
       {
-        'si': 'පා රිදෙනවා',
+        'si': 'කකුල රිදෙනවා',
         'ta': 'கால் வலிக்கிறது',
         'en': 'Leg hurts',
         'emoji': '😣'
       },
       {
-        'si': 'පා කැසෙනවා',
+        'si': 'කකුල කසනවා',
         'ta': 'கால் அரிக்கிறது',
         'en': 'Leg itches',
         'emoji': '🤚'
       },
-      {'si': 'පා අත ගහනවා', 'ta': 'கால் தொடு', 'en': 'Touch leg', 'emoji': '✋'},
       {
-        'si': 'පා එපා',
-        'ta': 'கால் வேண்டாம்',
-        'en': 'Don\'t touch leg',
-        'emoji': '🚫'
-      }
-    ]
-  },
-  {
-    'si': 'දණහිස',
-    'ta': 'முழங்கால்',
-    'en': 'Knee',
-    'emoji': '🦵',
-    'actions': [
-      {
-        'si': 'දණහිස රිදෙනවා',
-        'ta': 'முழங்கால் வலிக்கிறது',
-        'en': 'Knee hurts',
-        'emoji': '😣'
-      },
-      {
-        'si': 'දණහිස කැසෙනවා',
-        'ta': 'முழங்கால் அரிக்கிறது',
-        'en': 'Knee itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'දණහිස අත ගහනවා',
-        'ta': 'முழங்கால் தொடு',
-        'en': 'Touch knee',
+        'si': 'කකුල අත ගාන්න',
+        'ta': 'கால் தொடு',
+        'en': 'Touch leg',
         'emoji': '✋'
-      },
-      {
-        'si': 'දණහිස එපා',
-        'ta': 'முழங்கால் வேண்டாம்',
-        'en': 'Don\'t touch knee',
-        'emoji': '🚫'
       }
     ]
-  },
-  {
-    'si': 'පාදය',
-    'ta': 'பாதம்',
-    'en': 'Foot',
-    'emoji': '🦶',
-    'actions': [
-      {
-        'si': 'පාදය රිදෙනවා',
-        'ta': 'பாதம் வலிக்கிறது',
-        'en': 'Foot hurts',
-        'emoji': '😣'
-      },
-      {
-        'si': 'පාදය කැසෙනවා',
-        'ta': 'பாதம் அரிக்கிறது',
-        'en': 'Foot itches',
-        'emoji': '🤚'
-      },
-      {
-        'si': 'පාදය අත ගහනවා',
-        'ta': 'பாதம் தொடு',
-        'en': 'Touch foot',
-        'emoji': '✋'
-      },
-      {
-        'si': 'පාදය එපා',
-        'ta': 'பாதம் வேண்டாம்',
-        'en': 'Don\'t touch foot',
-        'emoji': '🚫'
-      }
-    ]
-  },
-  {
-    'si': 'සම',
-    'ta': 'தோல்',
-    'en': 'Skin',
-    'emoji': '🧴',
-    'actions': [
-      {
-        'si': 'සම රිදෙනවා',
-        'ta': 'தோல் வலிக்கிறது',
-        'en': 'Skin hurts',
-        'emoji': '😣'
-      },
-      {
-        'si': 'සම කැසෙනවා',
-        'ta': 'தோல் அரிக்கிறது',
-        'en': 'Skin itches',
-        'emoji': '🤚'
-      },
-      {'si': 'සම උණුසුම්', 'ta': 'தோல் சூடாக', 'en': 'Skin hot', 'emoji': '🔥'},
-      {'si': 'සම සීතල', 'ta': 'தோல் குளிர்', 'en': 'Skin cold', 'emoji': '🧊'}
-    ]
-  },
+  }
 ];
