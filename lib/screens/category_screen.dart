@@ -29,6 +29,7 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   late PageController _pageController;
   late int currentCategoryIndex;
+  late int _basePageIndex;
   String userName = '';
   bool hasAskedName = false;
   bool _isProcessingTap = false;
@@ -52,8 +53,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     super.initState();
     currentCategoryIndex = widget.initialCategoryIndex;
-    // Use a very large initial page to enable infinite scrolling
-    final initialPage = 1000000 + widget.initialCategoryIndex;
+    // Store the base index for consistent offset calculation
+    _basePageIndex = 1000000;
+    final initialPage = _basePageIndex + widget.initialCategoryIndex;
     _pageController = PageController(initialPage: initialPage);
     _loadUserName();
 
@@ -582,10 +584,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {
-              // Calculate actual category index using modulo for infinite loop
-              // The index from onPageChanged is relative to the starting position,
-              // so we need to ensure it properly maps to our category list
-              int calculatedIndex = index % widget.allCategories.length;
+              // Calculate offset from base page index
+              final offset = index - _basePageIndex;
+              int calculatedIndex = offset % widget.allCategories.length;
               // Handle negative modulo results
               if (calculatedIndex < 0) {
                 calculatedIndex += widget.allCategories.length;
@@ -594,8 +595,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
             });
           },
           itemBuilder: (context, index) {
-            // Get the actual category using modulo for infinite scrolling
-            int categoryIndex = index % widget.allCategories.length;
+            // Calculate offset from base page index
+            final offset = index - _basePageIndex;
+            int categoryIndex = offset % widget.allCategories.length;
             // Handle negative modulo results
             if (categoryIndex < 0) {
               categoryIndex += widget.allCategories.length;
