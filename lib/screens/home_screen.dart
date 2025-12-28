@@ -113,10 +113,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   Future<void> _loadGenderPreference() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final gender = await StorageService.getGender();
       if (mounted) {
         setState(() {
-          isGirl = prefs.getBool('isGirl') ?? true;
+          isGirl = gender == 'girl';
         });
       }
     } catch (e) {

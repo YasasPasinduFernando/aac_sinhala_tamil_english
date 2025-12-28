@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/storage_service.dart';
 import 'app_theme.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
@@ -91,8 +92,13 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
   }
 
   void _selectGender(bool isGirl) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isGirl', isGirl);
+    final gender = isGirl ? 'girl' : 'boy';
+    await StorageService.saveUserData(
+      name: (await SharedPreferences.getInstance()).getString('user_name') ?? '',
+      phone: (await SharedPreferences.getInstance()).getString('user_phone') ?? '',
+      isPremium: (await SharedPreferences.getInstance()).getBool('is_premium') ?? false,
+      gender: gender,
+    );
     widget.onGenderSelected(isGirl);
   }
 

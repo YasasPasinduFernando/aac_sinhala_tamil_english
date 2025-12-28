@@ -5,6 +5,7 @@ class StorageService {
   static const String _keyIsPremium = 'is_premium';
   static const String _keyName = 'user_name';
   static const String _keyPhone = 'user_phone';
+  static const String _keyGender = 'user_gender';
 
   static Future<bool> isRegistered() async {
     final prefs = await SharedPreferences.getInstance();
@@ -20,11 +21,18 @@ class StorageService {
     required String name,
     required String phone,
     required bool isPremium,
+    required String gender,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_keyIsRegistered, true);
     await prefs.setBool(_keyIsPremium, isPremium);
     await prefs.setString(_keyName, name);
     await prefs.setString(_keyPhone, phone);
+    await prefs.setString(_keyGender, gender);
+  }
+
+  static Future<String?> getGender() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyGender);
   }
 }

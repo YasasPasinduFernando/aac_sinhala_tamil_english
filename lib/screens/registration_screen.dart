@@ -18,6 +18,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _phoneController = TextEditingController();
   bool _needsFreeAccess = false;
   bool _isLoading = false;
+  String _selectedGender = 'boy'; // 'boy' or 'girl'
 
   Future<void> _handleFreeRegistration() async {
     if (!_formKey.currentState!.validate()) return;
@@ -29,6 +30,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       name: _nameController.text,
       phone: _phoneController.text,
       isPremium: true, // Free access - no ads
+      gender: _selectedGender,
     );
 
     if (mounted) {
@@ -55,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         name: _nameController.text,
         phone: _phoneController.text,
         isPremium: true,
+        gender: _selectedGender,
       );
 
       if (mounted) {
@@ -152,6 +155,99 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'ලිංගය තෝරන්න',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(
+                          color: _selectedGender == 'boy'
+                              ? Colors.blue
+                              : Colors.grey.shade300,
+                          width: _selectedGender == 'boy' ? 2 : 1,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () => setState(() => _selectedGender = 'boy'),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.boy,
+                                size: 48,
+                                color: _selectedGender == 'boy'
+                                    ? Colors.blue
+                                    : Colors.grey,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'පිරිමි',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: _selectedGender == 'boy'
+                                      ? Colors.blue
+                                      : Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(
+                          color: _selectedGender == 'girl'
+                              ? Colors.pink
+                              : Colors.grey.shade300,
+                          width: _selectedGender == 'girl' ? 2 : 1,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () => setState(() => _selectedGender = 'girl'),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.girl,
+                                size: 48,
+                                color: _selectedGender == 'girl'
+                                    ? Colors.pink
+                                    : Colors.grey,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'ගැහැණු',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: _selectedGender == 'girl'
+                                      ? Colors.pink
+                                      : Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               CheckboxListTile(
