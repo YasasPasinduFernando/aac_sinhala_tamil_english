@@ -187,9 +187,9 @@ class _HomeScreenState extends State<HomeScreen>
       case 'si-LK':
         return '🇱🇰';
       case 'ta-IN':
-        return '🇮🇳';
+        return '🔱';
       case 'en-US':
-        return '🇺🇸';
+        return 'uk';
       default:
         return '🌍';
     }
@@ -277,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               const SizedBox(height: 24),
               _buildLanguageOption('si-LK', '🇱🇰', 'සිංහල', colors),
-              _buildLanguageOption('ta-IN', '🇮🇳', 'தமிழ்', colors),
+              _buildLanguageOption('ta-IN', '🔱', 'தமிழ்', colors),
               _buildLanguageOption('en-US', '🇺🇸', 'English', colors),
               const SizedBox(height: 30),
               _buildDonateButton(colors),
@@ -354,10 +354,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _buildDonateButton(Map<String, Color> colors) {
     final String donateText = selectedLanguage == 'si-LK'
-        ? '☕ අපට ඩොනේට් කරන්න'
+        ? '🙏❤️ අපට ඩොනේට් කරන්න'
         : selectedLanguage == 'ta-IN'
-            ? '☕ எங்களுக்கு நன்கொடை'
-            : '☕ Support Us';
+            ? '🙏❤️ எங்களுக்கு நன்கொடை'
+            : '🙏❤️ Support Us';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -419,11 +419,7 @@ class _HomeScreenState extends State<HomeScreen>
       {'name': 'වර්ණ', 'emoji': '🎨', 'desc': 'රතු, නිල්, කහ...'},
       {'name': 'අංක', 'emoji': '🔢', 'desc': '1, 2, 3, 4, 5...'},
       {'name': 'සිතුවිලි', 'emoji': '😊', 'desc': 'සතුට, කරුණ, බිය...'},
-      {
-        'name': 'ක්‍රියාකාරකම්',
-        'emoji': '⚽',
-        'desc': 'දිවීම, ගමනය, නැටීම...'
-      },
+      {'name': 'ක්‍රියාකාරකම්', 'emoji': '⚽', 'desc': 'දිවීම, ගමනය, නැටීම...'},
       {
         'name': 'සංගීතය සහ ශබ්ද',
         'emoji': '🎵',

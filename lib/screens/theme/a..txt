@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 'si-LK':
         return '🇱🇰';
       case 'ta-IN':
-        return '🇮🇳';
+        return '🔱';
       case 'en-US':
         return '🇺🇸';
       default:
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     PopupMenuItem(
                       value: 'ta-IN',
-                      child: Text('🇮🇳 தமிழ்'),
+                      child: Text('🔱 தமிழ்'),
                     ),
                     PopupMenuItem(
                       value: 'en-US',
