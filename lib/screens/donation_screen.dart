@@ -451,7 +451,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('number'),
-            '0771234567',
+            '0776905654',
             '📞',
           ),
 
@@ -460,7 +460,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('name'),
-            'AAC Learning Platform',
+            'EKYP FERNANDO',
             '👤',
           ),
 
@@ -494,7 +494,7 @@ class _DonationScreenState extends State<DonationScreen>
                 const SizedBox(height: 16),
                 _buildInstruction('1', 'Open eZ Cash / mCash app'),
                 _buildInstruction('2', 'Select "Send Money"'),
-                _buildInstruction('3', 'Enter number: 0771234567'),
+                _buildInstruction('3', 'Enter number: 0776905654'),
                 _buildInstruction('4', 'Enter any amount'),
                 _buildInstruction('5', 'Complete payment'),
               ],
@@ -544,7 +544,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('bank_name'),
-            'Commercial Bank of Ceylon',
+            'BOC',
             '🏦',
           ),
 
@@ -553,7 +553,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('account_number'),
-            '1234567890123456',
+            '9604516',
             '🔢',
           ),
 
@@ -562,7 +562,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('account_holder'),
-            'AAC Learning Platform',
+            'EKYP FERNANDO',
             '👤',
           ),
 
@@ -571,7 +571,7 @@ class _DonationScreenState extends State<DonationScreen>
           _buildPaymentCard(
             colors,
             _getText('branch'),
-            'Colombo Main Branch',
+            'HIKKADUWA',
             '📍',
           ),
         ],

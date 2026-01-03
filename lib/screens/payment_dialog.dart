@@ -83,11 +83,11 @@ class PaymentDialog extends StatelessWidget {
         title: const Text('💝 Donation'),
         content: const Text(
           'ස්තූතියි! ඔබේ දායකත්වය ළමයින්ට උදව් කරයි.\n\n'
-          'Bank: Bank of Ceylon\n'
-          'Account: 1234567890\n'
-          'Name: AAC Lanka\n\n'
+          'Bank: BOC\n'
+          'Account: 9604516\n'
+          'Name: EKYP FERNANDO\n\n'
           'හෝ\n\n'
-          'eZ Cash / mCash: 0771234567',
+          'eZ Cash / mCash: 0776905654',
         ),
         actions: [
           TextButton(

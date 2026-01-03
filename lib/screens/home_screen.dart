@@ -1021,6 +1021,51 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
+
+                // Copyright Banner Footer
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        colors['primary']!.withOpacity(0.15),
+                        colors['accent']!.withOpacity(0.1),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    border: Border(
+                      top: BorderSide(
+                        color: colors['primary']!.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '© 2025 EKYP FERNANDO',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: colors['textColor']!.withOpacity(0.8),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'yasaspasindufernando@gmail.com',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: colors['textColor']!.withOpacity(0.6),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           },
