@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen>
         return '🇱🇰';
       case 'ta-IN':
         return '🔱';
-      case 'en-US':
+      case 'en-GB':
         return '🇬🇧';
       default:
         return '🌍';
@@ -201,8 +201,8 @@ class _HomeScreenState extends State<HomeScreen>
         return 'සිංහල';
       case 'ta-IN':
         return 'தமிழ்';
-      case 'en-US':
-        return 'English';
+      case 'en-GB':
+        return 'English (UK)';
       default:
         return 'Language';
     }
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen>
         return 'කතා කරමු';
       case 'ta-IN':
         return 'பேச வேண்டும்';
-      case 'en-US':
+      case 'en-GB':
         return 'Let\'s Talk';
       default:
         return 'Talk';
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen>
         return '👧 ගැහැණු / 👦 පුරුষ';
       case 'ta-IN':
         return '👧 பெண் / 👦 ஆண்';
-      case 'en-US':
+      case 'en-GB':
         return '👧 Girl / 👦 Boy';
       default:
         return 'Gender';
@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen>
               const SizedBox(height: 24),
               _buildLanguageOption('si-LK', '🇱🇰', 'සිංහල', colors),
               _buildLanguageOption('ta-IN', '🔱', 'தமிழ்', colors),
-              _buildLanguageOption('en-US', '🇺🇸', 'English', colors),
+              _buildLanguageOption('en-GB', '🇬🇧', 'English (UK)', colors),
               const SizedBox(height: 30),
               _buildDonateButton(colors),
               const SizedBox(height: 30),
@@ -479,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     final categories = selectedLanguage == 'ta-IN'
         ? taCategories
-        : selectedLanguage == 'en-US'
+        : selectedLanguage == 'en-GB'
             ? enCategories
             : siCategories;
     return categories

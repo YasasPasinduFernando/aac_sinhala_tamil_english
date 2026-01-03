@@ -297,7 +297,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return item['si'];
       case 'ta-IN':
         return item['ta'];
-      case 'en-US':
+      case 'en-GB':
         return item['en'];
       default:
         return item['si'];
@@ -310,7 +310,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         return action['si'] as String;
       case 'ta-IN':
         return action['ta'] as String;
-      case 'en-US':
+      case 'en-GB':
         return action['en'] as String;
       default:
         return action['si'] as String;

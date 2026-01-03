@@ -195,7 +195,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
     if (widget.language == 'ta-IN') {
       return categoryData['ta'] ?? key;
-    } else if (widget.language == 'en-US') {
+    } else if (widget.language == 'en-GB') {
       return categoryData['en'] ?? key;
     }
     return categoryData['si'] ?? key;
@@ -211,7 +211,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         return item['si'] ?? '';
       case 'ta-IN':
         return item['ta'] ?? '';
-      case 'en-US':
+      case 'en-GB':
         return item['en'] ?? '';
       default:
         return item['si'] ?? '';

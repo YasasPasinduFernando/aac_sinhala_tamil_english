@@ -144,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (widget.language == 'ta-IN') {
       return categoryData['ta'] ?? key;
-    } else if (widget.language == 'en-US') {
+    } else if (widget.language == 'en-GB') {
       return categoryData['en'] ?? key;
     }
     return categoryData['si'] ?? key;

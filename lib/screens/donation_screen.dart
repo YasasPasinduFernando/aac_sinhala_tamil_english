@@ -120,7 +120,7 @@ class _DonationScreenState extends State<DonationScreen>
         'previous': 'முந்தைய',
         'done': 'சரி',
       },
-      'en-US': {
+      'en-GB': {
         'title': 'Donation',
         'subtitle': 'Your Support Matters',
         'message':
@@ -145,7 +145,7 @@ class _DonationScreenState extends State<DonationScreen>
       },
     };
 
-    return texts[widget.language]?[key] ?? texts['en-US']?[key] ?? key;
+    return texts[widget.language]?[key] ?? texts['en-GB']?[key] ?? key;
   }
 
   void _copyToClipboard(String text) {

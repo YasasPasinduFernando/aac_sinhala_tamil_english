@@ -45,7 +45,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
         return '👋 ඔබ කවුද?';
       case 'ta-IN':
         return '👋 நீங்கள் யார்?';
-      case 'en-US':
+      case 'en-GB':
         return '👋 Who Are You?';
       default:
         return '👋 Who Are You?';
@@ -58,10 +58,10 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
         return 'ඔබේ සිතුමම මතකට ගිය වර්ණ තෝරා ගන්න!';
       case 'ta-IN':
         return 'உங்கள் விருப்பமான வண்ணத் தேர்வு செய்யுங்கள்!';
-      case 'en-US':
-        return 'Choose Your Favorite Color!';
+      case 'en-GB':
+        return 'Choose Your Favourite Colour!';
       default:
-        return 'Choose Your Favorite Color!';
+        return 'Choose Your Favourite Colour!';
     }
   }
 
@@ -71,7 +71,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
         return 'ගැහැනු\nළමයා';
       case 'ta-IN':
         return 'பெண்\nவள்ளி';
-      case 'en-US':
+      case 'en-GB':
         return 'Girl';
       default:
         return 'Girl';
@@ -84,7 +84,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
         return 'පිරිමි\nළමයා';
       case 'ta-IN':
         return 'ஆண்\nவள்ளி';
-      case 'en-US':
+      case 'en-GB':
         return 'Boy';
       default:
         return 'Boy';
