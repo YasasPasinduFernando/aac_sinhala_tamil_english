@@ -1,5 +1,6 @@
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -61,13 +62,14 @@ def make_dataset(paths, labels, batch_size, augment):
         image = tf.io.decode_image(image, channels=3, expand_animations=False)
         image.set_shape([None, None, 3])
         image = tf.image.resize(image, IMG_SIZE)
-        image = tf.cast(image, tf.float32) / 255.0
+        image = tf.cast(image, tf.float32)
+        image = tf.keras.applications.mobilenet_v2.preprocess_input(image)
         if augment:
             image = augmenter(image)
         return image, label
 
     ds = ds.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
-    ds = ds.apply(tf.data.experimental.ignore_errors())
+    ds = ds.ignore_errors()
     ds = ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
     return ds
 
@@ -102,10 +104,10 @@ def main():
         default=str(Path(__file__).resolve().parents[1] / "data"),
         help="Path to the data folder",
     )
-    parser.add_argument("--epochs", type=int, default=10)
+    parser.add_argument("--epochs", type=int, default=8)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--val_split", type=float, default=0.15)
-    parser.add_argument("--fine_tune_epochs", type=int, default=5)
+    parser.add_argument("--fine_tune_epochs", type=int, default=4)
     parser.add_argument("--no_pretrained", action="store_true")
     parser.add_argument("--fine_tune", action="store_true")
     args = parser.parse_args()
@@ -152,8 +154,18 @@ def main():
         else None
     )
 
+    train_steps = math.ceil(len(train_paths) / args.batch_size)
+    val_steps = math.ceil(len(val_paths) / args.batch_size)
+    test_steps = math.ceil(len(test_paths) / args.batch_size) if test_paths else None
+
     model, base = build_model(len(CLASSES), use_pretrained=not args.no_pretrained)
-    history = model.fit(train_ds, validation_data=val_ds, epochs=args.epochs)
+    history = model.fit(
+        train_ds,
+        validation_data=val_ds,
+        epochs=args.epochs,
+        steps_per_epoch=train_steps,
+        validation_steps=val_steps,
+    )
 
     if args.fine_tune:
         base.trainable = True
@@ -166,11 +178,15 @@ def main():
             metrics=["accuracy"],
         )
         history = model.fit(
-            train_ds, validation_data=val_ds, epochs=args.fine_tune_epochs
+            train_ds,
+            validation_data=val_ds,
+            epochs=args.fine_tune_epochs,
+            steps_per_epoch=train_steps,
+            validation_steps=val_steps,
         )
 
     if test_ds is not None:
-        model.evaluate(test_ds, verbose=2)
+        model.evaluate(test_ds, verbose=2, steps=test_steps)
 
     output_dir = Path(__file__).resolve().parents[1] / "outputs"
     output_dir.mkdir(parents=True, exist_ok=True)
