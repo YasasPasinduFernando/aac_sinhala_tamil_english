@@ -1,0 +1,6 @@
+anger
+fear
+joy
+Natural
+sadness
+surprise

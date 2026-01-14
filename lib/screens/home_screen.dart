@@ -11,6 +11,7 @@ import '../data/word_data.dart';
 import '../utils/gender_selection_util.dart';
 import 'category_screen.dart';
 import 'favourite_screen.dart';
+import 'camera_expression_screen.dart';
 import 'settings.dart';
 import 'donation_screen.dart';
 import 'theme/app_theme.dart';
@@ -627,6 +628,18 @@ class _HomeScreenState extends State<HomeScreen>
                                 setState(() {});
                               }
                             });
+                          }),
+                          const SizedBox(width: 4),
+                          _buildHeaderButton('📷', () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CameraExpressionScreen(
+                                  language: selectedLanguage,
+                                  isGirl: isGirl,
+                                ),
+                              ),
+                            );
                           }),
                           const SizedBox(width: 4),
                           _buildHeaderButton(

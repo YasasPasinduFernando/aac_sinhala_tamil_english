@@ -44,6 +44,10 @@ dependencies:
   http: ^1.1.0
   # Connectivity check for offline support
   connectivity_plus: ^5.0.0
+  # Camera + on-device ML
+  camera: ^0.11.0+2
+  tflite_flutter: ^0.10.4
+  image: ^4.1.7
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +77,10 @@ flutter:
     - family: NotoColorEmoji
       fonts:
         - asset: assets/fonts/NotoColorEmoji.ttf
+
+  assets:
+    - assets/models/emotion_model.tflite
+    - assets/models/labels.txt
 
   # App Icon Configuration
   # Run: flutter pub run flutter_launcher_icons
