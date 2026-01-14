@@ -1046,7 +1046,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Column(
                     children: [
                       Text(
-                        '© 2025 EKYP FERNANDO',
+                        '© 2026 EKYP FERNANDO',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
