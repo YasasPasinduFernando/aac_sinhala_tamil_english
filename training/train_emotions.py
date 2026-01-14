@@ -98,6 +98,48 @@ def build_model(num_classes, use_pretrained):
     return model, base
 
 
+def get_dataset_roots(data_root, dataset_choice):
+    if dataset_choice == "autism_emotion":
+        return {
+            "train": [
+                data_root
+                / "Autism emotion recogition dataset"
+                / "Autism emotion recogition dataset"
+                / "train"
+            ],
+            "test": [
+                data_root
+                / "Autism emotion recogition dataset"
+                / "Autism emotion recogition dataset"
+                / "test"
+            ],
+        }
+    return {
+        "train": [
+            data_root / "Autism Facial Recognition Dataset_Augmented" / "train",
+            data_root
+            / "Autism emotion recogition dataset"
+            / "Autism emotion recogition dataset"
+            / "train",
+            data_root
+            / "Autistic Children Emotions - Dr. Fatma M. Talaat"
+            / "Autistic Children Emotions - Dr. Fatma M. Talaat"
+            / "Train",
+        ],
+        "test": [
+            data_root / "Autism Facial Recognition Dataset_Augmented" / "test",
+            data_root
+            / "Autism emotion recogition dataset"
+            / "Autism emotion recogition dataset"
+            / "test",
+            data_root
+            / "Autistic Children Emotions - Dr. Fatma M. Talaat"
+            / "Autistic Children Emotions - Dr. Fatma M. Talaat"
+            / "Test",
+        ],
+    }
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -115,28 +157,9 @@ def main():
     args = parser.parse_args()
 
     data_root = Path(args.data_root)
-    train_dirs = [
-        data_root / "Autism Facial Recognition Dataset_Augmented" / "train",
-        data_root
-        / "Autism emotion recogition dataset"
-        / "Autism emotion recogition dataset"
-        / "train",
-        data_root
-        / "Autistic Children Emotions - Dr. Fatma M. Talaat"
-        / "Autistic Children Emotions - Dr. Fatma M. Talaat"
-        / "Train",
-    ]
-    test_dirs = [
-        data_root / "Autism Facial Recognition Dataset_Augmented" / "test",
-        data_root
-        / "Autism emotion recogition dataset"
-        / "Autism emotion recogition dataset"
-        / "test",
-        data_root
-        / "Autistic Children Emotions - Dr. Fatma M. Talaat"
-        / "Autistic Children Emotions - Dr. Fatma M. Talaat"
-        / "Test",
-    ]
+    roots = get_dataset_roots(data_root, args.dataset)
+    train_dirs = roots["train"]
+    test_dirs = roots["test"]
 
     train_paths, train_labels = collect_files(train_dirs)
     test_paths, test_labels = collect_files(test_dirs)
@@ -208,3 +231,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+    parser.add_argument(
+        "--dataset",
+        choices=["all", "autism_emotion"],
+        default="all",
+        help="Dataset to use: all folders or only autism_emotion",
+    )
