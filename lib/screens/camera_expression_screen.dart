@@ -107,9 +107,9 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen> {
             224,
             (x) {
               final pixel = resized.getPixel(x, y);
-              final r = img.getRed(pixel);
-              final g = img.getGreen(pixel);
-              final b = img.getBlue(pixel);
+              final r = pixel.r;
+              final g = pixel.g;
+              final b = pixel.b;
               return [
                 (r / 127.5) - 1.0,
                 (g / 127.5) - 1.0,
