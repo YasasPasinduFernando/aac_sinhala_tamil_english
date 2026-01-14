@@ -33,6 +33,12 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Local datasets and training outputs
+data/
+!data/README_DATASETS.txt
+outputs/
+training/.venv/
+
 # Symbolication related
 app.*.symbols
 
