@@ -148,12 +148,24 @@ def main():
         default=str(Path(__file__).resolve().parents[1] / "data"),
         help="Path to the data folder",
     )
+    parser.add_argument(
+        "--dataset",
+        choices=["all", "autism_emotion"],
+        default="all",
+        help="Dataset to use: all folders or only autism_emotion",
+    )
     parser.add_argument("--epochs", type=int, default=8)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--val_split", type=float, default=0.15)
     parser.add_argument("--fine_tune_epochs", type=int, default=4)
     parser.add_argument("--no_pretrained", action="store_true")
     parser.add_argument("--fine_tune", action="store_true")
+    parser.add_argument(
+        "--run_name",
+        type=str,
+        default="",
+        help="Optional run name to save outputs under outputs/<run_name>/",
+    )
     args = parser.parse_args()
 
     data_root = Path(args.data_root)
@@ -217,7 +229,8 @@ def main():
     if test_ds is not None:
         model.evaluate(test_ds, verbose=2, steps=test_steps)
 
-    output_dir = Path(__file__).resolve().parents[1] / "outputs"
+    output_root = Path(__file__).resolve().parents[1] / "outputs"
+    output_dir = output_root / args.run_name if args.run_name else output_root
     output_dir.mkdir(parents=True, exist_ok=True)
 
     model.save(output_dir / "emotion_model.keras")
@@ -231,9 +244,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    parser.add_argument(
-        "--dataset",
-        choices=["all", "autism_emotion"],
-        default="all",
-        help="Dataset to use: all folders or only autism_emotion",
-    )
