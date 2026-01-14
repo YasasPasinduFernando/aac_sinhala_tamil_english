@@ -44,7 +44,7 @@ def split_train_val(paths, labels, val_split):
     return train_paths, train_labels, val_paths, val_labels
 
 
-def make_dataset(paths, labels, batch_size, augment):
+def make_dataset(paths, labels, batch_size, augment, repeat):
     ds = tf.data.Dataset.from_tensor_slices((paths, labels))
     if augment:
         ds = ds.shuffle(buffer_size=len(paths), seed=SEED, reshuffle_each_iteration=True)
@@ -70,6 +70,8 @@ def make_dataset(paths, labels, batch_size, augment):
 
     ds = ds.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
     ds = ds.ignore_errors()
+    if repeat:
+        ds = ds.repeat()
     ds = ds.batch(batch_size).prefetch(tf.data.AUTOTUNE)
     return ds
 
@@ -146,10 +148,14 @@ def main():
         train_paths, train_labels, args.val_split
     )
 
-    train_ds = make_dataset(train_paths, train_labels, args.batch_size, augment=True)
-    val_ds = make_dataset(val_paths, val_labels, args.batch_size, augment=False)
+    train_ds = make_dataset(
+        train_paths, train_labels, args.batch_size, augment=True, repeat=True
+    )
+    val_ds = make_dataset(
+        val_paths, val_labels, args.batch_size, augment=False, repeat=False
+    )
     test_ds = (
-        make_dataset(test_paths, test_labels, args.batch_size, augment=False)
+        make_dataset(test_paths, test_labels, args.batch_size, augment=False, repeat=False)
         if test_paths
         else None
     )
