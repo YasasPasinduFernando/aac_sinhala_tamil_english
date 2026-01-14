@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,9 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   String? _errorText;
   String? _resultLabel;
   double? _resultScore;
+
+  Timer? _autoAnalyzeTimer;
+  static const Duration _autoAnalyzeInterval = Duration(milliseconds: 500);
 
   late AnimationController _emojiController;
   late AnimationController _pulseController;
@@ -90,6 +94,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
 
   @override
   void dispose() {
+    _stopAutoAnalyze();
     _controller?.dispose();
     _interpreter?.close();
     _emojiController.dispose();
@@ -117,6 +122,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
           .toList();
       if (mounted) {
         setState(() => _isLoading = false);
+        _startAutoAnalyze();
       }
     } catch (e) {
       if (mounted) {
@@ -152,11 +158,26 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     _currentCameraIndex = (_currentCameraIndex + 1) % _cameras.length;
     await _initCamera(_currentCameraIndex);
 
+    _startAutoAnalyze();
+
     setState(() => _isSwitchingCamera = false);
   }
 
+  void _startAutoAnalyze() {
+    _autoAnalyzeTimer?.cancel();
+    _autoAnalyzeTimer = Timer.periodic(_autoAnalyzeInterval, (_) {
+      if (!mounted || _isLoading || _errorText != null) return;
+      _analyze();
+    });
+  }
+
+  void _stopAutoAnalyze() {
+    _autoAnalyzeTimer?.cancel();
+    _autoAnalyzeTimer = null;
+  }
+
   Future<void> _analyze() async {
-    if (_controller == null || _interpreter == null || _isAnalyzing) {
+    if (_controller == null || _interpreter == null || _isAnalyzing || !_controller!.value.isInitialized) {
       return;
     }
 
