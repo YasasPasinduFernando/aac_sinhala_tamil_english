@@ -43,15 +43,13 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   late Animation<double> _pulseAnimation;
   late Animation<double> _flashAnimation;
 
-  // Emotion to emoji mapping
   final Map<String, String> _emotionEmojis = {
-    'happy': '😊',
-    'sad': '😢',
-    'angry': '😠',
-    'surprise': '😮',
+    'anger': '😠',
     'fear': '😨',
-    'disgust': '🤢',
-    'neutral': '😐',
+    'joy': '😊',
+    'natural': '😐',
+    'sadness': '😢',
+    'surprise': '😮',
   };
 
   @override

@@ -1,6 +1,6 @@
-anger
-fear
-joy
+Anger
+Fear
+Joy
 Natural
-sadness
-surprise
+Sadness
+Surprise
