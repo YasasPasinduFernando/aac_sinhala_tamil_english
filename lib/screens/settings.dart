@@ -323,8 +323,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ),
                                     child: Text(
                                       isFavorite
-                                          ? '❤️ ප්‍රිය'
-                                          : '🤍 ප්‍රිය නොවේ',
+                                          ? widget.language == 'ta-IN'
+                                              ? '❤️ விருப்பமான'
+                                              : widget.language == 'en-GB'
+                                                  ? '❤️ Favourite'
+                                                  : '❤️ ප්‍රිය'
+                                          : widget.language == 'ta-IN'
+                                              ? '🤍 விருப்பமில்லை'
+                                              : widget.language == 'en-GB'
+                                                  ? '🤍 Not Favourite'
+                                                  : '🤍 ප්‍රිය නොවේ',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,

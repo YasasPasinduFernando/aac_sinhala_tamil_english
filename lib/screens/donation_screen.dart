@@ -496,7 +496,7 @@ class _DonationScreenState extends State<DonationScreen>
                 _buildInstruction('2', 'Select "Send Money"'),
                 _buildInstruction('3', 'Enter number: 0776905654'),
                 _buildInstruction('4', 'Enter any amount'),
-                _buildInstruction('5', 'Complete payment'),
+                _buildInstruction('5', 'Complete transfer'),
               ],
             ),
           ),

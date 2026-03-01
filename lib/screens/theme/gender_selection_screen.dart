@@ -93,14 +93,9 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
 
   void _selectGender(bool isGirl) async {
     final gender = isGirl ? 'girl' : 'boy';
+    final prefs = await SharedPreferences.getInstance();
     await StorageService.saveUserData(
-      name:
-          (await SharedPreferences.getInstance()).getString('user_name') ?? '',
-      phone:
-          (await SharedPreferences.getInstance()).getString('user_phone') ?? '',
-      isPremium:
-          (await SharedPreferences.getInstance()).getBool('is_premium') ??
-              false,
+      name: prefs.getString('user_name') ?? '',
       gender: gender,
     );
     widget.onGenderSelected(isGirl);

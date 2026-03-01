@@ -1,4 +1,4 @@
-package com.example.aac_sinhala_tamil_english
+package lk.aac.sinhala_tamil_english
 
 import io.flutter.embedding.android.FlutterActivity
 

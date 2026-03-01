@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 import 'screens/theme/app_theme.dart';
-import 'services/ads_service.dart';
 import 'services/offline_service.dart';
 import 'services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AdsService.initialize();
   await OfflineService().initialize();
   runApp(const AACApp());
 }
