@@ -107,8 +107,9 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
         return;
       }
       await _initCamera(_currentCameraIndex);
+
       _interpreter =
-          await Interpreter.fromAsset('assets/models/emotion_efficientnet_optimized.tflite');
+          await Interpreter.fromAsset('assets/models/emotion_attention_model.tflite');
       _labels = (await rootBundle.loadString('assets/models/labels.txt'))
           .split('\n')
           .where((label) => label.trim().isNotEmpty)
