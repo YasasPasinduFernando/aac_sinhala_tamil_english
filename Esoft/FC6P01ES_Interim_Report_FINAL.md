@@ -42,9 +42,9 @@ Autism spectrum disorder (ASD) affects a large number of children worldwide, and
 
 Facial expression recognition (FER), supported by deep learning, can be used to enhance AAC systems by detecting the user’s emotional state and adjusting communication support accordingly. However, the use of this type of technology in AAC tools for children with autism, especially in low- and middle-income countries, has not been widely explored yet.
 
-This interim report focuses on the design, methodology, and progress of a final year project that aims to develop an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The system follows a dual-platform approach. Platform A provides a customisable, symbol-based AAC interface for children at ASD severity levels 1-2, with trilingual support in Sinhala, Tamil, and English. Platform B extends this by adding on-device facial expression recognition using an EfficientNetB0-based model with CBAM attention (MobileNetV2 was initially evaluated as a baseline model) and TensorFlow Lite, mainly targeting children at level 3 and above.
+This interim report focuses on the design, methodology, and progress of a final year project that aims to develop an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The system follows a dual-platform approach. Platform A provides a customisable, symbol-based AAC interface for children at ASD severity Level 1–2, with trilingual support in Sinhala, Tamil, and English. Platform B extends this by adding on-device facial expression recognition using an EfficientNetB0-based model with CBAM attention (MobileNetV2 was initially evaluated as a baseline model) and TensorFlow Lite, mainly targeting children at Level 3 and above.
 
-The mobile application is developed using Flutter and follows an offline-first approach, where data is stored locally on the device. Currently, Firebase is considered as a future option for synchronisation, but it is not fully implemented yet. Backup is currently handled through manual export, such as sharing files via WhatsApp or similar methods. A therapist-parent dashboard is also included to support collaboration and progress monitoring. The emotion recognition model classifies six emotions (happy, sad, angry, fear, neutral, tired), with a target accuracy of at least 80 per cent.
+The mobile application is developed using Flutter and follows an offline-first approach, where data is stored locally on the device. Currently, Firebase is considered a future option for synchronisation, but it is not fully implemented yet. Backup is currently handled through manual export, such as sharing files via WhatsApp or similar methods. A therapist-parent dashboard is also included to support collaboration and progress monitoring. The emotion recognition model classifies six emotions (happy, sad, angry, fear, neutral, tired), with a target accuracy of at least 80 per cent.
 
 This report covers the background, system architecture, development methodology, work completed so far, and the planned next steps. The main goal is to develop a working proof-of-concept that addresses a real gap in assistive technology for the Sri Lankan context and has the potential to improve everyday communication for children and their families.
 
@@ -74,6 +74,8 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 9. Figure 9: Google Play Console - Internal Testing
 10. Figure 10: Application Running on Real Device
 11. Figure 11: Flutter Unit Test Output
+12. Figure 12: AAC Interaction Example (Symbol Selection and Output)
+13. Figure 13: Facial Expression Recognition Screen (On-Device Detection)
 
 **Formatting note (ESOFT):** When exporting/printing, apply Times New Roman, size 12, 1.5 line spacing, and keep the heading hierarchy as shown in this document.
 
@@ -93,8 +95,8 @@ In Sri Lanka, awareness of ASD has been growing. Perera et al. (2019) reported a
 
 The aim of this study is to develop a dual-platform, AI-powered AAC system tailored for children with autism in Sri Lanka. It comprises two main platforms:
 
-- **Platform A:** A customisable, symbol-based AAC interface for children at ASD severity levels 1-2, with trilingual support (Sinhala, Tamil, English), configurable vocabulary, text-to-speech output, and visual scheduling.
-- **Platform B:** An AI-enhanced AAC platform for children at severity level 3 and above, extending Platform A with on-device facial expression recognition (FER) using an EfficientNetB0-based model with a CBAM (Convolutional Block Attention Module), deployed via TensorFlow Lite, enabling emotion-adaptive communication support.
+- **Platform A:** A customisable, symbol-based AAC interface for children at ASD severity Level 1–2, with trilingual support (Sinhala, Tamil, English), configurable vocabulary, text-to-speech output, and visual scheduling.
+- **Platform B:** An AI-enhanced AAC platform for children at severity Level 3 and above, extending Platform A with on-device facial expression recognition (FER) using an EfficientNetB0-based model with a CBAM (Convolutional Block Attention Module), deployed via TensorFlow Lite, enabling emotion-adaptive communication support.
 
 The mobile application is developed using Flutter for cross-platform deployment, with an offline-first architecture. Currently, the system stores data locally on the device (SQLite/JSON), and backup is handled using manual export (for example via WhatsApp or file sharing). Firebase is planned for future optional synchronisation and account-based collaboration, but it is not fully implemented yet.
 
@@ -110,7 +112,7 @@ The overall aim is to design and develop an AI-powered AAC system with facial ex
 
 The project objectives are:
 
-1. **Dual-platform architecture design:** Design a system serving children at ASD levels 1-2 (customisable symbol-based AAC) and level 3+ (AI-enhanced AAC with FER), with trilingual support, offline-first operation, and secure data management.
+1. **Dual-platform architecture design:** Design a system serving children at ASD Level 1–2 (customisable symbol-based AAC) and Level 3+ (AI-enhanced AAC with FER), with trilingual support, offline-first operation, and secure data management.
 2. **Cross-platform mobile application:** Implement a Flutter-based application with offline-first architecture, local storage, and a manual export backup option, targeting Android 8.0+ and iOS 14+.
 3. **AI model training and deployment:** Train an EfficientNetB0-based FER model with a CBAM (Convolutional Block Attention Module) attention mechanism, with MobileNetV2 initially evaluated as a baseline for mobile deployment, targeting six emotion classes with at least 80% accuracy, deployed on-device via TensorFlow Lite with inference under 500 ms.
 4. **Therapist-parent dashboard:** Develop a web-based dashboard for collaboration, progress monitoring, and vocabulary management.
@@ -119,15 +121,15 @@ The project objectives are:
 
 In practice, it is often observed that children with severe autism struggle to communicate even their most basic needs, such as hunger, discomfort, or emotional distress. This can lead to frustration, behavioural difficulties, and increased stress for both the child and their caregivers. In many situations, parents have to rely on guesswork rather than clear communication.
 
-In the Sri Lankan context, where access to specialised AAC tools and speech therapy services is limited, this challenge becomes even more significant. It seems that many families do not have access to affordable, locally relevant communication tools in Sinhala or Tamil.
+In the Sri Lankan context, where access to specialised AAC tools and speech therapy services is limited, this challenge becomes even more significant. In many cases, families do not have access to affordable, locally relevant communication tools in Sinhala or Tamil.
 
-Because of this, even a simple and accessible AAC system can make a meaningful difference in day-to-day life. It can help children express their needs more clearly, reduce frustration, and support better interaction within families. At this stage, the project aims to address not only a technical gap, but also a practical and social need that directly affects quality of life.
+Because of this, even a simple and accessible AAC system can make a meaningful difference in day-to-day life. It can help children express their needs more clearly, reduce frustration, and support better interaction within families. In this project, the aim is to address not only a technical gap, but also a practical and social need that directly affects quality of life.
 
 ### 1.5 Research Questions
 
 The project is guided by the following research questions:
 
-**RQ1:** How can a dual-platform AAC system be designed to serve children at ASD levels 1-2 and level 3+, while maintaining trilingual support, offline-first operation, and secure data management?
+**RQ1:** How can a dual-platform AAC system be designed to serve children at ASD Level 1–2 and Level 3+, while maintaining trilingual support, offline-first operation, and secure data management?
 
 This question gets at the core software engineering challenge: how to build a modular system that serves two user groups with different needs while still sharing core services.
 
@@ -319,7 +321,7 @@ Figure 1: System Architecture Diagram
 
 #### 2.5.2 Platform A: Customisable Symbol-Based AAC (Levels 1-2)
 
-Platform A is designed for children at severity levels 1-2 who can interact with a symbol-based interface and benefit from AAC as a supplement to developing speech. Key features include:
+Platform A is designed for children at severity Level 1–2 who can interact with a symbol-based interface and benefit from AAC as a supplement to developing speech. Key features include:
 
 - **Symbol grid interface:** Configurable grid of symbols (images with text labels) organised into categories (needs, feelings, activities, foods, people). Grid size (2x2 to 6x6) is configurable.
 - **Trilingual support:** Symbols and labels available in Sinhala, Tamil, and English, with language switching.
@@ -330,7 +332,7 @@ Platform A is designed for children at severity levels 1-2 who can interact with
 
 #### 2.5.3 Platform B: AI-Enhanced AAC with FER (Level 3+)
 
-Platform B extends Platform A by adding an optional FER pipeline for children at level 3 and above who may have minimal functional speech. Additional features include:
+Platform B extends Platform A by adding an optional FER pipeline for children at Level 3 and above who may have minimal functional speech. Additional features include:
 
 - **Facial expression recognition:** The front-facing camera captures the user's face, which is processed on-device by the TFLite model to classify into one of six emotion classes.
 - **Emotion-adaptive vocabulary:** Based on the inferred emotion, the AAC adapts the vocabulary or prompts presented (e.g., offering comfort-related vocabulary when distress is detected).
@@ -561,6 +563,12 @@ Core AAC features for Platform A have been partially implemented:
 - **Local data layer:** SQLite is used for structured data and local JSON files for vocabulary definitions, allowing the app to work offline for vocabulary access and settings.
 - **Text-to-speech:** Basic TTS integration using the device's built-in engine is working. English TTS has been tested successfully. Sinhala and Tamil testing is ongoing, and early results suggest that the platform TTS engines may need to be supplemented with third-party services for acceptable quality.
 
+To improve usability for children, particular attention was given to the visual design of the user interface. A child-friendly theme was considered important, including the use of soft colour palettes, rounded UI components, and visually appealing icons. The interface was designed to be simple, consistent, and easy to navigate, with clear visual feedback for user interactions.
+
+Icons and visual elements were selected to be easily recognisable and engaging for children, supporting faster symbol recognition within the AAC grid. Smooth UI transitions and consistent spacing were also considered to reduce cognitive load and improve the overall user experience.
+
+These design choices aim to create a more accessible and comfortable interaction environment, especially for children with autism who may be sensitive to complex or cluttered interfaces.
+
 There were some delays in finalising the symbol set and sorting out licensing for third-party symbol libraries. Finding culturally appropriate symbols and confirming licensing terms took longer than expected. This is now being treated as a priority for the next phase.
 
 ### 3.4 AI Model Pipeline
@@ -596,11 +604,18 @@ Figure 7: Confusion Matrix
 
 From the confusion matrix, the Joy class shows high accuracy, while Fear, Sadness, and Anger show lower accuracy. This mainly comes from class imbalance. For future improvement, the main focus will be on better dataset balancing and adding more realistic samples for the weaker classes.
 
-Across the experiments, more than one model variant was trained by changing epoch counts and switching between pure float32, pure float16, and the mixed float16/float32 setup. The final model was selected mainly based on validation performance and stability, rather than just training accuracy. Overall, it should be more reliable when used on real devices in practice.
+Across the experiments, more than one model variant was trained by changing epoch counts and switching between pure float32, pure float16, and the mixed float16/float32 setup. The final model was selected mainly based on validation performance and stability, rather than just training accuracy. Overall, the model is expected to be more reliable when deployed on real devices.
 
 Full training on the complete dataset (2,000-5,000 images) will be carried out once the dataset is fully prepared, including purpose-collected data after ethics approval is obtained.
 
 This switch from MobileNetV2 to EfficientNetB0 happened after testing a few architectures, and the final model was picked based on performance and stability.
+
+Figure 13: Facial Expression Recognition Screen (On-Device Detection)  
+[Insert figure here - screenshot of camera-based facial expression detection UI]
+
+The figure above shows the real-time facial expression recognition interface used in Platform B. The system captures the user's face through the front-facing camera, processes it using the on-device TensorFlow Lite model, and predicts the emotional state.
+
+The detected emotion is then used to support AAC interaction by suggesting appropriate communication options. This interface was designed to run smoothly on mobile devices without requiring an internet connection, ensuring real-time feedback and usability in low-connectivity environments.
 
 ### 3.5 Backend and Dashboard
 
@@ -662,6 +677,8 @@ Figure 11: Flutter Unit Test Output
 
 The following figures will be included to show the current UI direction of the mobile app.
 
+To support usability and accessibility for children, the interface follows a child-friendly design approach using soft colours, rounded components, and clear icon-based navigation. The UI is designed to minimise cognitive load while making symbol selection intuitive and visually engaging.
+
 Figure 3 shows the Register screen of the app, where a user or caregiver can create a profile before using the AAC features.
 
 Figure 3: Register Screen (UI)  
@@ -681,6 +698,11 @@ Figure 6 shows the Settings screen, where basic options such as language, layout
 
 Figure 6: Settings Screen (UI)  
 [Insert figure here - to be included in final submission]
+
+Figure 12: AAC Interaction Example (Symbol Selection and Output)
+[Insert figure here - showing symbol tap and TTS output flow]
+
+This figure demonstrates how a child interacts with the AAC grid, selects a symbol, and receives immediate audio feedback. This flow is designed to be simple and consistent, supporting faster learning and communication.
 
 ### 3.9 Model Training Evidence
 
@@ -758,6 +780,12 @@ There has been some informal interest in the concept outside the academic contex
 - Implement full customisation features: configurable grid size, user-added symbols, custom categories, colour themes, font size settings.
 - Implement visual scheduling functionality.
 - Conduct internal usability testing with at least one therapist and one parent/caregiver.
+
+Additional user-centred features are also planned for Platform A to improve flexibility and personalisation. These include the ability for caregivers to record custom audio for symbols (for example, a parent’s voice), edit existing cards, and add new symbols using photos captured from the device camera.
+
+These features are especially useful for children at ASD Levels 1–2, as they allow familiar voices, real-life objects, and personalised content to be incorporated into the AAC system. This can improve engagement, recognition, and overall communication effectiveness in daily use.
+
+Personalised content is particularly important in AAC systems, as familiarity can reduce cognitive load and improve communication outcomes.
 
 ### 4.2 Platform B and AI Integration
 
@@ -891,7 +919,7 @@ The critical path includes ethics approval, dataset collection, model training, 
 
 This interim report has outlined the design, methodology, and current progress of an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The project addresses a clear gap, as there are currently no culturally and linguistically appropriate AAC tools that combine affective computing with support for Sinhala and Tamil.
 
-The dual-platform approach provides a practical and structured solution. Platform A focuses on customisable, trilingual AAC for children at levels 1-2, while Platform B extends this with on-device FER for children at level 3 and above. Using Flutter and TensorFlow Lite allows the system to run on affordable mobile devices, which is important in environments where internet access may be limited. Currently, data is stored locally and backup is handled through manual export, while Firebase remains a planned option for future synchronisation.
+The dual-platform approach provides a practical and structured solution. Platform A focuses on customisable, trilingual AAC for children at Level 1–2, while Platform B extends this with on-device FER for children at Level 3 and above. Using Flutter and TensorFlow Lite allows the system to run on affordable mobile devices, which is important in environments where internet access may be limited. Currently, data is stored locally and backup is handled through manual export, while Firebase remains a planned option for future synchronisation.
 
 So far, key areas such as the literature review, system design, initial development, AI model pipeline, and ethics preparation have been completed or are well underway. Backend development is still at a prototype level. Overall, the project remains on track, with minor delays being actively managed.
 
