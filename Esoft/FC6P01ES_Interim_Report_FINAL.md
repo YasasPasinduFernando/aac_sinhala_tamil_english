@@ -19,7 +19,7 @@ AI-Powered Augmentative and Alternative Communication (AAC) System with Facial E
 
 ## Declaration
 
-This interim report is submitted in partial fulfilment of the requirements for the module FC6P01ES (Final Year Project) at ESOFT Metro Campus. The work presented in this report is original to the best of the author's knowledge, and all sources have been cited using the Harvard referencing system. No part of this report has been submitted for any other qualification or at any other institution.
+This interim report is submitted in partial fulfilment of the requirements for the module FC6P01ES (Final Year Project) at ESOFT Metro Campus. The work presented in this report is original to the best of the author’s knowledge and belief, and all sources have been cited using the Harvard referencing system. No part of this report has been submitted for any other qualification or at any other institution.
 
 The project has been carried out in line with institutional ethical guidelines. All collaborative arrangements, including the planned pilot with Karapitiya Teaching Hospital, are properly documented and subject to the necessary institutional and governmental approvals.
 
@@ -96,7 +96,7 @@ The aim of this study is to develop a dual-platform, AI-powered AAC system tailo
 - **Platform A:** A customisable, symbol-based AAC interface for children at ASD severity levels 1-2, with trilingual support (Sinhala, Tamil, English), configurable vocabulary, text-to-speech output, and visual scheduling.
 - **Platform B:** An AI-enhanced AAC platform for children at severity level 3 and above, extending Platform A with on-device facial expression recognition (FER) using an EfficientNetB0-based model with a CBAM (Convolutional Block Attention Module), deployed via TensorFlow Lite, enabling emotion-adaptive communication support.
 
-The mobile application is developed using Flutter for cross-platform deployment, with an offline-first architecture. At the moment, the system stores data locally on the device (SQLite/JSON), and backup is handled using manual export (for example via WhatsApp or file sharing). Firebase is planned for future optional synchronisation and account-based collaboration, but it is not fully implemented yet.
+The mobile application is developed using Flutter for cross-platform deployment, with an offline-first architecture. Currently, the system stores data locally on the device (SQLite/JSON), and backup is handled using manual export (for example via WhatsApp or file sharing). Firebase is planned for future optional synchronisation and account-based collaboration, but it is not fully implemented yet.
 
 ### 1.3 Rationale and Research Gap
 
@@ -604,7 +604,7 @@ This switch from MobileNetV2 to EfficientNetB0 happened after testing a few arch
 
 ### 3.5 Backend and Dashboard
 
-At the moment, backend work is still at an early, mostly prototype level. A Firebase project has been created and some basic configuration has been explored, but full end-to-end integration is not completed yet. Since the system follows an offline-first approach, the current working data store is local (SQLite/JSON), and backup is handled through manual export and import.
+Currently, backend work is still at an early, mostly prototype level. A Firebase project has been created and some basic configuration has been explored, but full end-to-end integration is not completed yet. Since the system follows an offline-first approach, the current working data store is local (SQLite/JSON), and backup is handled through manual export and import.
 
 A basic therapist-parent dashboard prototype has also been started:
 • Basic screens for login UI and navigation (prototype level)
@@ -693,13 +693,13 @@ Figure 8: Model Training in Google Colab
 
 The Colab notebook shows the training and validation loss/accuracy curves for each run. Mixed precision training was enabled to speed up training and reduce memory usage, while keeping key parts in float32 for stability. Across experiments, accuracy improved gradually as the number of epochs and other parameters were tuned.
 
-During testing, it seemed that watching these logs during runs was very helpful to see when the model started to overfit and when to stop or adjust the epochs.
+During testing, monitoring these logs during runs was helpful for spotting when the model started to overfit and when to stop or adjust the epochs.
 
 ### 3.10 Deployment and Play Store Testing
 
 To move closer to a real deployment, the application was packaged and uploaded to the Google Play Console under the **Internal Testing** track. An Android App Bundle / APK was generated from the Flutter project and then distributed to internal testers through the Play Console.
 
-At the moment, I am working at IdeaHub in Nugegoda (Pagoda Road), Sri Lanka, and discussions are ongoing for the iOS release steps, including developer account access.
+At this time, the project work is being carried out at IdeaHub in Nugegoda (Pagoda Road), Sri Lanka, and discussions are ongoing for the iOS release steps, including developer account access.
 
 Figure 9 shows the Google Play Console internal testing dashboard for the app, used to manage builds and distribute them to selected testers.
 
@@ -721,7 +721,7 @@ Figure 10: Application Running on Real Device
 
 During these tests, symbol selection, text-to-speech output, and screen navigation were tried repeatedly to see if any crashes or major delays occurred. Initial checks of the FER pipeline were also done to see if the camera feed and inference could run on-device without freezing. Overall, the app ran smoothly on both devices, with acceptable performance for an early-stage prototype.
 
-So far it seems that the app can run on real devices without major issues, which gives some confidence before moving to any wider pilot.
+So far, it appears that the app can run on real devices without major issues, which provides confidence before moving to any wider pilot.
 
 ### 3.12 Initial Field Exposure (Karapitiya Context)
 
@@ -739,9 +739,12 @@ The following links are planned to be added in the final submission once all mat
 - **Google Play Testing Link (Internal Testing):**  
   [Link will be provided in final submission]
 
+- **User Guidance (User Manual / Quick Guide) - Drive link:**  
+  [Drive link will be pasted in final submission]
+
 ### 3.14 External Interest and Future Outreach
 
-There has been some initial informal interest in the project from a few personal contacts outside the immediate academic context. Programmes such as TV Derana’s *Lokaya Saha Lokayo* may find the concept relevant in the future, but this is **not confirmed at this stage** and there is no formal collaboration yet. The project is still in the pilot stage and Ministry of Health approval has **not** yet been obtained. Any kind of media exposure or external collaboration will only be considered **after** the system is more complete, the pilot is properly validated, and all official approvals are in place. Even so, this early informal interest suggests that the idea may have real-world relevance if it reaches a mature and approved stage.
+There has been some informal interest in the concept outside the academic context, although no formal collaboration has been established at this stage. The project is still in the pilot stage and Ministry of Health approval has **not** yet been obtained. Any kind of media exposure or external collaboration will only be considered **after** the system is more complete, the pilot is properly validated, and all official approvals are in place.
 
 ---
 
@@ -842,7 +845,7 @@ Dataset collection: Purpose-built data collection has not yet started, as ethics
 
 ### 5.4 Impact Assessment
 
-At the moment, these delays are not expected to significantly affect the final deadline.
+Currently, these delays are not expected to significantly affect the final deadline.
 
 Decoupled dependencies: Platform A development and model training using public data can continue in parallel while the ethics application process is ongoing.
 
@@ -888,7 +891,7 @@ The critical path includes ethics approval, dataset collection, model training, 
 
 This interim report has outlined the design, methodology, and current progress of an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The project addresses a clear gap, as there are currently no culturally and linguistically appropriate AAC tools that combine affective computing with support for Sinhala and Tamil.
 
-The dual-platform approach provides a practical and structured solution. Platform A focuses on customisable, trilingual AAC for children at levels 1-2, while Platform B extends this with on-device FER for children at level 3 and above. Using Flutter and TensorFlow Lite allows the system to run on affordable mobile devices, which is important in environments where internet access may be limited. At the moment, data is stored locally and backup is handled through manual export, while Firebase remains a planned option for future synchronisation.
+The dual-platform approach provides a practical and structured solution. Platform A focuses on customisable, trilingual AAC for children at levels 1-2, while Platform B extends this with on-device FER for children at level 3 and above. Using Flutter and TensorFlow Lite allows the system to run on affordable mobile devices, which is important in environments where internet access may be limited. Currently, data is stored locally and backup is handled through manual export, while Firebase remains a planned option for future synchronisation.
 
 So far, key areas such as the literature review, system design, initial development, AI model pipeline, and ethics preparation have been completed or are well underway. Backend development is still at a prototype level. Overall, the project remains on track, with minor delays being actively managed.
 
