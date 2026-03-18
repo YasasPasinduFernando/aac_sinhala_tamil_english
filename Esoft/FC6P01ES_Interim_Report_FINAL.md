@@ -62,6 +62,19 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 6. [References](#6-references)
 7. [Bibliography](#7-bibliography)
 
+## List of Figures
+1. Figure 1: System Architecture Diagram
+2. Figure 2: ER Diagram
+3. Figure 3: Register Screen (UI)
+4. Figure 4: Home Screen (UI)
+5. Figure 5: Categories Screen (UI)
+6. Figure 6: Settings Screen (UI)
+7. Figure 7: Confusion Matrix
+8. Figure 8: Model Training in Google Colab
+9. Figure 9: Google Play Console - Internal Testing
+10. Figure 10: Application Running on Real Device
+11. Figure 11: Flutter Unit Test Output
+
 **Formatting note (ESOFT):** When exporting/printing, apply Times New Roman, size 12, 1.5 line spacing, and keep the heading hierarchy as shown in this document.
 
 **NOTE:** When converting this document to Microsoft Word, the Table of Contents should be regenerated using Word's automatic Table of Contents feature so that all section links work correctly.
@@ -104,7 +117,11 @@ The project objectives are:
 5. **Ethical approval and partnership:** Establish ethical approval protocols for a pilot study at Karapitiya Teaching Hospital, Galle.
 6. **Documentation and reporting:** Document the project to meet FC6P01ES module requirements with Harvard referencing.
 
-In practice, it is often observed that children with severe autism struggle to communicate even their most basic needs, such as hunger, discomfort, or emotional distress. This can lead to frustration, behavioural difficulties, and increased stress for both the child and their caregivers. In many cases, parents rely on guesswork rather than clear communication. So, providing a simple and accessible communication tool in local languages can make a meaningful difference in day-to-day life, helping children express themselves more clearly and reducing communication barriers within families. In a context like Sri Lanka, where access to specialised AAC tools is limited, even a basic, affordable communication aid can significantly improve daily interactions and reduce caregiver stress, highlighting the real-world value of this system beyond its technical contribution.
+In practice, it is often observed that children with severe autism struggle to communicate even their most basic needs, such as hunger, discomfort, or emotional distress. This can lead to frustration, behavioural difficulties, and increased stress for both the child and their caregivers. In many situations, parents have to rely on guesswork rather than clear communication.
+
+In the Sri Lankan context, where access to specialised AAC tools and speech therapy services is limited, this challenge becomes even more significant. It seems that many families do not have access to affordable, locally relevant communication tools in Sinhala or Tamil.
+
+Because of this, even a simple and accessible AAC system can make a meaningful difference in day-to-day life. It can help children express their needs more clearly, reduce frustration, and support better interaction within families. At this stage, the project aims to address not only a technical gap, but also a practical and social need that directly affects quality of life.
 
 ### 1.5 Research Questions
 
@@ -611,6 +628,19 @@ Full account linking and synchronisation, if implemented using Firebase, is plan
 • Manual testing of the basic AAC flow has been carried out on an Android emulator and one physical device
 • iOS testing is planned for the next phase
 • No formal user testing with children or caregivers has been conducted yet (this will take place after Platform A completion and ethics approval)
+
+In addition to manual testing, basic unit tests were implemented for selected core logic components of the system. These included symbol handling functions in the AAC module and emotion-based decision logic used in the FER integration.
+
+Since the AI model runs as a TensorFlow Lite component, direct unit testing of the full model was not feasible currently. Instead, mock-based tests were used to validate model output handling, such as selecting the dominant emotion from prediction probabilities.
+
+These unit tests were executed using Flutter’s built-in testing framework to ensure that critical logic behaves correctly and consistently.
+
+Test cases were executed using the `flutter test` command, and all implemented tests passed successfully.
+
+Figure 11 shows a screenshot of the Flutter unit test output after running `flutter test`.
+
+Figure 11: Flutter Unit Test Output
+[Insert figure here - to be included in final submission]
 
 [Table 9: Work Completed Summary]
 
