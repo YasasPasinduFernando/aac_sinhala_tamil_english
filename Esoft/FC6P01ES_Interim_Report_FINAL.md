@@ -599,7 +599,7 @@ In terms of individual classes, the model performs well on emotions like Joy. Ho
 Figure 7 shows the confusion matrix of the current FER model. It highlights which emotion classes are predicted correctly and where most of the misclassifications occur.
 
 Figure 7: Confusion Matrix
-[Insert Confusion Matrix Diagram here]
+[Insert figure here - confusion_matrix.png]
 [Insert figure here - to be included in final submission]
 
 From the confusion matrix, the Joy class shows high accuracy, while Fear, Sadness, and Anger show lower accuracy. This mainly comes from class imbalance. For future improvement, the main focus will be on better dataset balancing and adding more realistic samples for the weaker classes.
