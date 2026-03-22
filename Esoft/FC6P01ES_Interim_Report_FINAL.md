@@ -30,9 +30,13 @@ Date: ______________________________
 
 ## Acknowledgements
 
-The author would like to thank the project supervisor at ESOFT Metro Campus for their continuous guidance and feedback throughout this project. Special thanks also go to the staff at Karapitiya Teaching Hospital, Galle, for being open to a potential partnership for the planned pilot study and for sharing their valuable clinical insights on children with autism spectrum disorder.
+The author would like to express sincere gratitude to the project supervisor, Ms. Niruni Fonseka, at ESOFT Metro Campus for her continuous guidance, constructive feedback, and support throughout this project.
 
-The author is also grateful to the parents, caregivers, and speech-language therapists who provided informal feedback on the AAC interface design. Appreciation is extended to the open-source communities behind Flutter, TensorFlow, Firebase, and MobileNetV2, as well as to the creators of the public facial expression datasets used for initial model testing. Finally, the author would like to thank family and friends for their encouragement and support throughout this work.
+Special thanks are also extended to the staff at Karapitiya Teaching Hospital, Galle, for their openness to a potential collaboration for the planned pilot study and for sharing valuable clinical insights on children with autism spectrum disorder.
+
+The author is also grateful to the parents, caregivers, and speech-language therapists who provided informal feedback on the AAC interface design. Appreciation is extended to the open-source communities behind Flutter, TensorFlow, Firebase, and MobileNetV2, as well as to the creators of the public facial expression datasets used for initial model testing.
+
+Finally, the author would like to thank family and friends for their encouragement and support throughout this work.
 
 ---
 
