@@ -38,17 +38,17 @@ The author is also grateful to the parents, caregivers, and speech-language ther
 
 ## Abstract
 
-Autism spectrum disorder (ASD) affects a large number of children worldwide, and communication impairment is one of its core features. This often creates significant barriers to social interaction, education, and overall quality of life. In Sri Lanka, access to culturally and linguistically suitable augmentative and alternative communication (AAC) tools is still quite limited. Most existing solutions are designed for Western, English-speaking users and do not support Sinhala or Tamil, the country’s two official languages.
+Communication impairment is one of the defining features of autism spectrum disorder (ASD), and for many children it creates barriers that extend well beyond language, affecting social participation, education, and daily quality of life. In Sri Lanka, the situation is compounded by the absence of augmentative and alternative communication (AAC) tools that support the country's two official languages, Sinhala and Tamil. The commercially available options are built for Western, English-speaking users and do not reflect the cultural or linguistic realities of Sri Lankan families.
 
-Facial expression recognition (FER), supported by deep learning, can be used to enhance AAC systems by detecting the user’s emotional state and adjusting communication support accordingly. However, the use of this type of technology in AAC tools for children with autism, especially in low- and middle-income countries, has not been widely explored yet.
+Recent advances in deep learning have made facial expression recognition (FER) a viable addition to AAC systems, allowing emotional state to inform the communication support offered to the user. Despite this potential, the combination of FER with AAC has received limited attention in published research, particularly in low- and middle-income settings where the need is arguably greatest.
 
-This interim report focuses on the design, methodology, and progress of a final year project that aims to develop an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The system follows a dual-platform approach. Platform A provides a customisable, symbol-based AAC interface for children at ASD severity Level 1–2, with trilingual support in Sinhala, Tamil, and English. Platform B extends this by adding on-device facial expression recognition using an EfficientNetB0-based model with CBAM attention (MobileNetV2 was initially evaluated as a baseline model) and TensorFlow Lite, mainly targeting children at Level 3 and above.
+This interim report documents the design, methodology, and progress of a final year project developing an AI-powered AAC system with on-device facial expression recognition for children with autism in Sri Lanka. The system takes a dual-platform approach. Platform A offers a customisable, symbol-based AAC interface with trilingual support for children at ASD severity Level 1–2. Platform B extends this with on-device emotion detection using an EfficientNetB0 model with a CBAM attention module, deployed via TensorFlow Lite, targeting children at Level 3 and above. MobileNetV2 was initially evaluated as a baseline but was replaced after EfficientNetB0 with CBAM produced stronger validation results.
 
-The mobile application is developed using Flutter and follows an offline-first approach, where data is stored locally on the device. Currently, Firebase is considered a future option for synchronisation, but it is not fully implemented yet. Backup is currently handled through manual export, such as sharing files via WhatsApp or similar methods. A therapist-parent dashboard is also included to support collaboration and progress monitoring. The emotion recognition model classifies six emotions (happy, sad, angry, fear, neutral, tired), with a target accuracy of at least 80 per cent.
+The mobile application is built in Flutter and follows an offline-first architecture, with all core data stored locally using SQLite and JSON. Firebase remains a planned option for future synchronisation, but at the interim stage backup is handled through manual export. A therapist-parent dashboard is included to support collaboration and progress monitoring. The emotion recognition component classifies six states: happy, sad, angry, fear, neutral, and tired, with a target accuracy of at least 80 per cent.
 
-This report covers the background, system architecture, development methodology, work completed so far, and the planned next steps. The main goal is to develop a working proof-of-concept that addresses a real gap in assistive technology for the Sri Lankan context and has the potential to improve everyday communication for children and their families.
+This report covers the background literature, system architecture, development methodology, work completed to date, and the planned remaining tasks. The objective is to produce a working proof of concept that addresses a genuine gap in assistive technology provision for children with autism in Sri Lanka.
 
-Keywords: augmentative and alternative communication, autism spectrum disorder, facial expression recognition, EfficientNetB0 + CBAM (MobileNetV2 initially evaluated), TensorFlow Lite, Flutter, Firebase, Sri Lanka, affective computing, assistive technology, multilingual.
+Keywords: augmentative and alternative communication, autism spectrum disorder, facial expression recognition, EfficientNetB0 + CBAM, TensorFlow Lite, Flutter, offline-first architecture, Sri Lanka, affective computing, assistive technology, multilingual.
 
 ---
 
@@ -63,19 +63,37 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 7. [Bibliography](#7-bibliography)
 
 ## List of Figures
+
 1. Figure 1: System Architecture Diagram
-2. Figure 2: ER Diagram
-3. Figure 3: Register Screen (UI)
-4. Figure 4: Home Screen (UI)
-5. Figure 5: Categories Screen (UI)
-6. Figure 6: Settings Screen (UI)
-7. Figure 7: Confusion Matrix
-8. Figure 8: Model Training in Google Colab
-9. Figure 9: Google Play Console - Internal Testing
-10. Figure 10: Application Running on Real Device
-11. Figure 11: Flutter Unit Test Output
+2. Figure 2: Entity Relationship Diagram
+3. Figure 3: Use Case Diagram of the AAC System
+4. Figure 4: Class Diagram of the AAC System
+5. Figure 5: Confusion Matrix
+6. Figure 6: Facial Expression Recognition Screen (On-Device Detection)
+7. Figure 7: Flutter Unit Test Output
+8. Figure 8: Register Screen (UI)
+9. Figure 9: Home Screen (UI)
+10. Figure 10: Categories Screen (UI)
+11. Figure 11: Settings Screen (UI)
 12. Figure 12: AAC Interaction Example (Symbol Selection and Output)
-13. Figure 13: Facial Expression Recognition Screen (On-Device Detection)
+13. Figure 13: Model Training in Google Colab
+14. Figure 14: Google Play Console Internal Testing
+15. Figure 15: Application Running on Real Device
+16. Figure 16: Initial Project Gantt Chart
+17. Figure 17: Updated Project Gantt Chart
+
+## List of Tables
+
+1. Table 1: ASD Severity Levels and Communication Characteristics
+2. Table 2: Comparison of Existing AAC Systems
+3. Table 3: Technology Stack Summary
+4. Table 4: Non-Functional Requirements Summary
+5. Table 5: Data Augmentation Techniques
+6. Table 6: Dataset Distribution by Emotion
+7. Table 7: Ethical Risk Assessment
+8. Table 8: Risk Assessment Matrix
+9. Table 9: Work Completed Summary
+10. Table 10: Remaining Work Plan
 
 **Formatting note (ESOFT):** When exporting/printing, apply Times New Roman, size 12, 1.5 line spacing, and keep the heading hierarchy as shown in this document.
 
@@ -87,43 +105,39 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 
 ### 1.1 Background and Context
 
-Autism spectrum disorder (ASD) is a neurodevelopmental condition characterised by persistent difficulties in social communication alongside restricted, repetitive patterns of behaviour (American Psychiatric Association, 2013). Globally, it is estimated that about one in 160 children are affected (World Health Organization, 2021), although more recent studies in high-income countries suggest rates as high as one in 36 (Maenner et al., 2023). Communication impairment is central to the condition. The DSM-5 classifies severity from Level 1 ("requiring support") to Level 3 ("requiring very substantial support"). Children at Level 3 often have little or no functional speech and rely heavily on augmentative and alternative communication (AAC) to express their basic needs and emotions (Beukelman and Light, 2020).
+Autism spectrum disorder (ASD) is a neurodevelopmental condition characterised by persistent difficulties in social communication alongside restricted, repetitive patterns of behaviour (American Psychiatric Association, 2013). Global prevalence is estimated at approximately one in 160 children (World Health Organization, 2021), although more recent studies in high-income countries report rates as high as one in 36 (Maenner et al., 2023). Communication impairment is central to the condition. The DSM-5 classifies severity across three levels, from Level 1 ("requiring support") to Level 3 ("requiring very substantial support"). Children at Level 3 often have little or no functional speech and depend heavily on augmentative and alternative communication (AAC) to express basic needs and emotions (Beukelman and Light, 2020).
 
-In Sri Lanka, awareness of ASD has been growing. Perera et al. (2019) reported a prevalence of around 1.07 per cent among children aged two to nine. However, specialist services are still hard to access, especially outside major cities. Importantly, there are no commercially available AAC tools that support both Sinhala and Tamil, the two official languages of the country's 22 million population (Samad et al., 2020). The shortage of trained speech-language therapists makes it even harder for families to get proper communication support for their children (Wickramasinghe et al., 2021).
+In Sri Lanka, awareness of ASD has been growing. Perera et al. (2019) reported a prevalence of approximately 1.07 per cent among children aged two to nine, broadly consistent with global estimates. However, specialist services remain difficult to access, particularly outside major cities. Critically, there are no commercially available AAC tools that support both Sinhala and Tamil, the two official languages of the country (Samad et al., 2020). The shortage of trained speech-language therapists further compounds the challenge for families seeking communication support (Wickramasinghe et al., 2021).
 
 ### 1.2 Project Overview
 
-The aim of this study is to develop a dual-platform, AI-powered AAC system tailored for children with autism in Sri Lanka. It comprises two main platforms:
+The aim of this project is to design and develop a dual-platform, AI-powered AAC system tailored for children with autism in Sri Lanka. The system comprises two platforms:
 
 - **Platform A:** A customisable, symbol-based AAC interface for children at ASD severity Level 1–2, with trilingual support (Sinhala, Tamil, English), configurable vocabulary, text-to-speech output, and visual scheduling.
 - **Platform B:** An AI-enhanced AAC platform for children at severity Level 3 and above, extending Platform A with on-device facial expression recognition (FER) using an EfficientNetB0-based model with a CBAM (Convolutional Block Attention Module), deployed via TensorFlow Lite, enabling emotion-adaptive communication support.
 
-The mobile application is developed using Flutter for cross-platform deployment, with an offline-first architecture. Currently, the system stores data locally on the device (SQLite/JSON), and backup is handled using manual export (for example via WhatsApp or file sharing). Firebase is planned for future optional synchronisation and account-based collaboration, but it is not fully implemented yet.
+The mobile application is developed using Flutter for cross-platform deployment, following an offline-first architecture. At the interim stage, data is stored locally on the device using SQLite and JSON, with backup handled through manual export. Firebase is planned for future optional synchronisation and account-based collaboration but is not yet implemented.
 
 ### 1.3 Rationale and Research Gap
 
-A review of existing AAC systems (see Section 2) shows that no commercially available tool combines trilingual support for Sinhala, Tamil, and English with on-device facial expression recognition. Tools designed for Western markets often lack cultural and contextual relevance for Sri Lankan users (Alant and Bornman, 2021). Most existing systems are also static, showing a fixed set of symbols without adjusting to how the user is feeling. On top of this, dedicated AAC devices are expensive and out of reach for many families in Sri Lanka.
+A review of existing AAC systems (see Section 2.2.4) confirms that no commercially available tool combines trilingual support for Sinhala, Tamil, and English with on-device facial expression recognition. Tools such as Proloquo2Go, TouchChat, and Avaz AAC serve primarily English-speaking, Western populations. Their vocabularies, symbol sets, and cultural assumptions do not transfer well to Sri Lanka, where the food, clothing, religious practices, and family structures represented in AAC content need to be fundamentally different (Alant and Bornman, 2021). Beyond language and culture, cost is a significant barrier. Dedicated AAC devices can run to several hundred US dollars, which places them out of reach for most Sri Lankan families.
 
-Bringing facial expression recognition into AAC is what makes this study different from existing work. While emotion recognition has been explored in various settings, combining it with a multilingual, culturally adapted, mobile AAC system for children with autism in a low- and middle-income country has no direct precedent in the published literature.
+Existing AAC systems are also largely static, presenting the same vocabulary regardless of the child's emotional state. There is growing evidence that emotion-aware interfaces can improve engagement and communication outcomes (Picard, 2000), but the integration of FER into AAC tools remains largely unexplored, particularly for children with autism. Published research has examined FER and AAC as separate domains, yet no existing system brings both together within a mobile application designed for a low- and middle-income context, with multilingual support and full offline capability.
+
+This project directly addresses that gap. The proposed system combines trilingual AAC with on-device emotion recognition, delivered through a mobile application that does not depend on internet connectivity to function.
 
 ### 1.4 Project Aim and Objectives
 
-The overall aim is to design and develop an AI-powered AAC system with facial expression recognition, tailored for children with autism in Sri Lanka, and to lay the groundwork for a pilot evaluation in a clinical setting.
+The overall aim of this project is to design and develop an AI-powered AAC system with facial expression recognition, tailored for children with autism in Sri Lanka, and to lay the groundwork for a pilot evaluation in a clinical setting.
 
 The project objectives are:
 
-1. **Dual-platform architecture design:** Design a system serving children at ASD Level 1–2 (customisable symbol-based AAC) and Level 3+ (AI-enhanced AAC with FER), with trilingual support, offline-first operation, and secure data management.
-2. **Cross-platform mobile application:** Implement a Flutter-based application with offline-first architecture, local storage, and a manual export backup option, targeting Android 8.0+ and iOS 14+.
-3. **AI model training and deployment:** Train an EfficientNetB0-based FER model with a CBAM (Convolutional Block Attention Module) attention mechanism, with MobileNetV2 initially evaluated as a baseline for mobile deployment, targeting six emotion classes with at least 80% accuracy, deployed on-device via TensorFlow Lite with inference under 500 ms.
-4. **Therapist-parent dashboard:** Develop a web-based dashboard for collaboration, progress monitoring, and vocabulary management.
-5. **Ethical approval and partnership:** Establish ethical approval protocols for a pilot study at Karapitiya Teaching Hospital, Galle.
-6. **Documentation and reporting:** Document the project to meet FC6P01ES module requirements with Harvard referencing.
-
-In practice, it is often observed that children with severe autism struggle to communicate even their most basic needs, such as hunger, discomfort, or emotional distress. This can lead to frustration, behavioural difficulties, and increased stress for both the child and their caregivers. In many situations, parents have to rely on guesswork rather than clear communication.
-
-In the Sri Lankan context, where access to specialised AAC tools and speech therapy services is limited, this challenge becomes even more significant. In many cases, families do not have access to affordable, locally relevant communication tools in Sinhala or Tamil.
-
-Because of this, even a simple and accessible AAC system can make a meaningful difference in day-to-day life. It can help children express their needs more clearly, reduce frustration, and support better interaction within families. In this project, the aim is to address not only a technical gap, but also a practical and social need that directly affects quality of life.
+1. To design a dual-platform system architecture serving children at ASD Level 1–2 (customisable symbol-based AAC) and Level 3+ (AI-enhanced AAC with FER), with trilingual support, offline-first operation, and secure data management.
+2. To implement a cross-platform mobile application using Flutter with offline-first architecture, local storage, and manual export backup, targeting Android 8.0+ and iOS 14+.
+3. To train and deploy an EfficientNetB0-based FER model with a CBAM attention mechanism, targeting six emotion classes with at least 80% accuracy, deployed on-device via TensorFlow Lite with inference under 500 ms. MobileNetV2 was initially evaluated as a baseline.
+4. To develop a therapist-parent dashboard for collaboration, progress monitoring, and vocabulary management.
+5. To establish ethical approval protocols and a clinical partnership for a pilot study at Karapitiya Teaching Hospital, Galle.
+6. To document the project in accordance with FC6P01ES module requirements using Harvard referencing.
 
 ### 1.5 Research Questions
 
@@ -131,27 +145,19 @@ The project is guided by the following research questions:
 
 **RQ1:** How can a dual-platform AAC system be designed to serve children at ASD Level 1–2 and Level 3+, while maintaining trilingual support, offline-first operation, and secure data management?
 
-This question gets at the core software engineering challenge: how to build a modular system that serves two user groups with different needs while still sharing core services.
+**RQ2:** What accuracy can an on-device FER model based on EfficientNetB0 with CBAM attention achieve when trained on 2,000–5,000 images across six emotion classes, and what factors most influence performance?
 
-**RQ2:** What accuracy can an on-device FER model based on EfficientNetB0 with CBAM attention achieve when trained on 2,000-5,000 images across six emotion classes, and what factors most influence performance? (MobileNetV2 was initially evaluated as a baseline due to its mobile efficiency.)
-
-This addresses the machine learning dimension, including the effects of data augmentation, class balance, hyperparameter tuning, and quantisation on model performance.
-
-**RQ3:** How can therapist-parent collaboration be effectively supported through a secure dashboard integrated with the mobile application and Firebase, while respecting privacy and consent requirements?
-
-This addresses the human-computer interaction and clinical workflow aspects of the project. In the current stage, collaboration is approached through locally stored profiles and manual export, while Firebase-based collaboration is planned for a later stage.
+**RQ3:** How can therapist-parent collaboration be effectively supported through a secure dashboard integrated with the mobile application, while respecting privacy and consent requirements?
 
 **RQ4:** What ethical, regulatory, and practical considerations must be addressed for a pilot deployment at Karapitiya Teaching Hospital?
 
-This covers the institutional ethics approval process, informed consent for vulnerable participants, and data protection in the Sri Lankan regulatory context.
-
 **RQ5:** To what extent does the implemented system meet its functional and non-functional requirements, and what are the key areas for improvement?
 
-This evaluative question will be most fully addressed in the final report following system completion and pilot study.
+Research questions RQ1–RQ4 are addressed partially in this interim report. RQ5 will be most fully addressed in the final report following system completion and pilot evaluation.
 
 ### 1.6 Report Structure
 
-The rest of this report is organised as follows. Section 2 covers the background, including a literature review on ASD, AAC, facial expression recognition, and the technology stack, as well as the system architecture, development methodology, AI model design, and ethical considerations. Section 3 describes the work completed so far. Section 4 outlines the further work planned. Section 5 provides a progress review. Sections 6 and 7 list the references and bibliography respectively.
+The remainder of this report is organised as follows. Section 2 presents the background, including a literature review, system architecture, development methodology, AI model design, and ethical considerations. Section 3 describes the work completed to date, including design artefacts and implementation evidence. Section 4 outlines the further work planned. Section 5 provides a progress review comparing the original plan against actual progress. Sections 6 and 7 list the references and bibliography respectively.
 
 ---
 
@@ -233,43 +239,33 @@ Looking at the table above, three clear gaps stand out: (1) no existing system s
 
 ### 2.3 Facial Expression Recognition and Affective Computing
 
-In this system, AI is mainly used to analyse facial expressions using deep learning. The model learns patterns from facial images and predicts the likely emotional state of the user. This is then used to support the AAC system by adjusting communication options based on how the child appears to feel at that moment.
-
 #### 2.3.1 Theoretical Foundations
 
-Affective computing is a field concerned with building systems that can recognise, interpret, and respond to human emotions. The term was first introduced by Picard (2000). Facial expression recognition (FER) is one of the main areas within affective computing, focusing on automatically detecting and classifying emotions from facial images or video. It has applications across healthcare, education, human-computer interaction, and assistive technology.
+Affective computing concerns the development of systems that can recognise, interpret, and respond to human emotions (Picard, 2000). Facial expression recognition (FER) is a key subfield, focusing on automatically classifying emotions from facial images or video. The theoretical basis of FER derives largely from Ekman and Friesen (1971), who proposed a set of universal basic emotions linked to specific facial muscle movements described in the Facial Action Coding System (FACS). Although the universality of these categories has been questioned (Barrett et al., 2019), the Ekman framework remains the most widely used in computational FER due to the availability of large labelled datasets built around these categories (Li and Deng, 2020).
 
-The theoretical basis of FER comes largely from Ekman and Friesen (1971), who proposed a set of universal basic emotions: happiness, sadness, anger, fear, surprise, and disgust. Each of these emotions is linked to specific facial muscle movements described in the Facial Action Coding System (FACS). While the idea of universal emotions has been questioned by researchers like Barrett et al. (2019), who argue that expressions are more culturally variable than previously thought, the Ekman framework is still the most widely used in computational FER. This is mainly because large labelled datasets are built around these categories (Li and Deng, 2020), and discrete emotion labels are practical for system design.
+For the proposed system, six emotion classes have been selected: happy, sad, angry, fear, neutral, and tired. The "tired" class replaces "surprise" and "disgust" from the standard set, as fatigue detection is more clinically relevant when working with children who may need a simpler vocabulary or a break during a session.
 
-For the proposed system, six emotion classes have been selected: happy, sad, angry, fear, neutral, and tired. The "tired" class replaces "surprise" and "disgust" from the standard set, since it is more clinically relevant when working with children. A child who is tired or fatigued may need a simpler vocabulary or a break in the session, so detecting this state has genuine practical value.
+#### 2.3.2 Deep Learning and Transfer Learning for FER
 
-#### 2.3.2 Deep Learning for FER
+Convolutional neural networks (CNNs) represent the current state of the art for FER, achieving the best results on standard benchmarks such as FER2013, AffectNet, and RAF-DB (Li and Deng, 2020; Goodfellow et al., 2015). CNNs learn hierarchical feature representations directly from pixel data, progressing from low-level features (edges, textures) to high-level abstractions that distinguish emotional expressions (LeCun et al., 2015).
 
-Deep learning, and CNNs in particular, has become the go-to approach for FER. CNNs achieve the best results on standard benchmarks like FER2013, AffectNet, and RAF-DB (Li and Deng, 2020; Goodfellow et al., 2015). They work by learning feature representations directly from pixel data in a hierarchical manner. Early layers pick up basic features such as edges and textures. Middle layers combine these into higher-level patterns like facial features (eyes, nose, mouth). The deeper layers learn the more abstract patterns that actually distinguish one emotion from another (LeCun et al., 2015).
+Transfer learning is particularly relevant to this project, where the target dataset is relatively small (2,000–5,000 images). By using a model pre-trained on ImageNet and fine-tuning it for emotion classification, the system can leverage general visual features learned from a much larger dataset (Yosinski et al., 2014).
 
-A typical CNN used for image classification includes convolutional layers (which extract features using learnable filters), pooling layers (which reduce the spatial size), batch normalisation (which helps training stability; Ioffe and Szegedy, 2015), ReLU activation functions (Nair and Hinton, 2010), and fully connected layers that map features to class probabilities. Dropout is also commonly used to prevent overfitting by randomly switching off some neurons during training (Srivastava et al., 2014).
+#### 2.3.3 Model Architecture Selection
 
-Transfer learning plays an important role in this work. The idea is to take a model that has already been trained on a large dataset like ImageNet and fine-tune it for a new, smaller task. Yosinski et al. (2014) showed that features learned by early CNN layers are quite general and transfer well between tasks, while later layers become more task-specific. This approach works especially well when the target dataset is small, in this case somewhere between 2,000 and 5,000 images.
+MobileNetV2 (Sandler et al., 2018) was initially evaluated as the base architecture due to its efficiency for mobile deployment. With 3.4 million parameters, MobileNetV2 uses depthwise separable convolutions (Howard et al., 2017) to reduce computational cost by approximately 8–9 times compared to standard convolutions, enabling real-time inference on mid-range smartphones.
 
-#### 2.3.3 MobileNetV2
-
-MobileNetV2 was initially considered as the base architecture due to its efficiency for mobile deployment. However, during experimentation, an EfficientNetB0-based model combined with a CBAM attention module was selected for improved feature extraction and performance.
-
-The architecture builds on depthwise separable convolutions, first introduced in MobileNetV1 (Howard et al., 2017). These split a standard convolution into two parts: a depthwise convolution (one filter per channel) and a pointwise 1x1 convolution to combine outputs. This cuts the number of operations by roughly 8 to 9 times compared to a standard convolution, which is what makes real-time inference possible on phones with limited processing power.
-
-With 3.4 million parameters, MobileNetV2 achieves 72.0% top-1 accuracy on ImageNet. That is much smaller than VGG-16 (138M parameters) or ResNet-50 (25.6M), making it well suited for on-device use where model size and speed really matter. Combined with TensorFlow Lite, it can run inference in real time on mid-range smartphones, which is exactly what the emotion recognition pipeline in this project requires.
-
-MobileNetV2 was initially chosen over newer alternatives like MobileNetV3 (Howard et al., 2019) because it has broader availability of pre-trained weights, better documentation for TFLite conversion, and sufficient accuracy for the six-class classification task in this project.
+However, during experimentation, EfficientNetB0 combined with a CBAM (Convolutional Block Attention Module) was found to provide better feature representation and improved validation performance. EfficientNetB0 offers a more balanced trade-off between accuracy and efficiency through compound scaling, while the CBAM attention mechanism helps the model focus on the most informative facial regions. MobileNetV2 is retained as a baseline for comparison purposes.
 
 #### 2.3.4 FER Challenges
 
-Several challenges are relevant to this project and must be addressed in the design:  
+Several challenges are directly relevant to the design of this system:
 
-- **Dataset bias:** Major FER datasets (FER2013, AffectNet, CK+) are predominantly composed of adult, Western, posed faces. Models trained on these may not generalise well to children, non-Western populations, or the atypical expressions of children with ASD (Barrett et al., 2019; Li and Deng, 2020). This is a well-known problem in the field and is one reason why collecting purpose-specific data is planned.
-- **Atypical expressiveness in ASD:** Children with ASD may display reduced intensity, atypical timing, or unusual combinations of facial movements that do not conform to standard emotion categories (Trevisan et al., 2018). Grossard et al. (2020) found that children with ASD produce facial expressions that are more ambiguous and less socially meaningful than those of neurotypical children, leading to higher misclassification rates. This is a fundamental challenge that may limit the achievable accuracy for the target population.
-- **Environmental variability:** Real-world conditions introduce variability in lighting, head pose, facial occlusion, and camera quality that can degrade classification accuracy. Data augmentation (Section 2.7.2) and robust face detection preprocessing can partially mitigate these effects.
-- **Inter-individual variability:** Different children express emotions with different intensities and patterns, making a one-size-fits-all model inherently limited. The confidence thresholding and caregiver override mechanisms in the system are designed to mitigate the impact of this variability.
-- **Privacy and ethics:** FER in assistive technology for vulnerable children raises significant privacy concerns, including the capture and processing of facial images. These are addressed in Section 2.8.
+- **Dataset bias:** Major FER datasets are predominantly composed of adult, Western, posed faces and may not generalise well to children or non-Western populations (Barrett et al., 2019; Li and Deng, 2020). Purpose-specific data collection is planned to address this.
+- **Atypical expressiveness in ASD:** Children with ASD may display reduced intensity, atypical timing, or unusual facial movements (Trevisan et al., 2018). Grossard et al. (2020) found that such children produce more ambiguous expressions, leading to higher misclassification rates.
+- **Environmental variability:** Real-world conditions introduce variability in lighting, head pose, and camera quality. Data augmentation (Section 2.8.2) and robust face detection preprocessing are used to mitigate these effects.
+- **Inter-individual variability:** Different children express emotions differently. Confidence thresholding and caregiver override mechanisms are incorporated into the system design to address this.
+- **Privacy and ethics:** FER involving vulnerable children raises significant privacy concerns, addressed in Section 2.9.
 
 ### 2.4 Technology Stack
 
@@ -302,7 +298,7 @@ Firebase is considered as the future backend option for this project (Firebase, 
 
 #### 2.5.1 Architectural Overview
 
-The system uses a dual-platform architecture sharing a common technology stack and core services. The major components are:
+The system uses a dual-platform architecture with a shared technology stack and core services. The major components are:
 
 1. Two client-facing mobile applications (Platform A and Platform B) built with Flutter.
 2. An on-device FER module using TensorFlow Lite, integrated into Platform B via platform channels.
@@ -311,45 +307,46 @@ The system uses a dual-platform architecture sharing a common technology stack a
 5. A therapist-parent web-based dashboard (prototype), with planned Firebase integration later.
 6. A Firebase backend (planned) for authentication and optional synchronisation in later increments.
 
-The architecture follows an offline-first principle: all core AAC features and emotion recognition run locally on the device. Since Firebase is not fully implemented yet, the current backup/sharing approach is manual export/import. This design decision was made specifically because of Sri Lanka's variable internet connectivity (International Telecommunication Union, 2022).
+The architecture follows an offline-first principle: all core AAC features and emotion recognition run locally on the device. Firebase is not yet implemented; the current backup approach uses manual export/import. This design decision reflects the variable internet connectivity in many parts of Sri Lanka (International Telecommunication Union, 2022). The system architecture diagram and ER diagram, produced as design artefacts, are presented in Section 3.2.
 
-Figure 1 shows the overall system architecture, including the mobile AAC applications, the local storage layer, and where optional cloud components are planned for future use.
+#### 2.5.2 Platform A: Customisable Symbol-Based AAC (Levels 1–2)
 
-Figure 1: System Architecture Diagram  
-[Draw System Architecture Diagram here]  
-[Insert figure here - to be included in final submission]
-
-#### 2.5.2 Platform A: Customisable Symbol-Based AAC (Levels 1-2)
-
-Platform A is designed for children at severity Level 1–2 who can interact with a symbol-based interface and benefit from AAC as a supplement to developing speech. Key features include:
-
-- **Symbol grid interface:** Configurable grid of symbols (images with text labels) organised into categories (needs, feelings, activities, foods, people). Grid size (2x2 to 6x6) is configurable.
-- **Trilingual support:** Symbols and labels available in Sinhala, Tamil, and English, with language switching.
-- **Text-to-speech output:** Selected symbols are spoken aloud using the device's TTS engine.
-- **Customisation:** Parents and therapists can add, remove, or reorder symbols; create custom categories; configure visual settings.
-- **Visual scheduling:** Optional daily routine display.
-- **Usage logging:** Symbol selections and session data logged locally. Backup/sharing is handled through manual export (planned).
+Platform A is designed for children at severity Level 1–2 who can interact with a symbol-based interface and benefit from AAC as a supplement to developing speech. Key features include a configurable symbol grid (2x2 to 6x6), trilingual support (Sinhala, Tamil, English) with language switching, text-to-speech output, customisation options for parents and therapists, optional visual scheduling, and local usage logging with manual export for backup.
 
 #### 2.5.3 Platform B: AI-Enhanced AAC with FER (Level 3+)
 
-Platform B extends Platform A by adding an optional FER pipeline for children at Level 3 and above who may have minimal functional speech. Additional features include:
-
-- **Facial expression recognition:** The front-facing camera captures the user's face, which is processed on-device by the TFLite model to classify into one of six emotion classes.
-- **Emotion-adaptive vocabulary:** Based on the inferred emotion, the AAC adapts the vocabulary or prompts presented (e.g., offering comfort-related vocabulary when distress is detected).
-- **Caregiver override:** The system displays the inferred emotion as a suggestion; the caregiver can accept, override, or dismiss it at any time.
-- **Emotion history:** Aggregated emotion data displayed on the dashboard for progress monitoring.
+Platform B extends Platform A by adding an optional FER pipeline for children at Level 3 and above who may have minimal functional speech. Additional features include on-device facial expression recognition using the front-facing camera, emotion-adaptive vocabulary that adjusts prompts based on the inferred emotion, caregiver override for all emotion suggestions, and aggregated emotion history displayed on the dashboard.
 
 #### 2.5.4 Emotion Detection Pipeline
 
-The emotion detection pipeline operates in five stages:
+The emotion detection pipeline operates in five stages: (1) face detection using Google ML Kit; (2) preprocessing, which involves cropping, resizing to 224x224 pixels, and normalisation; (3) inference via the TFLite interpreter, outputting six class probabilities; (4) postprocessing, where argmax determines the dominant emotion, with a configurable confidence threshold below which no adaptation is triggered; and (5) adaptation logic, which adjusts the vocabulary and notifies the caregiver, who can override the result at any time.
 
-1. **Face detection:** Google ML Kit identifies the face bounding box. If no face is detected, no inference is attempted.
-2. **Preprocessing:** The face region is cropped, resized to 224x224 pixels, and normalised.
-3. **Inference:** The preprocessed image is passed to the TFLite interpreter, which outputs six class probabilities.
-4. **Postprocessing:** Argmax determines the dominant emotion. If confidence is below a configurable threshold (e.g., 0.5), the result is treated as uncertain and no adaptation is triggered.
-5. **Adaptation logic:** If a confident emotion is detected, the vocabulary adapts accordingly. The caregiver is notified and can override.
+#### 2.5.5 Functional Requirements
 
-#### 2.5.5 Non-Functional Requirements
+The following functional requirements have been defined for the system:
+
+1. The system should allow caregivers and therapists to create, edit, and manage user profiles for individual children.
+2. The system should display a configurable symbol grid (2x2 to 6x6) with images and text labels organised into categories such as needs, feelings, activities, and common objects.
+3. The system should support switching between Sinhala, Tamil, and English for all symbol labels and interface text.
+4. The system should produce spoken output of selected symbols using the device's text-to-speech engine in the active language.
+5. The system should allow caregivers and therapists to add, remove, and reorder symbols, create custom categories, and adjust visual settings.
+6. The system should capture facial images via the front-facing camera, process them on-device using the TFLite model, and classify the user's expression into one of six emotion classes.
+7. The system should adapt the presented vocabulary based on the detected emotion, offering contextually appropriate communication options.
+8. The system should allow caregivers to override, accept, or dismiss any emotion classification at any time.
+9. The system should log symbol selections, session data, and aggregated emotion history locally, with the option to export data manually for backup or sharing.
+10. The system should provide a therapist-parent dashboard for reviewing usage data, managing vocabulary, and monitoring progress.
+
+#### 2.5.6 Non-Functional Requirements
+
+The following non-functional requirements have been defined:
+
+1. The system should achieve emotion inference latency of less than 500 ms on a mid-range smartphone.
+2. The system should start within 3 seconds of launch.
+3. The system should operate fully offline for all core AAC and FER functionality.
+4. The system should conform to WCAG 2.1 AA accessibility guidelines, with configurable fonts, contrast, and layout.
+5. The system should not transmit raw facial images to any cloud service; only classified emotion labels and timestamps should be stored.
+6. The system should encrypt any transmitted data using TLS when synchronisation is implemented.
+7. The system should support Android 8.0+ and iOS 14+.
 
 [Table 4: Non-Functional Requirements Summary]
 
@@ -362,15 +359,9 @@ The emotion detection pipeline operates in five stages:
 | Data protection | TLS encryption; no raw facial images transmitted to cloud |
 | Platform support | Android 8.0+ and iOS 14+ |
 
-#### 2.5.6 Data Model (Interim)
+#### 2.5.7 Data Model (Interim)
 
-Currently, the main entities are kept in local storage (SQLite tables and some JSON vocabulary files). The ER diagram below represents the intended structure for users, categories, symbols, sessions, and logs. This will later be mapped to a cloud schema if Firebase synchronisation is implemented.
-
-Figure 2 shows the main entities (users, symbols, categories, sessions, and logs) and how they are linked inside the local database for the AAC app.
-
-Figure 2: ER Diagram  
-[Draw ER Diagram here]  
-[Insert figure here - to be included in final submission]
+At the interim stage, the main entities are stored in local storage (SQLite tables and JSON vocabulary files). The data model comprises users, categories, symbols, sessions, and logs. This structure is intended to be mapped to a cloud schema if Firebase synchronisation is implemented in a later increment. The ER diagram is presented as a completed design artefact in Section 3.2.
 
 ### 2.6 Development Methodology
 
@@ -404,9 +395,17 @@ The project is divided into five increments, each building upon the previous:
 
 **Increment 5 (Months 9-10): Pilot Execution and Final Report.** This increment covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
 
-### 2.7 AI Model Design and Data Collection
+### 2.7 Research Methodology
 
-#### 2.7.1 Transfer Learning Strategy
+This project adopts a mixed-methods approach combining qualitative and quantitative techniques. Qualitative insights were gathered through informal discussions with parents of children with ASD and conversations with speech-language therapists, which informed the understanding of real-world communication challenges and guided design decisions beyond what the literature alone could provide.
+
+Quantitative methods are applied in evaluating the FER model using standard classification metrics: accuracy, precision, recall, and F1-score. The system as a whole is assessed against defined non-functional requirements, including inference latency and offline reliability.
+
+The development follows an incremental methodology (described in Section 2.6), with the application built and tested in stages. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval. This combined approach ensures that the system is both technically validated and practically relevant to the intended users and context.
+
+### 2.8 AI Model Design and Data Collection
+
+#### 2.8.1 Transfer Learning Strategy
 
 While MobileNetV2 was initially evaluated as a baseline model, the final training pipeline uses EfficientNetB0 with a CBAM attention module, as it showed better feature representation and improved validation performance.
 
@@ -420,7 +419,7 @@ The FER component uses EfficientNetB0 pre-trained on ImageNet as a feature extra
 
 For training, mixed precision was used to reduce memory usage (float16), but float32 was kept in the final layers to avoid instability. This hybrid approach was mainly done to get better performance in low memory mode. Over time, epoch counts were also tuned (increased in experiments) to improve accuracy step by step.
 
-#### 2.7.2 Data Augmentation
+#### 2.8.2 Data Augmentation
 
 Data augmentation increases the effective diversity of the training set by applying label-preserving transformations during training (Shorten and Khoshgoftaar, 2019):
 
@@ -435,11 +434,11 @@ Data augmentation increases the effective diversity of the training set by apply
 | Contrast | Plus or minus 20% | Simulates varying image quality |
 | Translation | Plus or minus 10% horizontal/vertical | Simulates imperfect face centering |
 
-#### 2.7.3 Model Quantisation
+#### 2.8.3 Model Quantisation
 
 Post-training quantisation converts model weights from 32-bit floating point to 8-bit integers, reducing model size by approximately 4x and improving inference speed by 2-3x with minimal accuracy loss (typically less than 1-2 percentage points) (Jacob et al., 2018). Dynamic range quantisation is applied as the default.
 
-#### 2.7.4 Evaluation Metrics
+#### 2.8.4 Evaluation Metrics
 
 The model is evaluated using:
 
@@ -448,7 +447,7 @@ The model is evaluated using:
 - **Overall accuracy:** The proportion of correct predictions to total predictions.
 - **Inference time and model size:** Measured on a mid-range smartphone to verify non-functional requirements.
 
-#### 2.7.5 Dataset Composition
+#### 2.8.5 Dataset Composition
 
 The target dataset is 2,000-5,000 labelled facial images across six emotion classes:
 
@@ -466,17 +465,17 @@ The target dataset is 2,000-5,000 labelled facial images across six emotion clas
 
 Data sources include existing public datasets (FER2013, RAF-DB, AffectNet) filtered and relabelled for the target classes, and purpose-collected data (post-ethics approval) from consenting participants at Karapitiya Teaching Hospital. Data collection protocols define consent procedures, capture conditions, and labelling procedures with inter-rater reliability checks.
 
-### 2.8 Ethical Considerations
+### 2.9 Ethical Considerations
 
-#### 2.8.1 Overview
+#### 2.9.1 Overview
 
 Since this study involves vulnerable participants (children with ASD), sensitive data (facial images, usage logs), and deployment in a healthcare-related context, ethical considerations have been treated as fundamental design constraints from the start. The ethical framework draws on the Declaration of Helsinki (World Medical Association, 2013), the Belmont Report, and emerging guidelines for ethical AI deployment (Floridi et al., 2018; Jobin et al., 2019).
 
-#### 2.8.2 Informed Consent
+#### 2.9.2 Informed Consent
 
-Consent is obtained from parent or legal guardian, with assent sought from the child in an accessible form where possible. The child's willingness to engage is monitored throughout; signs of distress or unwillingness are treated as withdrawal of assent. Consent forms and information sheets have been drafted in English, with Sinhala and Tamil translations planned.
+Consent is obtained from the parent or legal guardian, with assent sought from the child in an accessible form where possible. The child's willingness to engage is monitored throughout; signs of distress or unwillingness are treated as withdrawal of assent. Draft consent forms and participant information sheets have been prepared in English and are included in Appendix A and Appendix B. Sinhala and Tamil translations are planned for the next phase.
 
-#### 2.8.3 Privacy and Data Protection
+#### 2.9.3 Privacy and Data Protection
 
 Specific measures include:
 
@@ -486,14 +485,14 @@ Specific measures include:
 - **Encryption:** When any data is transmitted (for example future sync), it will be protected using TLS. Firebase encryption at rest applies if Firebase storage is used later.
 - **Retention policies:** Defined in the ethics protocol with secure deletion after the project analysis period.
 
-#### 2.8.4 Minimisation of Harm
+#### 2.9.4 Minimisation of Harm
 
 - **Caregiver override:** Emotion recognition can be disabled or overridden at any time.
 - **Confidence thresholding:** Low-confidence predictions are not acted upon.
 - **Transparency:** The system presents emotion classification as a suggestion, not a certainty.
 - **Voluntary participation:** Participants can withdraw at any time without penalty.
 
-#### 2.8.5 Institutional Approval
+#### 2.9.5 Institutional Approval
 
 A pilot at Karapitiya Teaching Hospital requires approval from the hospital's institutional ethics committee and alignment with Ministry of Health research governance requirements (Ministry of Health, Sri Lanka, 2020). The ethics application includes the research protocol, consent forms, and data management plan.
 
@@ -507,7 +506,7 @@ A pilot at Karapitiya Teaching Hospital requires approval from the hospital's in
 | Child distress during data collection | Low | High | Trained collectors; stop criteria; parental presence |
 | Delayed ethics approval | Medium | Medium | Early submission; alternative evaluation plans |
 
-### 2.9 Risk Analysis
+### 2.10 Risk Analysis
 
 [Table 8: Risk Assessment Matrix]
 
@@ -524,7 +523,7 @@ A pilot at Karapitiya Teaching Hospital requires approval from the hospital's in
 
 The critical path runs through: ethics approval, dataset collection, model training, Platform B integration, pilot execution, and final report. Primary contingency is to proceed with model training on public data and complete Platform A independently.
 
-### 2.10 Limitations and Scope
+### 2.11 Limitations and Scope
 
 The scope of this work includes the design, development, and pilot evaluation of the dual-platform AAC system with FER in the Sri Lankan context. What falls outside the scope includes: full randomised controlled trials, longitudinal studies, nationwide deployment, support for languages beyond Sinhala/Tamil/English, and integration of modalities other than FER.
 
@@ -543,119 +542,138 @@ Known limitations include:
 
 ### 3.1 Summary of Progress
 
-Work completed so far covers Increment 1 (fully complete) and the majority of Increment 2 from the incremental plan described in Section 2.6. At this point, the foundational work, including design, architecture, literature review, and initial coding, is substantially done. The larger tasks such as full dataset collection, complete model training, and the pilot deployment are planned for the upcoming phase.
+At the time of this interim submission, Increment 1 has been completed in full and Increment 2 is substantially complete. The literature review, system architecture, technology stack selection, and the initial Flutter project setup are all in place. A considerable amount of early effort went into understanding the problem domain, not only through published literature but also through informal conversations with parents and therapists. Those conversations surfaced practical realities that the literature alone did not fully convey, and they directly influenced several design decisions described in the sections that follow.
 
-### 3.2 Requirements and Design
+Some work originally planned for Increment 3, particularly the AI model pipeline setup and preliminary training experiments, was started ahead of schedule during Increment 2. This provides a useful head start on model development for the next phase.
 
-A thorough literature review covering ASD, AAC, facial expression recognition, and the Sri Lankan context was completed and is presented in Sections 1 and 2. Requirements for both platforms were gathered through published literature analysis, a review of existing AAC systems, and informal conversations with a speech-language therapist and two parents of children with ASD. During one of these discussions, a parent mentioned how difficult it was to find any digital communication tool that worked in Sinhala, which reinforced the need for trilingual support. The architecture, data flow, and technology choices have all been documented, along with user roles (child, parent/caregiver, therapist) and use case mapping.
+The larger tasks remain ahead. Full dataset curation using purpose-collected data, complete model training and evaluation, Platform B integration with the FER pipeline, and the clinical pilot study are all planned for subsequent increments. There have been some delays in specific areas, notably symbol set licensing, ethics coordination, and TTS quality for Sinhala and Tamil, but these are accounted for in the revised project plan (Section 5.4). Overall, the project is in a reasonable position for this stage of the academic timeline.
 
-Key design decisions made during this phase include: the dual-platform approach to address different ASD severity levels; choosing Flutter for cross-platform development; selecting MobileNetV2 initially for on-device FER, and later using an EfficientNetB0 with CBAM for improved feature extraction; and using an offline-first architecture for areas with poor connectivity. Firebase is kept as a planned option for later, but the current working approach is local storage with manual export backup.
+### 3.2 Requirements, Design, and Produced Artefacts
+
+A comprehensive literature review covering ASD, AAC, facial expression recognition, and the Sri Lankan context was completed and is presented in Sections 1 and 2. Requirements for both platforms were gathered through published literature analysis, a review of existing AAC systems, and informal discussions with a speech-language therapist and two parents of children with ASD. The architecture, data flow, and technology choices have been documented, together with user roles (child, parent/caregiver, therapist) and use case mapping.
+
+Key design decisions made during this phase include: the dual-platform approach to address different ASD severity levels; the selection of Flutter for cross-platform development; the initial evaluation of MobileNetV2 for on-device FER, with subsequent adoption of EfficientNetB0 with CBAM for improved feature extraction; and the offline-first architecture to accommodate areas with unreliable connectivity. Firebase remains a planned option for future synchronisation, while the current approach uses local storage with manual export backup.
+
+To support the design phase of the project, several modelling artefacts were produced, including a system architecture diagram, an entity relationship diagram, a use case diagram, and a class diagram. These artefacts were used to clarify user interactions, define the data structure, and guide the system architecture prior to and during implementation. All figures presented in this section include appropriate captions in accordance with academic reporting standards.
+
+Figure 1 presents the overall system architecture, showing the mobile AAC applications, the local storage layer, the on-device FER module, and the planned cloud components.
+
+Figure 1: System Architecture Diagram
+[Insert figure here. To be included in the final submission.]
+
+#### 3.2.1 Entity Relationship Diagram
+
+The entity relationship diagram represents the logical data structure of the AAC system at the interim stage. It models the key entities required to support communication, user management, and monitoring features within the application.
+
+The system should store data related to users, child profiles, categories, symbols, sessions, usage logs, and emotion records in a structured manner. Child profiles are linked to sessions, symbol selections, and emotion records, enabling the system to maintain a consistent history of AAC interactions and detected emotional states.
+
+The system should support category and symbol entities to manage vocabulary in a scalable and customisable way. The system should also allow session based logging to capture user interactions over time, which can later be reviewed through the caregiver and therapist dashboard.
+
+At this stage, the data model is implemented using local storage technologies such as SQLite and JSON files, in line with the offline first design approach. The ER diagram also provides a foundation for potential future integration with a cloud based database if synchronisation features are implemented.
+
+Figure 2: Entity Relationship Diagram
+[Insert figure here. To be included in the final submission.]
+
+#### 3.2.2 Use Case Diagram
+
+The use case diagram models the primary interactions between the system and its three main user roles: the child, the parent or caregiver, and the therapist. It provides a high level representation of how each actor engages with the AAC system.
+
+The child primarily interacts with communication focused features. The system should allow the child to select symbols from a grid based interface, listen to text to speech output, browse categories, view a visual schedule, and use the facial expression recognition functionality. These interactions represent the core AAC usage flow of the application.
+
+The parent or caregiver plays both a support and management role. The system should allow caregivers to create and manage user profiles, switch between Sinhala, Tamil, and English, view detected emotions, override emotion classifications, manage symbols and categories, configure the grid size and theme, record custom audio, export and import backups, and manage child profiles.
+
+The therapist interacts mainly with monitoring and administrative features. The system should allow therapists to access the dashboard, review usage logs and progress, view emotion history, manage vocabulary, and manage child profiles.
+
+This diagram helps define the functional scope of the system and ensures that all user roles and interactions are clearly identified.
+
+Figure 3: Use Case Diagram of the AAC System
+[Insert figure here. To be included in the final submission.]
+
+#### 3.2.3 Class Diagram
+
+The class diagram describes the structural design of the AAC system at the software level by identifying the main classes and their relationships.
+
+The system should include core classes such as User, ChildProfile, Category, Symbol, and SymbolGrid to support profile management and symbol based communication. The system should also include supporting classes such as TTSEngine, Session, and UsageLog to handle speech output and interaction tracking.
+
+For the AI enhanced component, the system should include classes such as FERModule, FaceDetector, EmotionClassifier, AdaptationEngine, and CaregiverOverride. These classes work together to process facial input, classify emotions, and adapt the AAC interface accordingly.
+
+Additional classes such as LocalStorage, BackupManager, Dashboard, VisualSchedule, and SettingsManager are included to support data storage, backup handling, monitoring, scheduling, and personalisation features.
+
+The relationships between these classes illustrate how system components interact. For example, a child profile is associated with sessions and settings, while a session contains usage logs and emotion records. The FER module depends on face detection and emotion classification, and the adaptation engine modifies the symbol grid based on the detected emotional state.
+
+This class level design ensures that the system remains modular, maintainable, and extensible as development progresses.
+
+Figure 4: Class Diagram of the AAC System
+[Insert figure here. To be included in the final submission.]
 
 ### 3.3 Development Environment and Core AAC
 
-The Flutter project was set up following standard Flutter conventions, with separate directories for models, services, screens, widgets, and utilities. The project targets Android 8.0+ and iOS 14+ from a single Dart codebase.
+The Flutter project follows a standard folder structure with separate directories for models, services, screens, widgets, and utilities. It targets Android 8.0+ and iOS 14+ from a single Dart codebase.
 
 Core AAC features for Platform A have been partially implemented:
 
-- **Navigation and routing:** A screen navigation system has been built using Flutter's Navigator 2.0 pattern, covering the main AAC grid view, category selection, settings, and profile screens.
-- **Symbol grid interface:** A basic symbol grid is in place, displaying images with text labels organised into preliminary categories (needs, feelings, common objects). Grid size is currently fixed, with configurable sizes (2x2 to 6x6) planned for the next increment.
-- **Multilingual support:** The UI framework supports switching between Sinhala, Tamil, and English. Labels and interface text are stored in separate localisation files, though the full vocabulary for Sinhala and Tamil still needs to be populated.
-- **Local data layer:** SQLite is used for structured data and local JSON files for vocabulary definitions, allowing the app to work offline for vocabulary access and settings.
-- **Text-to-speech:** Basic TTS integration using the device's built-in engine is working. English TTS has been tested successfully. Sinhala and Tamil testing is ongoing, and early results suggest that the platform TTS engines may need to be supplemented with third-party services for acceptable quality.
+- **Navigation and routing:** Screen navigation uses Flutter's Navigator 2.0 pattern, covering the main AAC grid view, category selection, settings, and profile screens.
+- **Symbol grid interface:** A basic symbol grid is functional, displaying images with text labels in preliminary categories (needs, feelings, common objects). Grid size is currently fixed; configurable sizes (2x2 to 6x6) are planned for the next increment.
+- **Multilingual support:** The UI framework supports switching between Sinhala, Tamil, and English. Labels and interface text are stored in separate localisation files. The English vocabulary is mostly populated; Sinhala and Tamil vocabularies require further work.
+- **Local data layer:** SQLite is used for structured data and local JSON files store vocabulary definitions, enabling full offline operation for vocabulary access and settings.
+- **Text-to-speech:** Basic TTS integration using the device's built-in engine is functional for English. Preliminary testing indicated that the default platform TTS for Sinhala and Tamil produces unnatural output, and third-party TTS services will need to be evaluated.
 
-To improve usability for children, particular attention was given to the visual design of the user interface. A child-friendly theme was considered important, including the use of soft colour palettes, rounded UI components, and visually appealing icons. The interface was designed to be simple, consistent, and easy to navigate, with clear visual feedback for user interactions.
+Getting the interface right took considerably longer than the original timeline anticipated. Children with autism can disengage entirely when a screen feels cluttered or visually overwhelming (Fletcher-Watson and Happe, 2019), so every colour choice, every icon, and every tap target required deliberate consideration. Several versions were tested before the current soft palette and rounded component style was settled upon.
 
-Icons and visual elements were selected to be easily recognisable and engaging for children, supporting faster symbol recognition within the AAC grid. Smooth UI transitions and consistent spacing were also considered to reduce cognitive load and improve the overall user experience.
-
-These design choices aim to create a more accessible and comfortable interaction environment, especially for children with autism who may be sensitive to complex or cluttered interfaces.
-
-There were some delays in finalising the symbol set and sorting out licensing for third-party symbol libraries. Finding culturally appropriate symbols and confirming licensing terms took longer than expected. This is now being treated as a priority for the next phase.
+The symbol set proved more challenging than expected. Most established AAC symbol libraries are designed for Western contexts, and the food symbols typically show sandwiches and hamburgers, not rice, kottu, or string hoppers. A significant amount of manual sourcing and adaptation was required to build a culturally appropriate vocabulary, and licensing terms added further complexity. This work remains ongoing and has been prioritised for the next increment.
 
 ### 3.4 AI Model Pipeline
 
-A Python-based training pipeline has been implemented using TensorFlow and Keras. The current model is based on EfficientNetB0 (pretrained on ImageNet), with a custom CBAM (Convolutional Block Attention Module) added on top to improve feature focus.
+Model training was conducted on Google Colab with GPU support, which proved workable but not without friction. The free tier imposes session time limits, and on several occasions training runs were interrupted before completion. In some early instances, unsaved progress was lost entirely. After those setbacks, checkpoint saving was adopted far more aggressively, which added overhead but prevented further losses.
 
-Initially, MobileNetV2 was explored as a baseline model due to its efficiency for mobile deployment. However, further experimentation showed that EfficientNetB0 combined with a CBAM attention module provided better feature representation and improved validation performance. So, the current implementation uses EfficientNetB0 with CBAM as the primary model.
+The model architecture went through a deliberate process of iteration. MobileNetV2 was evaluated first as a baseline, being lightweight, well documented for TFLite conversion, and a reasonable starting point for mobile deployment. However, validation performance did not reach the required level. After further experimentation, EfficientNetB0 combined with a CBAM (Convolutional Block Attention Module) was selected, producing noticeably better feature representation.
 
-The main setup used was:
-• Input size: 224x224
-• Batch size: 16 (used due to memory limitations)
-• Mixed precision training: float16 and float32 (float16 was mainly used to improve speed and reduce memory usage, while float32 is kept in the final layers for stability)
-• Dataset pipeline: tf.data API with optimised loading
-• Class balancing: sample_from_datasets used to reduce imbalance between emotion classes
-• Data augmentation: random flip, rotation, zoom, and contrast adjustments
-• MixUp: applied to improve generalisation performance
-• Regularisation: dropout (0.4), L2 regularisation, and label smoothing
-• Optimiser: AdamW
-• Learning rate scheduling: ReduceLROnPlateau
-• Training control: EarlyStopping
+The training configuration is as follows:
 
-In practice, because of memory limits on Google Colab and typical devices, a small batch size (16) and mixed precision were mainly used to keep training stable and fairly fast.
+- Input size: 224x224
+- Batch size: 16 (constrained by GPU memory limitations)
+- Mixed precision training: float16 for speed and memory efficiency, with float32 retained in the final layers for numerical stability
+- Dataset pipeline: tf.data API with optimised loading
+- Class balancing: sample_from_datasets to address class imbalance
+- Data augmentation: random flip, rotation, zoom, and contrast adjustments
+- MixUp regularisation to improve generalisation
+- Regularisation: dropout (0.4), L2 regularisation, and label smoothing
+- Optimiser: AdamW
+- Learning rate scheduling: ReduceLROnPlateau
+- Training control: EarlyStopping
 
-Several experiments were carried out by adjusting epochs and other training settings. Based on current results, training accuracy is around 85-87% and validation accuracy is around 82-84%, while test accuracy is about 66%. From the results, it looks like the model learns the training and validation data reasonably well, but during testing it still struggles with unseen real-world samples, which is quite common in FER when datasets are limited or slightly imbalanced. There is still a noticeable gap on the test set, which suggests some level of overfitting. For now, this generalisation gap will be addressed in the next phase by improving dataset balance and diversity.
+Current results show training accuracy of approximately 85–87% and validation accuracy of 82–84%, though test accuracy sits lower at around 66%. Closing that generalisation gap is the primary model objective for the next phase. The model learns the training and validation distributions reasonably well, but still struggles with unseen real world samples, which is a recognised challenge in FER when datasets are limited or imbalanced (Li and Deng, 2020). Per class analysis shows strong performance on the "happy" class, with weaker results for "fear", "sad", and "angry", most likely attributable to class imbalance and environmental variability such as lighting and head pose. Improving dataset balance and adding more diverse samples for the weaker classes will be the focus going forward.
 
-In terms of individual classes, the model performs well on emotions like Joy. However, it is weaker on classes such as Fear, Sadness, and Anger. The likely reasons are dataset imbalance and real-world variability such as lighting conditions, head pose, and subtle differences between similar expressions.
+Figure 5 presents the confusion matrix for the current FER model, illustrating which emotion classes are classified correctly and where misclassifications are concentrated.
 
-Figure 7 shows the confusion matrix of the current FER model. It highlights which emotion classes are predicted correctly and where most of the misclassifications occur.
+Figure 5: Confusion Matrix
+[Insert figure here. To be included in the final submission.]
 
-Figure 7: Confusion Matrix
-[Insert figure here - confusion_matrix.png]
-[Insert figure here - to be included in final submission]
+Multiple model variants were trained by adjusting epoch counts and precision settings (float32, float16, and mixed). The final model was selected based on validation performance and stability rather than training accuracy alone. Full training on the complete dataset (2,000–5,000 images) will be conducted once the dataset is fully prepared, including purpose-collected data following ethics approval.
 
-From the confusion matrix, the Joy class shows high accuracy, while Fear, Sadness, and Anger show lower accuracy. This mainly comes from class imbalance. For future improvement, the main focus will be on better dataset balancing and adding more realistic samples for the weaker classes.
+Figure 6 shows the facial expression recognition interface in Platform B, demonstrating on-device emotion detection using the front-facing camera and TFLite model. The detected emotion is used to adapt the AAC vocabulary accordingly, supporting contextually appropriate communication.
 
-Across the experiments, more than one model variant was trained by changing epoch counts and switching between pure float32, pure float16, and the mixed float16/float32 setup. The final model was selected mainly based on validation performance and stability, rather than just training accuracy. Overall, the model is expected to be more reliable when deployed on real devices.
-
-Full training on the complete dataset (2,000-5,000 images) will be carried out once the dataset is fully prepared, including purpose-collected data after ethics approval is obtained.
-
-This switch from MobileNetV2 to EfficientNetB0 happened after testing a few architectures, and the final model was picked based on performance and stability.
-
-Figure 13: Facial Expression Recognition Screen (On-Device Detection)  
-[Insert figure here - screenshot of camera-based facial expression detection UI]
-
-The figure above shows the real-time facial expression recognition interface used in Platform B. The system captures the user's face through the front-facing camera, processes it using the on-device TensorFlow Lite model, and predicts the emotional state.
-
-The detected emotion is then used to support AAC interaction by suggesting appropriate communication options. This interface was designed to run smoothly on mobile devices without requiring an internet connection, ensuring real-time feedback and usability in low-connectivity environments.
+Figure 6: Facial Expression Recognition Screen (On-Device Detection)
+[Insert figure here. To be included in the final submission.]
 
 ### 3.5 Backend and Dashboard
 
-Currently, backend work is still at an early, mostly prototype level. A Firebase project has been created and some basic configuration has been explored, but full end-to-end integration is not completed yet. Since the system follows an offline-first approach, the current working data store is local (SQLite/JSON), and backup is handled through manual export and import.
-
-A basic therapist-parent dashboard prototype has also been started:
-• Basic screens for login UI and navigation (prototype level)
-• Placeholder progress views
-• Early vocabulary management UI (not yet fully connected to real synchronisation)
-
-Full account linking and synchronisation, if implemented using Firebase, is planned for a later stage once the offline core is stable.
+Backend work is at an early, prototype level. A Firebase project has been created and basic configuration has been explored, but full end-to-end integration has not been completed. The current data store is local (SQLite/JSON), and backup is handled through manual export and import. A basic therapist-parent dashboard prototype has been started, including login UI and navigation screens, placeholder progress views, and an early vocabulary management interface. Full account linking and Firebase synchronisation are planned for a later stage once the offline core is stable.
 
 ### 3.6 Ethics and Partnership
 
-• Draft consent forms and information sheets have been prepared in English
-• Sinhala and Tamil translations are planned for the next phase
-• Initial contact with Karapitiya Teaching Hospital has been established
-• Formal ethics application is currently in advanced preparation
-• Ministry of Health approval requirements have been researched and documented
+Draft consent forms and participant information sheets have been prepared in English (included in Appendix A and Appendix B). Sinhala and Tamil translations are planned for the next phase. Initial contact with Karapitiya Teaching Hospital has been established, and the formal ethics application is in advanced preparation. Ministry of Health approval requirements have been researched and documented.
 
 ### 3.7 Testing
 
-• Unit tests have been introduced for critical data layer and utility functions
-• Full test coverage has not yet been achieved, as priority was given to feature development
-• Manual testing of the basic AAC flow has been carried out on an Android emulator and one physical device
-• iOS testing is planned for the next phase
-• No formal user testing with children or caregivers has been conducted yet (this will take place after Platform A completion and ethics approval)
+Testing at the interim stage has focused on unit tests for the most critical parts of the codebase. The data layer functions, symbol handling logic in the AAC module, and the emotion-based decision logic in the FER integration have all been covered with automated tests. The AI model itself runs as a TensorFlow Lite component on the device, which makes direct unit testing of the full inference pipeline impractical at this stage. Instead, mock-based tests were written to validate the output handling, for example confirming that the correct dominant emotion is selected from a set of prediction probabilities.
 
-In addition to manual testing, basic unit tests were implemented for selected core logic components of the system. These included symbol handling functions in the AAC module and emotion-based decision logic used in the FER integration.
+All implemented tests were executed using Flutter's built-in testing framework and passed without failure. That said, full test coverage has not been achieved. During this phase, development priority was given to getting core features functional, with the understanding that test coverage would be expanded in subsequent increments. Manual testing of the basic AAC communication flow, including symbol selection, category navigation, and text-to-speech output, has been carried out on an Android emulator and one physical device. iOS testing has not yet been conducted, and formal user testing with children and caregivers will only take place after ethics approval is obtained.
 
-Since the AI model runs as a TensorFlow Lite component, direct unit testing of the full model was not feasible currently. Instead, mock-based tests were used to validate model output handling, such as selecting the dominant emotion from prediction probabilities.
+Figure 7 presents the output from the Flutter unit test suite at the interim stage.
 
-These unit tests were executed using Flutter’s built-in testing framework to ensure that critical logic behaves correctly and consistently.
-
-Test cases were executed using the `flutter test` command, and all implemented tests passed successfully.
-
-Figure 11 shows a screenshot of the Flutter unit test output after running `flutter test`.
-
-Figure 11: Flutter Unit Test Output
-[Insert figure here - to be included in final submission]
+Figure 7: Flutter Unit Test Output
+[Insert figure here. To be included in the final submission.]
 
 [Table 9: Work Completed Summary]
 
@@ -675,255 +693,237 @@ Figure 11: Flutter Unit Test Output
 
 ### 3.8 Current UI Screens (Interim)
 
-The following figures will be included to show the current UI direction of the mobile app.
+The following figures present the current state of the mobile application's user interface. The interface follows a child-friendly design approach using soft colours, rounded components, and clear icon-based navigation, intended to minimise cognitive load while supporting intuitive symbol selection.
 
-To support usability and accessibility for children, the interface follows a child-friendly design approach using soft colours, rounded components, and clear icon-based navigation. The UI is designed to minimise cognitive load while making symbol selection intuitive and visually engaging.
+Figure 8: Register Screen (UI)
+[Insert figure here. To be included in the final submission.]
 
-Figure 3 shows the Register screen of the app, where a user or caregiver can create a profile before using the AAC features.
+Figure 9: Home Screen (UI)
+[Insert figure here. To be included in the final submission.]
 
-Figure 3: Register Screen (UI)  
-[Insert figure here - to be included in final submission]
+Figure 10: Categories Screen (UI)
+[Insert figure here. To be included in the final submission.]
 
-Figure 4 shows the Home screen, giving access to the main AAC grid and navigation to other parts of the app.
+Figure 11: Settings Screen (UI)
+[Insert figure here. To be included in the final submission.]
 
-Figure 4: Home Screen (UI)  
-[Insert figure here - to be included in final submission]
-
-Figure 5 shows the Categories screen, where symbols are grouped into areas like needs, feelings, and activities for easier selection.
-
-Figure 5: Categories Screen (UI)  
-[Insert figure here - to be included in final submission]
-
-Figure 6 shows the Settings screen, where basic options such as language, layout, and other preferences can be adjusted.
-
-Figure 6: Settings Screen (UI)  
-[Insert figure here - to be included in final submission]
+Figure 12 demonstrates a typical AAC interaction, showing symbol selection and the resulting text-to-speech output.
 
 Figure 12: AAC Interaction Example (Symbol Selection and Output)
-[Insert figure here - showing symbol tap and TTS output flow]
-
-This figure demonstrates how a child interacts with the AAC grid, selects a symbol, and receives immediate audio feedback. This flow is designed to be simple and consistent, supporting faster learning and communication.
+[Insert figure here. To be included in the final submission.]
 
 ### 3.9 Model Training Evidence
 
-Model training for the FER component was mainly done using Google Colab with GPU support. This made it easier to run longer experiments without overloading the local machine. Several training runs were carried out with different settings (epochs, learning rates, and regularisation) to slowly improve accuracy.
+Model training for the FER component was conducted on Google Colab with GPU support. Multiple training runs were carried out with different combinations of epochs, learning rates, and regularisation settings. Each run was logged, and training/validation loss and accuracy curves were monitored to identify overfitting and guide parameter adjustments.
 
-Figure 8 illustrates a typical Google Colab training run, including the loss and accuracy logs for the model across epochs.
+Figure 13 presents a representative Colab training session showing the loss and accuracy logs across epochs.
 
-Figure 8: Model Training in Google Colab  
-[Insert figure here - screenshot of training logs will be included in final submission]
+Figure 13: Model Training in Google Colab
+[Insert figure here. To be included in the final submission.]
 
-The Colab notebook shows the training and validation loss/accuracy curves for each run. Mixed precision training was enabled to speed up training and reduce memory usage, while keeping key parts in float32 for stability. Across experiments, accuracy improved gradually as the number of epochs and other parameters were tuned.
-
-During testing, monitoring these logs during runs was helpful for spotting when the model started to overfit and when to stop or adjust the epochs.
+Mixed precision training (float16 for computational layers, float32 for final layers) reduced memory usage and enabled training with reasonable batch sizes on the free-tier GPU. Accuracy improved gradually across experiments as hyperparameters were refined.
 
 ### 3.10 Deployment and Play Store Testing
 
-To move closer to a real deployment, the application was packaged and uploaded to the Google Play Console under the **Internal Testing** track. An Android App Bundle / APK was generated from the Flutter project and then distributed to internal testers through the Play Console.
+The application was packaged and uploaded to the Google Play Console under the Internal Testing track. An Android App Bundle was generated from the Flutter project and distributed to internal testers. Internal testers installed the application on their own Android devices and verified the main flows, including the AAC grid, navigation, and basic settings. This confirmed that deployment through the Play Store is technically feasible at this stage.
 
-At this time, the project work is being carried out at IdeaHub in Nugegoda (Pagoda Road), Sri Lanka, and discussions are ongoing for the iOS release steps, including developer account access.
+Figure 14 presents the Google Play Console internal testing dashboard.
 
-Figure 9 shows the Google Play Console internal testing dashboard for the app, used to manage builds and distribute them to selected testers.
+Figure 14: Google Play Console Internal Testing
+[Insert figure here. To be included in the final submission.]
 
-Figure 9: Google Play Console - Internal Testing  
-[Insert figure here - screenshot will be included in final submission]
-
-Internal testers installed the app on their own Android devices and checked the main flows, especially the AAC grid, navigation, and basic settings. This helped to confirm that the app can be installed and launched through a normal Play Store flow. A proper Play Store link will be added in the final version after further testing and polishing.
-
-These internal tests mainly showed that, at this stage, deployment through the Play Store route is technically feasible even though the app is still in a pilot state.
+iOS deployment steps, including developer account access, are currently being arranged.
 
 ### 3.11 Real Device Testing Sessions
 
-In addition to emulators, the app was tested on two physical Android devices in everyday conditions. These sessions focused on basic AAC communication and general stability rather than formal user studies.
+In addition to emulator testing, the application was tested on two physical Android devices under everyday conditions. These sessions focused on basic AAC communication and general stability rather than formal user studies. Symbol selection, text-to-speech output, and screen navigation were tested repeatedly to check for crashes or performance issues. Initial checks of the FER pipeline confirmed that the camera feed and on-device inference could run without freezing.
 
-Figure 10 shows the AAC application running on a real Android device, demonstrating the live UI and basic interaction flow.
+Figure 15 shows the application running on a real Android device.
 
-Figure 10: Application Running on Real Device  
-[Insert figure here - screenshots/photos will be included in final submission]
+Figure 15: Application Running on Real Device
+[Insert figure here. To be included in the final submission.]
 
-During these tests, symbol selection, text-to-speech output, and screen navigation were tried repeatedly to see if any crashes or major delays occurred. Initial checks of the FER pipeline were also done to see if the camera feed and inference could run on-device without freezing. Overall, the app ran smoothly on both devices, with acceptable performance for an early-stage prototype.
-
-So far, it appears that the app can run on real devices without major issues, which provides confidence before moving to any wider pilot.
+The application performed acceptably on both devices, providing confidence that the prototype can function on real hardware before any wider pilot deployment.
 
 ### 3.12 Initial Field Exposure (Karapitiya Context)
 
-As part of understanding the real-world context, informal exposure and discussions related to the autism unit at Karapitiya Teaching Hospital were carried out. These were not a formal pilot or official data collection, but more about observing and listening to staff and families about the day-to-day communication challenges they see.
+Before any formal approval was in place, an early visit was made to Karapitiya Teaching Hospital in Galle, not to collect data, but to understand the real context behind what was being built.
 
-From these initial informal observations and conversations, it became clearer that many children have very limited ways to express basic needs and feelings, and that language (Sinhala/Tamil) and cultural fit are important. Parents and staff also highlighted issues like device availability, attention span, and noise in the clinic environment. These points helped to keep the design grounded in real needs, even though the proper pilot study will only happen after full ethics approval.
+What became clear during that visit was difficult to read about in a paper. Children were present who had no reliable way to communicate that they were hungry, or tired, or scared. Parents were not guessing occasionally. Guessing was constant. One mother described searching for an app that worked in Sinhala and finding nothing. Not something inadequate. Nothing at all.
 
-### 3.13 Supporting Links (Optional)
+The clinical staff were open and genuinely helpful, but honest about the practical constraints. The ward was noisy. Attention spans among the children were short. Many families did not own a tablet, and internet connectivity at home was unreliable even for those who did. These were not theoretical limitations drawn from ITU statistics. They were visible, and they shifted several design decisions that followed.
 
-The following links are planned to be added in the final submission once all materials are finalised:
+The offline-first architecture, the simplified interface, the deliberate decision to keep the symbol grid uncluttered. Much of that came into sharper focus after Karapitiya. The formal pilot will only proceed once ethics approval is in place, but this early exposure shaped the project in ways the literature review alone could not have.
 
-- **Google Colab (Model Training):**  
-  [Link will be provided in final submission]
+### 3.13 Supporting Links
 
-- **Google Play Testing Link (Internal Testing):**  
-  [Link will be provided in final submission]
+The following links will be included in the final submission:
 
-- **User Guidance (User Manual / Quick Guide) - Drive link:**  
-  [Drive link will be pasted in final submission]
+- **Google Colab (Model Training):** [To be provided in final submission]
+- **Google Play Testing Link (Internal Testing):** [To be provided in final submission]
+- **User Guidance (User Manual / Quick Guide):** [To be provided in final submission]
 
-### 3.14 External Interest and Future Outreach
+### 3.14 External Interest
 
-There has been some informal interest in the concept outside the academic context, although no formal collaboration has been established at this stage. The project is still in the pilot stage and Ministry of Health approval has **not** yet been obtained. Any kind of media exposure or external collaboration will only be considered **after** the system is more complete, the pilot is properly validated, and all official approvals are in place.
+There has been some informal interest in the project concept outside the academic context, although no formal collaboration has been established. The project remains at the prototype stage, and Ministry of Health approval has not yet been obtained. Any external collaboration or outreach will only be pursued after system completion, pilot validation, and all necessary approvals are in place.
 
 ---
 
 ## 4. Further Work
 
+The following subsections outline the remaining tasks required to complete the project. These tasks are aligned with the revised project plan presented in Section 5.6.
+
 ### 4.1 Platform A Completion
 
-- Finalise symbol set and resolve licensing issues.
-- Complete full vocabulary in Sinhala, Tamil, and English, including culturally appropriate symbols.
-- Integrate and evaluate text-to-speech for all three languages.
-- Implement full customisation features: configurable grid size, user-added symbols, custom categories, colour themes, font size settings.
-- Implement visual scheduling functionality.
-- Conduct internal usability testing with at least one therapist and one parent/caregiver.
+The remaining work for Platform A includes: finalising the symbol set and resolving licensing issues; completing the full vocabulary in Sinhala, Tamil, and English with culturally appropriate symbols; integrating and evaluating text-to-speech for all three languages; implementing full customisation features (configurable grid size, user-added symbols, custom categories, colour themes, and font size settings); implementing visual scheduling functionality; and conducting internal usability testing with at least one therapist and one parent/caregiver.
 
-Additional user-centred features are also planned for Platform A to improve flexibility and personalisation. These include the ability for caregivers to record custom audio for symbols (for example, a parent’s voice), edit existing cards, and add new symbols using photos captured from the device camera.
-
-These features are especially useful for children at ASD Levels 1–2, as they allow familiar voices, real-life objects, and personalised content to be incorporated into the AAC system. This can improve engagement, recognition, and overall communication effectiveness in daily use.
-
-Personalised content is particularly important in AAC systems, as familiarity can reduce cognitive load and improve communication outcomes.
+Additional personalisation features are planned, including the ability for caregivers to record custom audio for symbols, edit existing cards, and add new symbols using photos from the device camera. These features are intended to improve engagement and communication effectiveness for children at ASD Levels 1–2.
 
 ### 4.2 Platform B and AI Integration
 
-- Complete curated dataset (2,000-5,000 images) combining public data with purpose-collected data.
-- Conduct full model training with hyperparameter tuning (learning rate, batch size, fine-tuned layers, dropout rate).
-- Achieve and document the 80% accuracy target with full confusion matrix analysis, per-class precision, recall, and F1.
-- Integrate TFLite model into the Flutter app with face detection and preprocessing pipeline.
-- Implement configurable emotion-adaptive logic and caregiver override.
-- Test emotion detection on multiple devices (Android and iOS, varying screen sizes and camera qualities).
+The remaining work for Platform B includes: completing the curated dataset (2,000–5,000 images) combining public data with purpose-collected data; conducting full model training with hyperparameter tuning; achieving and documenting the 80% accuracy target with full confusion matrix analysis, per-class precision, recall, and F1; integrating the TFLite model into the Flutter application with the face detection and preprocessing pipeline; implementing configurable emotion-adaptive logic and caregiver override; and testing emotion detection on multiple devices (Android and iOS).
 
 ### 4.3 Backend and Synchronisation
 
-- Complete manual export/import backup and restore flows (shareable backup file).
-- If Firebase is implemented later, design and implement optional synchronisation with conflict handling.
-- Harden security (role-based access, encryption, audit logging) once accounts/sync are finalised.
+The remaining backend work includes: completing manual export/import backup and restore flows; designing and implementing optional Firebase synchronisation with conflict handling (if pursued); and hardening security (role-based access, encryption, audit logging).
 
 ### 4.4 Dashboard
 
-- Complete dashboard with progress visualisations, vocabulary management, and export options.
-- Conduct feedback sessions with at least one therapist and one parent.
+The dashboard requires completion with progress visualisations, vocabulary management, and data export options. Feedback sessions with at least one therapist and one parent are also planned.
 
 ### 4.5 Pilot and Evaluation
 
-- Obtain ethics approval from Karapitiya Teaching Hospital.
-- Complete Ministry of Health processes.
-- Recruit pilot participants (target: 5-15 children with ASD and their caregivers/therapists).
-- Conduct supervised pilot use over 4-8 weeks.
-- Collect quantitative data (usage logs, emotion detection accuracy, task completion rates) and qualitative data (caregiver and therapist feedback).
-- Analyse findings and document limitations, lessons learned, and recommendations.
+The pilot phase requires: obtaining ethics approval from Karapitiya Teaching Hospital and completing Ministry of Health processes; recruiting pilot participants (target: 5–15 children with ASD and their caregivers/therapists); conducting supervised pilot use over 4–8 weeks; collecting quantitative data (usage logs, emotion detection accuracy, task completion rates) and qualitative data (caregiver and therapist feedback); and analysing findings with documentation of limitations and recommendations.
 
 ### 4.6 Final Deliverables
 
-- Finalise the final report incorporating pilot findings and full model evaluation.
-- Prepare user documentation (installation guide, user manual).
-- Prepare deployment package (APK/IPA, model files, backend configuration).
-- Prepare presentation or demo for the examining panel.
+Final deliverables include: the final report incorporating pilot findings and full model evaluation; user documentation (installation guide, user manual); a deployment package (APK/IPA, model files, backend configuration); and a presentation or demonstration for the examining panel.
 
 [Table 10: Remaining Work Plan]
 
 | Task | Target Period | Dependency | Status |
 |---|---|---|---|
 | Finalise symbol set and licensing | Month 5 | None | Pending |
-| Complete Platform A (full trilingual AAC) | Months 5-6 | Symbol set | Pending |
-| Complete curated dataset | Months 5-7 | Ethics approval | Pending |
-| Full model training and evaluation | Months 6-7 | Dataset | Pending |
-| Platform B integration (FER + adaptation) | Months 6-7 | Model | Pending |
-| Full dashboard | Months 6-7 | None | Pending |
+| Complete Platform A (full trilingual AAC) | Months 5–6 | Symbol set | Pending |
+| Complete curated dataset | Months 5–7 | Ethics approval | Pending |
+| Full model training and evaluation | Months 6–7 | Dataset | Pending |
+| Platform B integration (FER + adaptation) | Months 6–7 | Model | Pending |
+| Full dashboard | Months 6–7 | None | Pending |
 | Full offline-first sync | Month 7 | None | Pending |
-| Ethics approval (hospital + MoH) | Months 5-6 | Application | In preparation |
+| Ethics approval (hospital + MoH) | Months 5–6 | Application | In preparation |
 | Pilot recruitment | Month 7 | Ethics approval | Pending |
-| Pilot execution | Months 8-9 | Recruitment | Pending |
-| Final report | Months 9-10 | All above | Pending |
+| Pilot execution | Months 8–9 | Recruitment | Pending |
+| Final report | Months 9–10 | All above | Pending |
 
 ---
 
 ## 5. Progress Review
 
-### 5.1 Overall Assessment
+### 5.1 Original Project Plan
 
-Overall, the project is on track for the interim submission. There have been a few minor delays, but these are not expected to affect the final deadline as long as the planned mitigation strategies are followed. So far, good progress has been made on the literature review, system architecture design, initial development work, AI model pipeline setup, and preparation of the required ethics documentation.
+At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five increments spanning approximately ten months, with each increment building upon the deliverables of the previous one. Figure 16 presents the original project Gantt chart.
 
-### 5.2 Areas on Track
+Figure 16: Initial Project Gantt Chart
+[Insert figure here. To be included in the final submission.]
 
-Literature review: Nearly complete, covering ASD, AAC, FER, and the Sri Lankan context with a reasonable level of critical analysis.
+The five increments in the original plan were defined as follows:
 
-System architecture and design: Completed for the interim stage. The dual-platform architecture, backend planning, emotion detection pipeline, and technology stack have all been documented.
+Increment 1 (Months 1 to 2) covered requirements analysis, architecture design, literature review, and the initial Flutter project setup. The expected deliverable was a documented system architecture and a basic application skeleton.
 
-Development methodology: The incremental approach is being followed, and overall progress is in line with the planned schedule.
+Increment 2 (Months 3 to 4) covered Platform A core AAC features, including the symbol grid, trilingual support, basic TTS, and navigation. It also included Firebase backend configuration and initial dashboard implementation. The expected deliverable was a functional, though incomplete, AAC application and backend.
 
-AI model pipeline: Set up and tested using public datasets. Initial results are reasonably promising at this stage.
+Increment 3 (Months 5 to 6) covered dataset assembly, full model training and evaluation, TFLite export, and Platform B FER integration. The expected deliverable was a working Platform B prototype.
 
-Flutter project and core AAC: The project structure is in place, and basic AAC features have been partially implemented and tested.
+Increment 4 (Months 7 to 8) covered dashboard completion, ethics approval, pilot design, consent form translation, and participant recruitment. The expected deliverable was a complete system ready for pilot deployment.
 
-Backend planning: The Firebase approach and dashboard prototype have been initiated, although full integration has not yet been completed. Currently, an offline-first local storage approach is being used.
+Increment 5 (Months 9 to 10) covered pilot execution, data collection and analysis, final report writing, and preparation of deliverables. The expected deliverable was the final report and all supporting documentation.
 
-Ethics documentation: Draft consent forms have been prepared, and initial communication with the hospital has already taken place.
+At the interim submission point, which falls at the end of Month 4, Increments 1 and 2 were expected to be fully complete.
 
-### 5.3 Areas with Minor Delays
+### 5.2 Progress Against the Original Plan
 
-Symbol set and licensing: Finalising this took slightly longer than expected, mainly due to identifying culturally appropriate symbols and resolving licensing issues. This has now been prioritised for the next increment.
+Increment 1 (Months 1 to 2) was completed on schedule. The literature review, requirements analysis, system architecture, and technology stack selection were all delivered within the planned timeframe. The Flutter project was initialised with the intended folder structure and build targets for both Android and iOS. No significant issues arose during this phase.
 
-Ethics application: There has been a delay due to administrative coordination. However, the application is now close to completion and is expected to be submitted in the next reporting period.
+Increment 2 (Months 3 to 4) is substantially complete, though progress was uneven across different work packages. The core AAC features for Platform A, including the symbol grid, screen navigation, basic text-to-speech, and the multilingual switching framework, have been partially implemented and are functional at a prototype level. The AI model pipeline was set up ahead of schedule, with preliminary training experiments on public datasets completed during this increment rather than in Increment 3 as originally planned. This early start on the model work provides a useful buffer for the next phase.
 
-Dataset collection: Purpose-built data collection has not yet started, as ethics approval is required before proceeding. For now, public datasets are being used mainly to validate the model pipeline.
+However, four areas did not progress as quickly as the original plan anticipated.
 
-### 5.4 Impact Assessment
+The symbol set and licensing process proved more time-consuming than expected. Identifying symbols that are culturally appropriate for Sri Lankan users, and then navigating the licensing terms of various symbol libraries, required correspondence and research that had not been fully accounted for in the original estimate. This work remains in progress.
 
-Currently, these delays are not expected to significantly affect the final deadline.
+The Firebase backend is at an early prototype level. The decision was taken to prioritise the offline-first architecture and local storage layer over cloud integration. Firebase configuration has been started, but full synchronisation and authentication have been deliberately deferred. This was a conscious scope prioritisation rather than an unplanned delay.
 
-Decoupled dependencies: Platform A development and model training using public data can continue in parallel while the ethics application process is ongoing.
+Text-to-speech quality for Sinhala and Tamil fell short of expectations. The assumption that the default platform TTS engines would produce acceptable output proved incorrect during initial testing. Alternative TTS services will need to be evaluated in the next increment.
 
-Buffer period: The project plan includes a buffer period before the final submission, which should help absorb minor delays.
+The ethics application for Karapitiya Teaching Hospital has taken longer to coordinate than originally anticipated. The process involves both the hospital's institutional ethics committee and Ministry of Health governance requirements. The application is in advanced preparation but has not yet been formally submitted.
 
-Contingency planning: If the pilot cannot be fully completed, the final report will still present the implemented system, model performance based on available data, and a reflective discussion of the limitations and challenges. This is considered acceptable within the scope of a final year project.
+### 5.3 Justification for Delays
 
-### 5.5 Work Breakdown Structure
+The delays identified above are minor and have specific, identifiable causes.
 
-The project is divided into the following main work packages:
+First, regarding the symbol set licensing, most established AAC symbol libraries are designed for Western contexts. Finding and licensing symbols that represent Sri Lankan food, clothing, and cultural activities required additional research and correspondence with symbol library providers. The time required for this task was underestimated in the original plan.
 
-Requirements and Design: Literature review, stakeholder analysis, requirements gathering, system architecture design, and technology selection.
+Second, regarding ethics coordination, the ethics approval process at Karapitiya Teaching Hospital involves coordination with both the hospital institutional ethics committee and the Ministry of Health. The administrative timelines for these processes were not fully known at the planning stage and have proved longer than initially assumed.
 
-Platform A Development: Flutter setup, symbol grid implementation, trilingual support, text-to-speech, customisation, visual scheduling, and usage logging.
+Third, regarding TTS quality, the original assumption that platform native TTS engines would provide acceptable Sinhala and Tamil output was incorrect. This limitation was only identified during implementation and now requires evaluation of third party alternatives.
 
-AI Model: Data sourcing, preprocessing, transfer learning setup, model training, evaluation, quantisation, and benchmarking.
+Fourth, regarding AI model training, the training pipeline was developed and executed on Google Colab using the free tier GPU allocation. The free tier imposes session time limits, which meant that longer training runs were sometimes interrupted before completion, resulting in lost checkpoints and the need to repeat experiments. This slowed the pace of iterative experimentation. More frequent checkpoint saving was adopted as a mitigation measure, and overall training progress continued, but the rate of experimentation was slower than originally anticipated.
 
-Platform B Integration: Face detection, TFLite inference, emotion-adaptive logic, caregiver override, and end-to-end testing.
+None of these delays affect the critical path in a way that compromises the final deadline, provided the revised plan outlined below is followed. The critical path runs through ethics approval, dataset collection, model training, Platform B integration, pilot execution, and the final report. Platform A development and model training on public data can proceed independently of the ethics timeline.
 
-Backend and Dashboard: Firebase configuration, schema design, security considerations, offline synchronisation handling, dashboard development, and progress visualisation.
+### 5.4 Revised Plan for Remaining Work
 
-Ethics and Pilot: Consent forms, translations, ethics application, Ministry coordination, participant recruitment, pilot execution, and analysis.
+Based on the progress to date and the delays identified, the project plan has been revised for the remaining increments. The key adjustment is the introduction of an overlap between Increments 3 and 4, where Platform A completion, model training, and ethics preparation proceed in parallel. This is feasible because these tasks have limited interdependencies. Figure 17 presents the updated project Gantt chart reflecting these changes.
 
-Documentation: Interim report, final report, user documentation, presentation materials, and code archival.
+Figure 17: Updated Project Gantt Chart
+[Insert figure here. To be included in the final submission.]
 
-### 5.6 Gantt Chart Summary
+The revised schedule is as follows.
 
-The project schedule covers the full academic year in five phases, aligned with the defined increments:
+Months 5 to 6 (Revised Increment 3). The focus during this period will be on finalising the symbol set, completing Platform A vocabulary and TTS integration, submitting the ethics application, continuing model training on public datasets, and beginning dataset curation.
 
-Phase 1 (Months 1-2): Requirements, Architecture, and Literature Review. Tasks included literature review, requirements elicitation, system architecture design, and project setup. Milestone: Architecture design complete. Status: Complete.
+Months 6 to 7 (Overlap between Revised Increments 3 and 4). This period will focus on full model training and evaluation once the dataset is ready, Platform B FER integration and testing, and dashboard completion.
 
-Phase 2 (Months 3-4): Platform A and Backend Development. Tasks included Platform A AAC features, multilingual vocabulary, TTS integration, Firebase setup, and initial dashboard work. Milestone: Platform A basic version demo. Status: Substantially complete.
+Months 7 to 8 (Revised Increment 4). Ethics approval is expected during this period. Tasks include pilot preparation, participant recruitment, and finalisation of backup and synchronisation flows.
 
-Phase 3 (Months 5-6): AI Model and Platform B Integration. Tasks include dataset assembly, model training, TFLite export, Platform B FER pipeline, and emotion-adaptive vocabulary. Milestone: Model accuracy target achieved and Platform B demo. Status: Early stages (pipeline setup and preliminary training completed).
+Months 8 to 9 (Revised Increment 5). This period covers pilot execution at Karapitiya Teaching Hospital, data collection, and preliminary analysis.
 
-Phase 4 (Months 7-8): Dashboard Completion, Ethics, and Pilot Preparation. Tasks include dashboard completion, ethics application and approval, pilot design, consent form translation, and participant recruitment. Milestone: Ethics approval and pilot readiness. Status: Early stages (ethics preparation and hospital coordination ongoing).
+Months 9 to 10 (Final phase). The final period is reserved for final report writing, preparation of deliverables, and the project presentation.
 
-Phase 5 (Months 9-10): Pilot Execution and Final Report. Tasks include pilot deployment, data collection, analysis, final report writing, and presentation preparation. Milestone: Pilot completion and final report submission. Status: Not yet started.
+The main difference between the original and revised plans is the parallel scheduling of previously sequential tasks during Months 5 to 8. This approach absorbs the minor delays without extending the overall project timeline.
 
-The critical path includes ethics approval, dataset collection, model training, Platform B integration, pilot execution, and final report completion. Non-critical tasks, such as documentation refinements and optional dashboard features, can be adjusted if needed to manage time effectively.
+### 5.5 Risk Assessment for Remaining Work
+
+The most significant risk to the revised plan is a delay in ethics approval, which would prevent purpose collected data from being included in the training dataset and would delay the pilot study. The primary contingency is to complete model training and evaluation using public datasets only, and to conduct Platform A usability testing with informal participants rather than a formal pilot. This would still produce a valid proof of concept, though with acknowledged limitations.
+
+Other risks, including model accuracy below the 80 per cent target, insufficient TTS quality for Sinhala and Tamil, and limited therapist or parent availability for the pilot, are mitigated through the strategies documented in Section 2.10.
+
+### 5.6 Work Breakdown Structure
+
+The project is divided into the following main work packages.
+
+Requirements and Design covers the literature review, stakeholder analysis, requirements gathering, system architecture design, and technology selection.
+
+Platform A Development covers Flutter setup, symbol grid implementation, trilingual support, text to speech integration, customisation features, visual scheduling, and usage logging.
+
+AI Model covers data sourcing, preprocessing, transfer learning setup, model training, evaluation, quantisation, and benchmarking.
+
+Platform B Integration covers face detection, TFLite inference, emotion adaptive logic, caregiver override, and end to end testing.
+
+Backend and Dashboard covers Firebase configuration, schema design, security considerations, offline synchronisation handling, dashboard development, and progress visualisation.
+
+Ethics and Pilot covers consent forms, translations, the ethics application, Ministry coordination, participant recruitment, pilot execution, and analysis.
+
+Documentation covers the interim report, final report, user documentation, presentation materials, and code archival.
 
 ### 5.7 Conclusion
 
-This interim report has outlined the design, methodology, and current progress of an AI-powered AAC system with facial expression recognition for children with autism in Sri Lanka. The project addresses a clear gap, as there are currently no culturally and linguistically appropriate AAC tools that combine affective computing with support for Sinhala and Tamil.
+The project has completed Increment 1 in full and the majority of Increment 2. The literature review, system architecture, technology selection, Flutter project setup, and preliminary AI model training are all in place. Some tasks have taken longer than the original plan allowed for, particularly symbol set licensing, ethics coordination with Karapitiya Teaching Hospital, and the discovery that platform TTS engines do not produce acceptable Sinhala and Tamil output. These delays are acknowledged but none of them are severe enough to compromise the final deadline, provided the revised plan is followed.
 
-The dual-platform approach provides a practical and structured solution. Platform A focuses on customisable, trilingual AAC for children at Level 1–2, while Platform B extends this with on-device FER for children at Level 3 and above. Using Flutter and TensorFlow Lite allows the system to run on affordable mobile devices, which is important in environments where internet access may be limited. Currently, data is stored locally and backup is handled through manual export, while Firebase remains a planned option for future synchronisation.
+The amount of work remaining is substantial. Platform A needs to be completed with full trilingual vocabulary and customisation features. The FER model needs to be trained on a larger, more balanced dataset and integrated into the Flutter application. The ethics application needs to be submitted and approved before any pilot data collection can begin. The revised plan introduces parallel scheduling for these tasks during Months 5 to 8, which is feasible because the tasks have limited interdependencies.
 
-So far, key areas such as the literature review, system design, initial development, AI model pipeline, and ethics preparation have been completed or are well underway. Backend development is still at a prototype level. Overall, the project remains on track, with minor delays being actively managed.
+The most significant risk is a delay in ethics approval, which would prevent purpose-collected data from being included in the training set and would push back the pilot study. A contingency plan exists for this scenario: model training and evaluation would proceed using public datasets only, and Platform A usability testing would be conducted with informal participants. This would still produce a valid proof of concept, though with acknowledged limitations in the evaluation.
 
-The remaining work will focus on completing both platforms, achieving the target model accuracy, finalising the dashboard, obtaining ethics approval, conducting the pilot study, and completing the final report. The aim is to deliver a working proof-of-concept and contribute practical insights into AI-enhanced AAC systems in a Sri Lankan context.
+At this stage, the project is in a reasonable position relative to the academic timeline. The foundational and architectural work is solid, the early model experiments have produced informative results, and the remaining tasks are clearly defined. The goal remains to deliver a working system that addresses the identified gap in AAC provision for children with autism in Sri Lanka.
 
 ---
 
