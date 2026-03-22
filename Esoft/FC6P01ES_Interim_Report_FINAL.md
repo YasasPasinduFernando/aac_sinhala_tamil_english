@@ -79,8 +79,9 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 13. Figure 13: Model Training in Google Colab
 14. Figure 14: Google Play Console Internal Testing
 15. Figure 15: Application Running on Real Device
-16. Figure 16: Initial Project Gantt Chart
-17. Figure 17: Updated Project Gantt Chart
+16. Figure 16: Field Exposure at Karapitiya Teaching Hospital
+17. Figure 17: Initial Project Gantt Chart
+18. Figure 18: Updated Project Gantt Chart
 
 ## List of Tables
 
@@ -747,13 +748,20 @@ The application performed acceptably on both devices, providing confidence that 
 
 ### 3.12 Initial Field Exposure (Karapitiya Context)
 
-Before any formal approval was in place, an early visit was made to Karapitiya Teaching Hospital in Galle, not to collect data, but to understand the real context behind what was being built.
+An initial field exposure was conducted at Karapitiya Teaching Hospital in Galle to gain a practical understanding of the real-world context in which the proposed system would be used. This visit was exploratory in nature and did not involve formal data collection, as ethical approval had not yet been obtained at this stage.
 
-What became clear during that visit was difficult to read about in a paper. Children were present who had no reliable way to communicate that they were hungry, or tired, or scared. Parents were not guessing occasionally. Guessing was constant. One mother described searching for an app that worked in Sinhala and finding nothing. Not something inadequate. Nothing at all.
+Observations from this setting highlighted significant communication challenges faced by children with autism spectrum disorder. Many of the children present did not have reliable means of expressing basic needs such as hunger, discomfort, or emotional distress. Caregivers reported relying on continuous interpretation and guesswork, often without access to suitable digital tools. Additionally, the absence of AAC applications supporting the Sinhala language was identified as a critical gap, reinforcing the motivation for this project.
 
-The clinical staff were open and genuinely helpful, but honest about the practical constraints. The ward was noisy. Attention spans among the children were short. Many families did not own a tablet, and internet connectivity at home was unreliable even for those who did. These were not theoretical limitations drawn from ITU statistics. They were visible, and they shifted several design decisions that followed.
+From an environmental perspective, the clinical setting presented several practical constraints. The ward environment was relatively noisy, attention spans among the children were limited, and many families did not have consistent access to tablets or similar devices. Internet connectivity in home environments was also reported as unreliable, even among families who owned compatible devices. These constraints were directly observed and had a clear influence on subsequent design decisions.
 
-The offline-first architecture, the simplified interface, the deliberate decision to keep the symbol grid uncluttered. Much of that came into sharper focus after Karapitiya. The formal pilot will only proceed once ethics approval is in place, but this early exposure shaped the project in ways the literature review alone could not have.
+In particular, the adoption of an offline-first architecture, the implementation of a simplified user interface, and the decision to maintain a minimal and uncluttered symbol grid were all informed by insights gained during this field exposure.
+
+Figure 16 illustrates the field exposure session conducted at Karapitiya Teaching Hospital, where the AAC application was demonstrated within a real-world context.
+
+Figure 16: Field Exposure at Karapitiya Teaching Hospital
+[Insert figure here. To be included in the final submission.]
+
+The formal pilot testing phase will be conducted following ethical approval. However, this initial exposure provided practical insights that could not be fully captured through the literature review alone and contributed significantly to shaping the overall system design.
 
 ### 3.13 Supporting Links
 
@@ -821,9 +829,9 @@ Final deliverables include: the final report incorporating pilot findings and fu
 
 ### 5.1 Original Project Plan
 
-At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five increments spanning approximately ten months, with each increment building upon the deliverables of the previous one. Figure 16 presents the original project Gantt chart.
+At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five increments spanning approximately ten months, with each increment building upon the deliverables of the previous one. Figure 17 presents the original project Gantt chart.
 
-Figure 16: Initial Project Gantt Chart
+Figure 17: Initial Project Gantt Chart
 [Insert figure here. To be included in the final submission.]
 
 The five increments in the original plan were defined as follows:
@@ -872,9 +880,9 @@ None of these delays affect the critical path in a way that compromises the fina
 
 ### 5.4 Revised Plan for Remaining Work
 
-Based on the progress to date and the delays identified, the project plan has been revised for the remaining increments. The key adjustment is the introduction of an overlap between Increments 3 and 4, where Platform A completion, model training, and ethics preparation proceed in parallel. This is feasible because these tasks have limited interdependencies. Figure 17 presents the updated project Gantt chart reflecting these changes.
+Based on the progress to date and the delays identified, the project plan has been revised for the remaining increments. The key adjustment is the introduction of an overlap between Increments 3 and 4, where Platform A completion, model training, and ethics preparation proceed in parallel. This is feasible because these tasks have limited interdependencies. Figure 18 presents the updated project Gantt chart reflecting these changes.
 
-Figure 17: Updated Project Gantt Chart
+Figure 18: Updated Project Gantt Chart
 [Insert figure here. To be included in the final submission.]
 
 The revised schedule is as follows.
