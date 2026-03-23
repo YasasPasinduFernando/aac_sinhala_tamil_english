@@ -495,29 +495,41 @@ Figure 19: Trello Board for Sprint Management
 
 ### 2.7 Research Methodology
 
-#### 2.7.1 Justification for Mixed-Methods Approach
+#### 2.7.1 Research Type
+
+This project is classified as applied research. Unlike pure or theoretical research, which aims to generate new knowledge for its own sake, applied research focuses on solving a specific, real-world problem using existing knowledge and techniques (Kothari, 2004). In this case, the problem is the absence of a culturally and linguistically appropriate AAC system with emotion recognition for children with autism in Sri Lanka. The project applies established technologies and frameworks, including deep learning for facial expression recognition, Flutter for cross-platform mobile development, and AAC design principles from the literature, to develop a practical solution that addresses this identified gap.
+
+Applied research was considered the most appropriate classification because the primary objective is not to advance theoretical understanding of autism, AAC, or deep learning as academic disciplines, but rather to design, build, and evaluate a working system that can be used by real children, caregivers, and therapists in a Sri Lankan clinical and home context.
+
+#### 2.7.2 Justification for Mixed-Methods Approach
 
 A mixed-methods research approach was selected for this project because it involves both technical system evaluation and human-centred usability assessment, and neither a purely quantitative nor a purely qualitative strategy would be sufficient on its own. The performance of the facial expression recognition model requires objective, numerical evaluation through classification metrics, which is inherently quantitative. At the same time, the usability, acceptance, and real-world effectiveness of the AAC system can only be understood through the subjective insights and lived experiences of caregivers, therapists, and observers, which is inherently qualitative. Combining both approaches provides a more comprehensive evaluation of the system than either method could achieve alone. Creswell and Creswell (2018) argue that mixed-methods designs are particularly appropriate when a research problem requires both numerical performance data and contextual human insight, which is precisely the case here.
 
 A convergent mixed-methods design was chosen, where quantitative and qualitative data are collected in parallel during the pilot phase and then compared to provide a more complete picture of the system's effectiveness and usability.
 
-#### 2.7.2 Quantitative Evaluation
+#### 2.7.3 Quantitative Evaluation
 
-Quantitative evaluation will be conducted in two areas.
+The quantitative component of the evaluation serves as the primary means of objectively measuring whether the system meets its defined requirements. This component is divided into two areas.
 
-The first is FER model performance. The trained model is evaluated using standard classification metrics, including overall accuracy, per-class precision, recall, F1-score, and a confusion matrix. These metrics are computed on a held-out test set that was not used during training. The target accuracy is at least 80 per cent across six emotion classes.
+The first is FER model performance. The trained model is evaluated using standard classification metrics, including overall accuracy, per-class precision, recall, F1-score, and a confusion matrix. These metrics are computed on a held-out test set that was not used during training. The target accuracy is at least 80 per cent across six emotion classes. If the model falls below this threshold, the results will be analysed to determine which classes are underperforming and what corrective measures (such as additional data collection or class rebalancing) are needed.
 
 The second is system usability and user experience. During the pilot phase, structured questionnaires will be distributed to caregivers and therapists who observe or facilitate the use of the application with children. These questionnaires will use Likert scale responses (1 to 5) to measure usability, satisfaction, and system effectiveness across dimensions such as ease of use, symbol relevance, navigation clarity, response time, and overall satisfaction. The System Usability Scale (SUS) will also be applied as a standardised usability measure (Brooke, 1996). Questionnaire responses will be analysed using descriptive statistics to identify patterns in user satisfaction and areas requiring improvement.
 
-#### 2.7.3 Qualitative Evaluation
+Non-functional requirements, including emotion inference latency (target under 500 ms), application startup time (target under 3 seconds), and offline reliability, will also be measured quantitatively on test devices.
+
+#### 2.7.4 Qualitative Evaluation
 
 Qualitative evaluation will be conducted through semi-structured interviews with caregivers and therapists following the pilot period. These interviews will explore user experience, perceived usefulness of the system, challenges faced during use, whether the symbol vocabulary was culturally and linguistically appropriate, how useful the emotion detection feature was perceived to be, and suggestions for improvement.
 
 Observational notes will also be recorded during pilot sessions, documenting how children interact with the interface, which symbols are used most frequently, how caregivers intervene or support the interaction, and any behavioural responses to the emotion-adaptive features. Qualitative data will be analysed thematically to identify recurring patterns and insights that the quantitative data alone may not capture.
 
-#### 2.7.4 Evidence for the Final Report
+#### 2.7.5 Evaluation Process and Drawing Conclusions
 
-In the final report, both quantitative and qualitative evidence will be presented to support the overall evaluation of the system. Quantitative data will include model evaluation metrics (accuracy, precision, recall, F1-score, confusion matrix), questionnaire results with statistical summaries, SUS scores, and system performance benchmarks (inference latency, startup time). Qualitative data will include thematic analysis of interview transcripts, observational notes from pilot sessions, and selected participant feedback (anonymised). This combined evidence will provide a balanced assessment of the system's technical performance and its practical value in the intended context, and will form the basis for conclusions and recommendations in the final report.
+The overall evaluation process will follow a structured sequence. First, the FER model will be evaluated against its performance targets using the held-out test set, and the results will be documented with supporting metrics and visualisations such as the confusion matrix and training curves. Second, during the pilot study at Karapitiya Teaching Hospital, quantitative data (questionnaire responses, usage logs, SUS scores) and qualitative data (interview transcripts, observational notes) will be collected in parallel from caregivers and therapists.
+
+Once all data has been collected, the quantitative results will be summarised using descriptive statistics and compared against the defined functional and non-functional requirements. The qualitative findings will be organised through thematic analysis, identifying common themes such as perceived ease of use, barriers to adoption, and suggestions for feature improvement.
+
+Conclusions will be drawn by triangulating the quantitative and qualitative findings. For example, if the SUS score indicates moderate usability but interview responses reveal specific navigation difficulties, the conclusion would identify targeted improvements rather than a general assessment of success or failure. This triangulation approach is intended to produce conclusions that are grounded in measurable evidence while also reflecting the practical realities of use in the Sri Lankan context. The final report will present these conclusions alongside specific recommendations for future development and deployment.
 
 The development follows an Agile Scrum methodology (described in Section 2.6), with the application built and tested in iterative sprints. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval.
 
@@ -1115,6 +1127,8 @@ Ioffe, S. and Szegedy, C. (2015) 'Batch normalization: accelerating deep network
 Jacob, B., Kligys, S., Chen, B., Zhu, M., Tang, M., Howard, A., Adam, H. and Kalenichenko, D. (2018) 'Quantization and training of neural networks for efficient integer-arithmetic-only inference', in *Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition*. Piscataway, NJ: IEEE, pp. 2704-2713.
 
 Jobin, A., Ienca, M. and Vayena, E. (2019) 'The global landscape of AI ethics guidelines', *Nature Machine Intelligence*, 1(9), pp. 389-399.
+
+Kothari, C.R. (2004) *Research methodology: methods and techniques*. 2nd edn. New Delhi: New Age International Publishers.
 
 LeCun, Y., Bengio, Y. and Hinton, G. (2015) 'Deep learning', *Nature*, 521(7553), pp. 436-444.
 
