@@ -185,7 +185,7 @@ def convert(input_path, output_path):
             p = doc.add_paragraph()
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             set_paragraph_spacing(p, before=8, after=4)
-            add_run(p, stripped[1:-1], bold=True, italic=True, size=10)
+            add_run(p, stripped[1:-1], bold=True, italic=True, size=FONT_SIZE)
             i += 1
             continue
 
@@ -205,10 +205,10 @@ def convert(input_path, output_path):
                             p = cell.paragraphs[0]
                             p.paragraph_format.space_before = Pt(2)
                             p.paragraph_format.space_after = Pt(2)
-                            p.paragraph_format.line_spacing = 1.0
+                            p.paragraph_format.line_spacing = LINE_SPACING
 
                             is_header = (row_idx == 0)
-                            process_inline(p, cell_text, size=10, base_bold=is_header)
+                            process_inline(p, cell_text, size=FONT_SIZE, base_bold=is_header)
                             set_cell_borders(cell)
 
                 doc.add_paragraph().paragraph_format.space_after = Pt(4)
@@ -237,8 +237,8 @@ def convert(input_path, output_path):
         if stripped.startswith('**Keywords:**'):
             p = doc.add_paragraph()
             set_paragraph_spacing(p, before=8)
-            add_run(p, 'Keywords: ', bold=True, size=11)
-            add_run(p, stripped.replace('**Keywords:**', '').strip(), italic=True, size=11)
+            add_run(p, 'Keywords: ', bold=True, size=FONT_SIZE)
+            add_run(p, stripped.replace('**Keywords:**', '').strip(), italic=True, size=FONT_SIZE)
             i += 1
             continue
 
@@ -283,8 +283,8 @@ def convert(input_path, output_path):
             i += 1
             continue
 
-        # Increment/Phase headings
-        inc_match = re.match(r'^\*\*((?:Increment|Phase) \d+.*?)\*\*\s*(.*)', stripped)
+        # Sprint/Increment/Phase headings
+        inc_match = re.match(r'^\*\*((?:Sprint|Increment|Phase) \d+.*?)\*\*\s*(.*)', stripped)
         if inc_match:
             p = doc.add_paragraph()
             set_paragraph_spacing(p, before=8, after=3)
