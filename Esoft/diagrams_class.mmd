@@ -1,0 +1,189 @@
+classDiagram
+    class User {
+        -int userId
+        -String name
+        -String email
+        -String role
+        +login()
+        +register()
+        +getProfile()
+    }
+
+    class ChildProfile {
+        -int profileId
+        -String childName
+        -int age
+        -String asdLevel
+        -String preferredLanguage
+        -String avatar
+        +createProfile()
+        +updateProfile()
+        +getSettings()
+    }
+
+    class Category {
+        -int categoryId
+        -String nameEn
+        -String nameSi
+        -String nameTa
+        -String icon
+        -int displayOrder
+        +getSymbols()
+        +addCustomCategory()
+    }
+
+    class Symbol {
+        -int symbolId
+        -String labelEn
+        -String labelSi
+        -String labelTa
+        -String imagePath
+        -String audioPath
+        -boolean isCustom
+        +getLabel(language)
+        +playAudio()
+    }
+
+    class SymbolGrid {
+        -int gridSize
+        -List~Symbol~ symbols
+        +displayGrid()
+        +updateGrid(emotion)
+        +setGridSize(size)
+    }
+
+    class TTSEngine {
+        -String activeLanguage
+        -float speechRate
+        +speak(text, language)
+        +setLanguage(language)
+        +stop()
+    }
+
+    class Session {
+        -int sessionId
+        -DateTime startTime
+        -DateTime endTime
+        -String sessionType
+        +startSession()
+        +endSession()
+        +getLogs()
+    }
+
+    class UsageLog {
+        -int logId
+        -DateTime timestamp
+        -String actionType
+        +logSelection(symbol)
+        +logAction(action)
+    }
+
+    class FERModule {
+        -boolean isEnabled
+        -float confidenceThreshold
+        +initialise()
+        +processFrame(image)
+        +getEmotion()
+        +dispose()
+    }
+
+    class FaceDetector {
+        -String modelPath
+        +detectFace(image)
+        +getCroppedFace()
+        +isValidFace()
+    }
+
+    class EmotionClassifier {
+        -String tfliteModelPath
+        -List~String~ emotionLabels
+        +classify(faceImage)
+        +getConfidence()
+        +getPredictions()
+    }
+
+    class AdaptationEngine {
+        -Map~String,List~ emotionVocabulary
+        +adaptVocabulary(emotion)
+        +getAdaptedSymbols()
+        +resetToDefault()
+    }
+
+    class CaregiverOverride {
+        -boolean overrideActive
+        +override(emotion)
+        +dismiss()
+        +acceptDetection()
+    }
+
+    class EmotionRecord {
+        -int recordId
+        -String detectedEmotion
+        -float confidenceScore
+        -DateTime timestamp
+        -boolean overridden
+        +save()
+        +getHistory()
+    }
+
+    class LocalStorage {
+        -String dbPath
+        +saveData(entity)
+        +loadData(query)
+        +deleteData(id)
+        +exportBackup()
+    }
+
+    class BackupManager {
+        +exportToFile()
+        +importFromFile()
+        +shareBackup()
+    }
+
+    class Dashboard {
+        +viewProgress(profileId)
+        +viewEmotionHistory(profileId)
+        +viewUsageLogs(profileId)
+        +exportReport()
+    }
+
+    class VisualSchedule {
+        -List~ScheduleItem~ items
+        +addItem(item)
+        +removeItem(id)
+        +displaySchedule()
+    }
+
+    class SettingsManager {
+        -int gridSize
+        -String colourTheme
+        -String fontSize
+        -boolean ttsEnabled
+        -boolean ferEnabled
+        -String activeLanguage
+        +updateSettings()
+        +getSettings()
+        +resetDefaults()
+    }
+
+    User "1" --> "*" ChildProfile : manages
+    ChildProfile "1" --> "*" Session : has
+    ChildProfile "1" --> "1" SettingsManager : has
+    Session "1" --> "*" UsageLog : contains
+    Session "1" --> "*" EmotionRecord : records
+    Category "1" --> "*" Symbol : contains
+    Symbol "*" --> "*" UsageLog : referenced in
+    SymbolGrid --> Symbol : displays
+    SymbolGrid --> AdaptationEngine : adapted by
+    TTSEngine --> Symbol : speaks
+    FERModule --> FaceDetector : uses
+    FERModule --> EmotionClassifier : uses
+    EmotionClassifier --> AdaptationEngine : triggers
+    AdaptationEngine --> SymbolGrid : modifies
+    CaregiverOverride --> EmotionRecord : overrides
+    Dashboard --> Session : reads
+    Dashboard --> EmotionRecord : reads
+    LocalStorage --> ChildProfile : stores
+    LocalStorage --> Session : stores
+    BackupManager --> LocalStorage : exports from
+    VisualSchedule --> ChildProfile : belongs to

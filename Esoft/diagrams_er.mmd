@@ -1,0 +1,89 @@
+erDiagram
+    USER {
+        int user_id PK
+        string name
+        string email
+        string role
+        string password_hash
+        datetime created_at
+    }
+
+    CHILD_PROFILE {
+        int profile_id PK
+        int user_id FK
+        string child_name
+        int age
+        string asd_level
+        string preferred_language
+        string avatar
+        datetime created_at
+    }
+
+    CATEGORY {
+        int category_id PK
+        string name_en
+        string name_si
+        string name_ta
+        string icon
+        int display_order
+        boolean is_custom
+    }
+
+    SYMBOL {
+        int symbol_id PK
+        int category_id FK
+        string label_en
+        string label_si
+        string label_ta
+        string image_path
+        string audio_path
+        boolean is_custom
+    }
+
+    SESSION {
+        int session_id PK
+        int profile_id FK
+        datetime start_time
+        datetime end_time
+        int total_selections
+        string session_type
+    }
+
+    USAGE_LOG {
+        int log_id PK
+        int session_id FK
+        int symbol_id FK
+        datetime timestamp
+        string action_type
+    }
+
+    EMOTION_RECORD {
+        int record_id PK
+        int session_id FK
+        int profile_id FK
+        string detected_emotion
+        float confidence_score
+        datetime timestamp
+        boolean caregiver_override
+        string override_emotion
+    }
+
+    SETTINGS {
+        int settings_id PK
+        int profile_id FK
+        int grid_size
+        string colour_theme
+        string font_size
+        boolean tts_enabled
+        boolean fer_enabled
+        string active_language
+    }
+
+    USER ||--o{ CHILD_PROFILE : "manages"
+    CHILD_PROFILE ||--o{ SESSION : "has"
+    CHILD_PROFILE ||--|| SETTINGS : "has"
+    CHILD_PROFILE ||--o{ EMOTION_RECORD : "generates"
+    SESSION ||--o{ USAGE_LOG : "contains"
+    SESSION ||--o{ EMOTION_RECORD : "records"
+    CATEGORY ||--o{ SYMBOL : "contains"
+    SYMBOL ||--o{ USAGE_LOG : "referenced in"
