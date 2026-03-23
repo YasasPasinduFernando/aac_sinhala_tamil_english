@@ -100,6 +100,8 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 8. Table 8: Risk Assessment Matrix
 9. Table 9: Work Completed Summary
 10. Table 10: Remaining Work Plan
+11. Table 11: Development Libraries and Packages
+12. Table 12: AI Model Training Libraries
 
 **Formatting note (ESOFT):** When exporting/printing, apply Times New Roman, size 12, 1.5 line spacing, and keep the heading hierarchy as shown in this document.
 
@@ -738,7 +740,42 @@ Figure 4: Class Diagram of the AAC System
 
 ### 3.3 Development Environment and Core AAC
 
-The Flutter project follows a standard folder structure with separate directories for models, services, screens, widgets, and utilities. It targets Android 8.0+ and iOS 14+ from a single Dart codebase.
+The application was developed using Visual Studio Code as the primary IDE, with Flutter SDK (Dart SDK >=2.19.0) as the development framework. The project follows a standard Flutter folder structure with separate directories for models, services, screens, widgets, and utilities. It targets Android 8.0+ and iOS 14+ from a single Dart codebase.
+
+The following table lists the key development libraries and packages used in the project, as specified in the project dependency file (`pubspec.yaml`). These packages were selected based on their relevance to the project requirements, community support, and compatibility with the offline-first architecture.
+
+[Table 11: Development Libraries and Packages]
+
+| Package | Version | Purpose | Justification for Selection |
+|---|---|---|---|
+| flutter (SDK) | >=2.19.0 | Cross-platform mobile framework | Single codebase for both Android and iOS; large community; hot reload speeds up development; native performance through platform channels |
+| cupertino_icons | ^1.0.6 | iOS-style icon set | Provides platform-consistent iconography for iOS users without requiring separate asset bundles |
+| flutter_tts | ^3.8.3 | Text-to-speech output | Most widely adopted Flutter TTS package; supports multiple languages including Sinhala and Tamil engine access; works offline |
+| shared_preferences | ^2.2.2 | Local key-value storage | Lightweight and simple for storing user settings and preferences; no server dependency; supports the offline-first architecture |
+| google_mobile_ads | ^4.0.0 | Advertisement integration | Planned for a future sustainability model to keep the application free for end users; official Google package with strong documentation |
+| http | ^1.1.0 | HTTP client | Standard Dart HTTP package for planned payment gateway and optional API calls; minimal footprint |
+| connectivity_plus | ^5.0.0 | Network connectivity detection | Required for offline-first behaviour; detects connection state changes so the application can switch between offline and online modes |
+| camera | ^0.11.0+2 | Camera access | Official Flutter camera plugin; provides access to the front-facing camera required for facial expression capture in Platform B |
+| tflite_flutter | ^0.12.1 | On-device ML inference | Only viable option for running TensorFlow Lite models within Flutter via platform channels; enables on-device emotion classification without cloud dependency |
+| image | ^4.1.7 | Image processing | Needed for preprocessing camera frames (cropping, resizing to 224x224, normalisation) before passing them to the TFLite model |
+| flutter_test (dev) | SDK | Unit and widget testing | Built-in Flutter testing framework; no additional dependency needed; supports mock-based testing of AAC and FER logic |
+| flutter_launcher_icons (dev) | ^0.13.1 | App icon generation | Automates icon generation for both Android and iOS from a single source image; reduces manual configuration |
+| flutter_lints (dev) | ^6.0.0 | Code quality | Enforces recommended Dart coding standards and best practices through static analysis |
+
+Custom assets bundled with the application include the TensorFlow Lite emotion model (`emotion_model.tflite`), emotion class labels (`labels.txt`), and the NotoColorEmoji font for consistent emoji rendering across devices.
+
+For the AI model training component, the following Python libraries were used within Google Colab.
+
+[Table 12: AI Model Training Libraries (Google Colab)]
+
+| Library | Purpose | Justification for Selection |
+|---|---|---|
+| TensorFlow / Keras | Model training and evaluation | Industry-standard deep learning framework; supports transfer learning with EfficientNetB0; direct TFLite export for mobile deployment |
+| NumPy | Array manipulation and computation | Required dependency for TensorFlow; used for data preprocessing and numerical operations |
+| Matplotlib | Training curve visualisation | Standard plotting library; used to visualise loss and accuracy curves across training epochs for model evaluation |
+| Pillow (PIL) | Image loading and preprocessing | Widely used image library; handles loading, resizing, and format conversion of facial expression images |
+| scikit-learn | Classification metrics and confusion matrix | Provides precision, recall, F1-score, and confusion matrix functions required for model evaluation against the 80% accuracy target |
+| tf.data API | Optimised data pipeline | Built into TensorFlow; enables efficient batching, shuffling, and augmentation during training; reduces GPU idle time |
 
 Core AAC features for Platform A have been partially implemented.
 
