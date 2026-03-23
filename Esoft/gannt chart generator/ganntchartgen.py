@@ -117,28 +117,20 @@ def create_gantt(tasks_data, title, subtitle_extra, output_name, today_line=None
 # (Original plan from project proposal)
 # ═══════════════════════════════════════════
 initial_tasks = [
-    ("Literature Review",                "2025-11-01", "2025-12-15", "#2E7DB6"),
-    ("Requirements Analysis",            "2025-11-15", "2025-12-20", "#4A90D9"),
-    ("System Architecture Design",       "2025-12-01", "2025-12-31", "#1B5E8A"),
-    ("Flutter Project Setup",            "2025-12-10", "2025-12-31", "#6BAED6"),
-    ("Symbol Grid & AAC Interface",      "2026-01-01", "2026-02-15", "#F28E1C"),
-    ("Trilingual Framework",             "2026-01-10", "2026-02-20", "#F5A623"),
-    ("TTS Integration",                  "2026-01-15", "2026-02-28", "#E8751A"),
-    ("Local Data Layer (SQLite/JSON)",   "2026-01-05", "2026-01-31", "#FFB84D"),
-    ("AI Model Pipeline Setup",          "2026-02-01", "2026-03-15", "#2CA02C"),
-    ("Full Model Training & TFLite",     "2026-03-01", "2026-03-31", "#3DBF3D"),
-    ("Ethics Application & Approval",    "2026-03-01", "2026-04-15", "#98DF8A"),
-    ("FER Integration (Platform B)",     "2026-04-01", "2026-04-25", "#D62728"),
-    ("Dashboard Development",            "2026-04-01", "2026-04-20", "#FF6B6B"),
-    ("Pilot Preparation",                "2026-04-10", "2026-04-30", "#9467BD"),
-    ("Pilot Execution & Data Collection","2026-05-01", "2026-05-20", "#E377C2"),
-    ("Final Report & Deliverables",      "2026-05-05", "2026-05-31", "#7F7F7F"),
+    ("Platform A Completion",  "2026-02-01", "2026-03-15", "#2E7DB6"),
+    ("Dataset & Ethics Prep",  "2026-02-01", "2026-03-10", "#F28E1C"),
+    ("Model Training",         "2026-03-01", "2026-04-10", "#2CA02C"),
+    ("FER Integration",        "2026-03-15", "2026-04-20", "#D62728"),
+    ("Dashboard Development",  "2026-03-10", "2026-04-20", "#9467BD"),
+    ("Pilot Preparation",      "2026-04-15", "2026-05-01", "#8C564B"),
+    ("Pilot Execution",        "2026-05-01", "2026-05-20", "#E377C2"),
+    ("Final Report",           "2026-05-10", "2026-05-31", "#7F7F7F"),
 ]
 
 create_gantt(
     initial_tasks,
-    "AAC System - Initial Project Plan (Gantt Chart)",
-    "5 Sprints | Nov 2025 - May 2026",
+    "AI-Powered Facial Expression Analysis & AAC Platform Development",
+    "Original Project Plan",
     "gantt_initial.png"
 )
 
@@ -148,19 +140,19 @@ create_gantt(
 # (Revised plan with parallel scheduling)
 # ═══════════════════════════════════════════
 updated_tasks = [
-    ("Literature Review [Done]",              "2025-11-01", "2025-12-15", "#93C5E6"),
-    ("Requirements & Architecture [Done]",    "2025-11-15", "2025-12-31", "#93C5E6"),
-    ("Flutter Setup & Design Artefacts [Done]","2025-12-10", "2025-12-31", "#93C5E6"),
-    ("Symbol Grid & AAC Interface [Done]",    "2026-01-01", "2026-02-10", "#FFD699"),
-    ("TTS & Trilingual Framework [In Prog]",  "2026-01-10", "2026-03-31", "#FFF2CC"),
-    ("Local Data Layer [Done]",               "2026-01-05", "2026-01-25", "#FFD699"),
-    ("AI Pipeline & Preliminary Training [Done]","2026-01-15", "2026-02-28", "#B8E6B8"),
-    ("Karapitiya Field Exposure [Done]",      "2026-02-01", "2026-02-10", "#FFD699"),
-    ("Symbol Set Finalisation [In Prog]",     "2026-03-01", "2026-03-31", "#F28E1C"),
+    ("Literature Review [Done]",              "2025-11-01", "2025-12-15", "#2E7DB6"),
+    ("Requirements & Architecture [Done]",    "2025-11-15", "2025-12-31", "#2E7DB6"),
+    ("Flutter Setup & Design Artefacts [Done]","2025-12-10", "2025-12-31", "#2E7DB6"),
+    ("Symbol Grid & AAC Interface [Done]",    "2026-01-01", "2026-02-10", "#F28E1C"),
+    ("TTS & Trilingual Framework [In Prog]",  "2026-01-10", "2026-03-31", "#F28E1C"),
+    ("Local Data Layer [Done]",               "2026-01-05", "2026-01-25", "#F28E1C"),
+    ("AI Pipeline & Preliminary Training [Done]","2026-01-15", "2026-02-28", "#2CA02C"),
+    ("Karapitiya Field Exposure [Done]",      "2026-02-01", "2026-02-10", "#D62728"),
+    ("Symbol Set Finalisation [In Prog]",     "2026-03-01", "2026-03-31", "#9467BD"),
     ("Full Model Training & TFLite Export",   "2026-03-10", "2026-04-10", "#2CA02C"),
     ("Ethics Application & Approval",         "2026-03-01", "2026-04-15", "#9467BD"),
     ("FER Integration (Platform B)",          "2026-04-01", "2026-04-20", "#D62728"),
-    ("Dashboard Development",                 "2026-04-01", "2026-04-20", "#FF6B6B"),
+    ("Dashboard Development",                 "2026-04-01", "2026-04-20", "#8C564B"),
     ("Pilot Preparation & Recruitment",       "2026-04-10", "2026-04-30", "#8C564B"),
     ("Pilot Execution & Data Collection",     "2026-05-01", "2026-05-15", "#E377C2"),
     ("Final Report & Deliverables",           "2026-05-05", "2026-05-31", "#7F7F7F"),
@@ -168,8 +160,8 @@ updated_tasks = [
 
 create_gantt(
     updated_tasks,
-    "AAC System - Updated Project Plan (Gantt Chart)",
-    "Revised Sprint 3-5 with parallel scheduling | As of March 2026",
+    "AI-Powered Facial Expression Analysis & AAC Platform Development",
+    "Updated Project Plan | As of March 2026",
     "gantt_updated.png",
     today_line="2026-03-25"
 )
