@@ -355,6 +355,7 @@ The following non-functional requirements have been defined.
 5. The system should not transmit raw facial images to any cloud service; only classified emotion labels and timestamps should be stored.
 6. The system should encrypt any transmitted data using TLS when synchronisation is implemented.
 7. The system should support Android 8.0+ and iOS 14+.
+8. The system should maintain consistent and usable layouts across different smartphone screen sizes and resolutions.
 
 [Table 4: Non-Functional Requirements Summary]
 
@@ -366,6 +367,7 @@ The following non-functional requirements have been defined.
 | Accessibility | WCAG 2.1 AA with configurable fonts, contrast, and layout |
 | Data protection | TLS encryption with no raw facial images transmitted to cloud |
 | Platform support | Android 8.0+ and iOS 14+ |
+| Screen-size compatibility | Responsive and readable layout across tested smartphone display sizes |
 
 #### 2.5.7 Data Model (Interim)
 
@@ -906,7 +908,7 @@ iOS deployment has not yet been undertaken, as an Apple Developer account is not
 
 ### 3.11 Real Device Testing Sessions
 
-In addition to emulator testing, the application was tested on two physical Android devices under everyday conditions. These sessions focused on basic AAC communication and general stability rather than formal user studies. Symbol selection, text-to-speech output, and screen navigation were tested repeatedly to check for crashes or performance issues. Initial checks of the FER pipeline confirmed that the camera feed and on-device inference could run without freezing.
+In addition to emulator testing, the application was tested on two physical Android devices under everyday conditions. These sessions focused on basic AAC communication and general stability rather than formal user studies. Symbol selection, text-to-speech output, and screen navigation were tested repeatedly to check for crashes or performance issues. Initial checks of the FER pipeline confirmed that the camera feed and on-device inference could run without freezing. Compatibility checks across different display sizes were also carried out to confirm that key interface elements remained readable and usable without layout breakage.
 
 Figure 15 shows the application running on a real Android device.
 
@@ -1091,6 +1093,8 @@ Throughout the project, sprint progress and task status were tracked using a Goo
 
 Figure 19: Google Sheets Sprint Tracking Spreadsheet
 [Insert figure here. To be included in the final submission.]
+
+The workbook used for sprint tracking was organised into several sheets so that backlog management, day-to-day progress, and governance could be recorded in one place. The Product Backlog sheet listed prioritised features and epics. The Sprint Backlogs sheet broke work down by sprint. The Sprint Tracker sheet followed a Kanban-style layout for task status. Additional sheets supported project oversight, namely Sprint Summary for high-level progress, Milestones for key dates, Meeting Log for supervisor and stakeholder reviews, Issue Tracker for defects and blockers, Decision Log for agreed changes, Retrospectives for sprint reflections, and Time Log for effort records. The same structure was maintained when the file was prepared for upload to Google Drive and reviewed as a screenshot for Figure 19.
 
 ### 5.5 Risk Assessment for Remaining Work
 
