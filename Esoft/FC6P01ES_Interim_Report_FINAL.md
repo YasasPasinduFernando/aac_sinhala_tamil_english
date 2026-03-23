@@ -86,6 +86,7 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 16. Figure 16: Field Exposure at Karapitiya Teaching Hospital
 17. Figure 17: Initial Project Gantt Chart
 18. Figure 18: Updated Project Gantt Chart
+19. Figure 19: Trello Board for Sprint Management
 
 ## List of Tables
 
@@ -284,7 +285,7 @@ TensorFlow Lite is a lightweight framework for running machine learning models o
 
 #### 2.4.3 Firebase
 
-Firebase is considered as the future backend option for this project (Firebase, 2023). At interim stage, Firebase is **not fully implemented** for end-to-end use. The system follows an offline-first approach where core AAC data is stored locally using SQLite/JSON, and the TFLite model runs entirely on the device. Backup is currently planned as a **manual export** (for example sharing a backup file through WhatsApp or file sharing). Firebase-based authentication, Firestore, and storage are kept as planned components for later increments when stable sync and access control are ready.
+Firebase is considered as the future backend option for this project (Firebase, 2023). At interim stage, Firebase is **not fully implemented** for end-to-end use. The system follows an offline-first approach where core AAC data is stored locally using SQLite/JSON, and the TFLite model runs entirely on the device. Backup is currently planned as a **manual export** (for example sharing a backup file through WhatsApp or file sharing). Firebase-based authentication, Firestore, and storage are kept as planned components for later sprints when stable sync and access control are ready.
 
 [Table 3: Technology Stack Summary]
 
@@ -310,7 +311,7 @@ The system uses a dual-platform architecture with a shared technology stack and 
 3. A local data layer (SQLite/JSON) for offline storage.
 4. Manual export/import for backup and sharing between caregiver and therapist (current approach).
 5. A therapist-parent web-based dashboard (prototype), with planned Firebase integration later.
-6. A Firebase backend (planned) for authentication and optional synchronisation in later increments.
+6. A Firebase backend (planned) for authentication and optional synchronisation in later sprints.
 
 The architecture follows an offline-first principle, meaning all core AAC features and emotion recognition run locally on the device. Firebase is not yet implemented; the current backup approach uses manual export/import. This design decision reflects the variable internet connectivity in many parts of Sri Lanka (International Telecommunication Union, 2022). The system architecture diagram and ER diagram, produced as design artefacts, are presented in Section 3.2.
 
@@ -366,39 +367,46 @@ The following non-functional requirements have been defined.
 
 #### 2.5.7 Data Model (Interim)
 
-At the interim stage, the main entities are stored in local storage (SQLite tables and JSON vocabulary files). The data model comprises users, categories, symbols, sessions, and logs. This structure is intended to be mapped to a cloud schema if Firebase synchronisation is implemented in a later increment. The ER diagram is presented as a completed design artefact in Section 3.2.
+At the interim stage, the main entities are stored in local storage (SQLite tables and JSON vocabulary files). The data model comprises users, categories, symbols, sessions, and logs. This structure is intended to be mapped to a cloud schema if Firebase synchronisation is implemented in a later sprint. The ER diagram is presented as a completed design artefact in Section 3.2.
 
 ### 2.6 Development Methodology
 
 #### 2.6.1 Methodology Selection
 
-The project uses an incremental development model, where the system is built in a series of planned increments. Each increment produces a working subset of the overall system (Sommerville, 2016). This approach was chosen after considering several alternatives.
+The project adopts an Agile development methodology based on an adapted Scrum framework. Several alternative methodologies were considered before arriving at this decision.
 
-- **Waterfall model:** This was not suitable because it assumes all requirements are known upfront. That does not work well for a project with external dependencies like ethics approval, ongoing stakeholder feedback, and iterative AI model development (Sommerville, 2016).
-- **Scrum (Agile):** Scrum is great for adaptability, but its roles (Scrum Master, Product Owner) and rituals (daily stand-ups, sprint reviews) are designed for teams. Since this is a single-developer project, following full Scrum would add overhead without real benefit.
-- **Spiral model:** Boehm's (1988) spiral model focuses on risk-driven development, which is relevant here given the technical and ethical risks. However, its iterative prototyping approach was considered unnecessarily complex for the scope of this project.
-- **Rapid Application Development (RAD):** RAD focuses on speed over rigour. This conflicts with the need for proper ethical documentation, careful AI model validation, and systematic testing, all of which are essential in a healthcare-related project.
+- **Waterfall model.** This was not suitable because it assumes all requirements are known upfront. That does not work well for a project involving ongoing stakeholder feedback, iterative AI model training where results are unpredictable, and external dependencies such as ethics approval whose timelines cannot be fixed in advance (Sommerville, 2016).
+- **Incremental model.** The incremental model offers structured, phased delivery, but it assumes a relatively stable set of requirements from the outset. In this project, requirements have evolved continuously based on field observations at Karapitiya, feedback from caregivers, and the practical outcomes of model training experiments. The rigidity of predefined increments would not have accommodated these changes well (Sommerville, 2016).
+- **Spiral model.** Boehm's (1988) spiral model focuses on risk-driven development, which is relevant given the technical and ethical risks in this project. However, its formal risk analysis cycles were considered unnecessarily complex for a single-developer final year project.
+- **Rapid Application Development (RAD).** RAD focuses on speed over rigour. This conflicts with the need for proper ethical documentation, careful AI model validation, and systematic testing, all of which are essential in a healthcare-related project.
 
-The incremental model was selected as the best fit for this project for several reasons.
+Agile Scrum was selected as the best fit for this project for several reasons.
 
-- The dual-platform architecture naturally suits phased delivery, with Platform A built before Platform B.
-- Each increment produces something that can be demonstrated and reviewed by the supervisor.
-- External dependencies like ethics approval and hospital partnership can progress alongside development work.
-- The academic timeline has clear milestones, with the interim report around month 4 and the final report at month 10.
+- The nature of the project is inherently exploratory. The exact requirements for the AAC interface, the symbol vocabulary, and the FER model performance could not be fully determined at the start. Each sprint revealed new information that shaped subsequent work. For example, the field visit to Karapitiya shifted the design towards a simpler symbol grid, and early model training results led to switching from MobileNetV2 to EfficientNetB0 with CBAM.
+- AI model development is iterative by nature. Training runs produce results that inform the next round of experimentation. A fixed plan cannot account for this, whereas Scrum sprints allow the backlog to be reprioritised based on the latest findings.
+- External dependencies such as ethics approval and hospital coordination have uncertain timelines. Scrum accommodates this by allowing tasks to be moved between sprints without disrupting the overall framework.
+- The dual-platform architecture still benefits from phased delivery, with Platform A features developed before Platform B, but within a flexible sprint structure rather than rigid predefined phases.
 
-#### 2.6.2 Incremental Plan
+Since this is a single-developer project, the standard Scrum framework was adapted to suit the context. The roles of developer, product owner, and scrum master were combined and carried out by the same individual. Formal team ceremonies such as daily stand-ups were not applicable, but sprint planning was conducted at the start of each sprint and a sprint review was held with the project supervisor at the end. Retrospective notes were recorded after each sprint to identify what worked well and what needed adjustment in the following cycle. A Trello board was used to manage the product backlog, sprint backlogs, and task progress throughout the project, providing a visual record of how work was prioritised and completed across sprints.
 
-The project is divided into five increments, each building upon the previous.
+#### 2.6.2 Sprint Plan
 
-**Increment 1 (Months 1-2), Requirements, Architecture, and Minimal AAC.** This increment covers literature review completion, requirements analysis, system architecture design, technology stack selection, and initial Flutter project setup. The deliverable is a documented architecture and a basic application skeleton.
+The project is organised into five sprints, each approximately two months in duration. The sprint boundaries align with the academic timeline and key project milestones.
 
-**Increment 2 (Months 3-4), Platform A and Firebase Backend.** This increment covers the core AAC features for Platform A (symbol grid, trilingual support, basic TTS, navigation), Firebase backend configuration, and initial dashboard implementation. The deliverable is a functional (though incomplete) AAC application and backend.
+**Sprint 1 (Months 1-2), Requirements, Architecture, and Minimal AAC.** This sprint covers literature review completion, requirements analysis, system architecture design, technology stack selection, and initial Flutter project setup. The deliverable is a documented architecture and a basic application skeleton.
 
-**Increment 3 (Months 5-6), AI Model Training and Platform B Integration.** This increment covers dataset assembly, full model training and evaluation, TFLite export, integration of the FER pipeline into the Flutter application, and implementation of emotion-adaptive vocabulary logic. The deliverable is a working Platform B prototype.
+**Sprint 2 (Months 3-4), Platform A and Firebase Backend.** This sprint covers the core AAC features for Platform A (symbol grid, trilingual support, basic TTS, navigation), Firebase backend configuration, and initial dashboard implementation. The deliverable is a functional (though incomplete) AAC application and backend.
 
-**Increment 4 (Months 7-8), Dashboard Completion, Ethics Approval, and Pilot Preparation.** This increment covers full dashboard development, ethics application and approval process, pilot protocol design, and participant recruitment. The deliverable is a complete system ready for pilot deployment.
+**Sprint 3 (Months 5-6), AI Model Training and Platform B Integration.** This sprint covers dataset assembly, full model training and evaluation, TFLite export, integration of the FER pipeline into the Flutter application, and implementation of emotion-adaptive vocabulary logic. The deliverable is a working Platform B prototype.
 
-**Increment 5 (Months 9-10), Pilot Execution and Final Report.** This increment covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
+**Sprint 4 (Months 7-8), Dashboard Completion, Ethics Approval, and Pilot Preparation.** This sprint covers full dashboard development, ethics application and approval process, pilot protocol design, and participant recruitment. The deliverable is a complete system ready for pilot deployment.
+
+**Sprint 5 (Months 9-10), Pilot Execution and Final Report.** This sprint covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
+
+Sprint management and task tracking were carried out using Trello, with columns for Backlog, To Do, In Progress, Review, and Done. Figure 19 presents the Trello board used for sprint management during the project.
+
+Figure 19: Trello Board for Sprint Management
+[Insert figure here. To be included in the final submission.]
 
 ### 2.7 Research Methodology
 
@@ -406,7 +414,7 @@ This project adopts a mixed-methods approach combining qualitative and quantitat
 
 Quantitative methods are applied in evaluating the FER model using standard classification metrics such as accuracy, precision, recall, and F1-score. The system as a whole is assessed against defined non-functional requirements, including inference latency and offline reliability.
 
-The development follows an incremental methodology (described in Section 2.6), with the application built and tested in stages. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval. This combined approach helps to validate the system technically while keeping it practically relevant to the intended users and context.
+The development follows an Agile Scrum methodology (described in Section 2.6), with the application built and tested in iterative sprints. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval. This combined approach helps to validate the system technically while keeping it practically relevant to the intended users and context.
 
 ### 2.8 AI Model Design and Data Collection
 
@@ -538,7 +546,7 @@ Known limitations are as follows.
 2. **Pilot constraints:** Sample size and duration will be constrained by ethics approval timelines and participant availability. Findings should be interpreted as preliminary and formative.
 3. **Atypical expressiveness in ASD:** The model's ability to recognise emotions in children with ASD is an open question.
 4. **TTS quality:** Text-to-speech quality for Sinhala and Tamil may vary across engines.
-5. **Single-developer constraints:** This limits the breadth of testing and formal usability evaluation.
+5. **Single-developer constraints:** As a solo project, the Scrum framework was adapted with all roles combined into one. This limits the breadth of testing, peer review, and formal usability evaluation.
 6. **Device variability:** Performance may vary across devices; testing focuses on representative mid-range devices.
 
 ---
@@ -547,11 +555,11 @@ Known limitations are as follows.
 
 ### 3.1 Summary of Progress
 
-At the time of this interim submission, Increment 1 has been completed in full and Increment 2 is substantially complete. The literature review, system architecture, technology stack selection, and the initial Flutter project setup are all in place. A considerable amount of early effort went into understanding the problem domain, not only through published literature but also through informal conversations with parents and therapists. Those conversations surfaced practical realities that the literature alone did not fully convey, and they directly influenced several design decisions described in the sections that follow.
+At the time of this interim submission, Sprint 1 has been completed in full and Sprint 2 is substantially complete. The literature review, system architecture, technology stack selection, and the initial Flutter project setup are all in place. A considerable amount of early effort went into understanding the problem domain, not only through published literature but also through informal conversations with parents and therapists. Those conversations surfaced practical realities that the literature alone did not fully convey, and they directly influenced several design decisions described in the sections that follow.
 
-Some work originally planned for Increment 3, particularly the AI model pipeline setup and preliminary training experiments, was started ahead of schedule during Increment 2. This provides a useful head start on model development for the next phase.
+Some work originally planned for Sprint 3, particularly the AI model pipeline setup and preliminary training experiments, was started ahead of schedule during Sprint 2. This provides a useful head start on model development for the next phase.
 
-The larger tasks remain ahead. Full dataset curation using purpose-collected data, complete model training and evaluation, Platform B integration with the FER pipeline, and the clinical pilot study are all planned for subsequent increments. There have been some delays in specific areas, notably symbol set licensing, ethics coordination, and TTS quality for Sinhala and Tamil, but these are accounted for in the revised project plan (Section 5.4). Overall, the project is in a reasonable position for this stage of the academic timeline.
+The larger tasks remain ahead. Full dataset curation using purpose-collected data, complete model training and evaluation, Platform B integration with the FER pipeline, and the clinical pilot study are all planned for subsequent sprints. There have been some delays in specific areas, notably symbol set licensing, ethics coordination, and TTS quality for Sinhala and Tamil, but these are accounted for in the revised project plan (Section 5.4). Overall, the project is in a reasonable position for this stage of the academic timeline.
 
 ### 3.2 Requirements, Design, and Produced Artefacts
 
@@ -618,14 +626,14 @@ The Flutter project follows a standard folder structure with separate directorie
 Core AAC features for Platform A have been partially implemented.
 
 - **Navigation and routing:** Screen navigation uses Flutter's Navigator 2.0 pattern, covering the main AAC grid view, category selection, settings, and profile screens.
-- **Symbol grid interface:** A basic symbol grid is functional, displaying images with text labels in preliminary categories (needs, feelings, common objects). Grid size is currently fixed; configurable sizes (2x2 to 6x6) are planned for the next increment.
+- **Symbol grid interface:** A basic symbol grid is functional, displaying images with text labels in preliminary categories (needs, feelings, common objects). Grid size is currently fixed; configurable sizes (2x2 to 6x6) are planned for the next sprint.
 - **Multilingual support:** The UI framework supports switching between Sinhala, Tamil, and English. Labels and interface text are stored in separate localisation files. The English vocabulary is mostly populated; Sinhala and Tamil vocabularies require further work.
 - **Local data layer:** SQLite is used for structured data and local JSON files store vocabulary definitions, enabling full offline operation for vocabulary access and settings.
 - **Text-to-speech:** Basic TTS integration using the device's built-in engine is functional for English. Preliminary testing indicated that the default platform TTS for Sinhala and Tamil produces unnatural output, and third-party TTS services will need to be evaluated.
 
 Getting the interface right took considerably longer than the original timeline anticipated. Children with autism can disengage entirely when a screen feels cluttered or visually overwhelming (Fletcher-Watson and Happe, 2019), so every colour choice, every icon, and every tap target required deliberate consideration. Several versions were tested before the current soft palette and rounded component style was settled upon.
 
-The symbol set proved more challenging than expected. Most established AAC symbol libraries are designed for Western contexts, and the food symbols typically show sandwiches and hamburgers, not rice, kottu, or string hoppers. A significant amount of manual sourcing and adaptation was required to build a culturally appropriate vocabulary, and licensing terms added further complexity. This work remains ongoing and has been prioritised for the next increment.
+The symbol set proved more challenging than expected. Most established AAC symbol libraries are designed for Western contexts, and the food symbols typically show sandwiches and hamburgers, not rice, kottu, or string hoppers. A significant amount of manual sourcing and adaptation was required to build a culturally appropriate vocabulary, and licensing terms added further complexity. This work remains ongoing and has been prioritised for the next sprint.
 
 ### 3.4 AI Model Pipeline
 
@@ -673,7 +681,7 @@ Draft consent forms and participant information sheets have been prepared in Eng
 
 Testing at the interim stage has focused on unit tests for the most critical parts of the codebase. The data layer functions, symbol handling logic in the AAC module, and the emotion-based decision logic in the FER integration have all been covered with automated tests. The AI model itself runs as a TensorFlow Lite component on the device, which makes direct unit testing of the full inference pipeline impractical at this stage. Instead, mock-based tests were written to validate the output handling, for example confirming that the correct dominant emotion is selected from a set of prediction probabilities.
 
-All implemented tests were executed using Flutter's built-in testing framework and passed without failure. That said, full test coverage has not been achieved. During this phase, development priority was given to getting core features functional, with the understanding that test coverage would be expanded in subsequent increments. Manual testing of the basic AAC communication flow, including symbol selection, category navigation, and text-to-speech output, has been carried out on an Android emulator and one physical device. iOS testing has not yet been conducted, and formal user testing with children and caregivers will only take place after ethics approval is obtained.
+All implemented tests were executed using Flutter's built-in testing framework and passed without failure. That said, full test coverage has not been achieved. During this phase, development priority was given to getting core features functional, with the understanding that test coverage would be expanded in subsequent sprints. Manual testing of the basic AAC communication flow, including symbol selection, category navigation, and text-to-speech output, has been carried out on an Android emulator and one physical device. iOS testing has not yet been conducted, and formal user testing with children and caregivers will only take place after ethics approval is obtained.
 
 Figure 7 presents the output from the Flutter unit test suite at the interim stage.
 
@@ -833,30 +841,30 @@ Final deliverables include the final report incorporating pilot findings and ful
 
 ### 5.1 Original Project Plan
 
-At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five increments spanning approximately ten months, with each increment building upon the deliverables of the previous one. Figure 17 presents the original project Gantt chart.
+At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five sprints spanning approximately ten months, with each sprint building upon the deliverables of the previous one. Figure 17 presents the original project Gantt chart.
 
 Figure 17: Initial Project Gantt Chart
 [Insert figure here. To be included in the final submission.]
 
-The five increments in the original plan were defined as follows.
+The five sprints in the original plan were defined as follows.
 
-Increment 1 (Months 1 to 2) covered requirements analysis, architecture design, literature review, and the initial Flutter project setup. The expected deliverable was a documented system architecture and a basic application skeleton.
+Sprint 1 (Months 1 to 2) covered requirements analysis, architecture design, literature review, and the initial Flutter project setup. The expected deliverable was a documented system architecture and a basic application skeleton.
 
-Increment 2 (Months 3 to 4) covered Platform A core AAC features, including the symbol grid, trilingual support, basic TTS, and navigation. It also included Firebase backend configuration and initial dashboard implementation. The expected deliverable was a functional, though incomplete, AAC application and backend.
+Sprint 2 (Months 3 to 4) covered Platform A core AAC features, including the symbol grid, trilingual support, basic TTS, and navigation. It also included Firebase backend configuration and initial dashboard implementation. The expected deliverable was a functional, though incomplete, AAC application and backend.
 
-Increment 3 (Months 5 to 6) covered dataset assembly, full model training and evaluation, TFLite export, and Platform B FER integration. The expected deliverable was a working Platform B prototype.
+Sprint 3 (Months 5 to 6) covered dataset assembly, full model training and evaluation, TFLite export, and Platform B FER integration. The expected deliverable was a working Platform B prototype.
 
-Increment 4 (Months 7 to 8) covered dashboard completion, ethics approval, pilot design, consent form translation, and participant recruitment. The expected deliverable was a complete system ready for pilot deployment.
+Sprint 4 (Months 7 to 8) covered dashboard completion, ethics approval, pilot design, consent form translation, and participant recruitment. The expected deliverable was a complete system ready for pilot deployment.
 
-Increment 5 (Months 9 to 10) covered pilot execution, data collection and analysis, final report writing, and preparation of deliverables. The expected deliverable was the final report and all supporting documentation.
+Sprint 5 (Months 9 to 10) covered pilot execution, data collection and analysis, final report writing, and preparation of deliverables. The expected deliverable was the final report and all supporting documentation.
 
-At the interim submission point, which falls at the end of Month 4, Increments 1 and 2 were expected to be fully complete.
+At the interim submission point, which falls at the end of Month 4, Sprints 1 and 2 were expected to be fully complete.
 
 ### 5.2 Progress Against the Original Plan
 
-Increment 1 (Months 1 to 2) was completed on schedule. The literature review, requirements analysis, system architecture, and technology stack selection were all delivered within the planned timeframe. The Flutter project was initialised with the intended folder structure and build targets for both Android and iOS. No significant issues arose during this phase.
+Sprint 1 (Months 1 to 2) was completed on schedule. The literature review, requirements analysis, system architecture, and technology stack selection were all delivered within the planned timeframe. The Flutter project was initialised with the intended folder structure and build targets for both Android and iOS. No significant issues arose during this phase.
 
-Increment 2 (Months 3 to 4) is substantially complete, though progress was uneven across different work packages. The core AAC features for Platform A, including the symbol grid, screen navigation, basic text-to-speech, and the multilingual switching framework, have been partially implemented and are functional at a prototype level. The AI model pipeline was set up ahead of schedule, with preliminary training experiments on public datasets completed during this increment rather than in Increment 3 as originally planned. This early start on the model work provides a useful buffer for the next phase.
+Sprint 2 (Months 3 to 4) is substantially complete, though progress was uneven across different work packages. The core AAC features for Platform A, including the symbol grid, screen navigation, basic text-to-speech, and the multilingual switching framework, have been partially implemented and are functional at a prototype level. The AI model pipeline was set up ahead of schedule, with preliminary training experiments on public datasets completed during this sprint rather than in Sprint 3 as originally planned. This early start on the model work provides a useful buffer for the next phase.
 
 However, four areas did not progress as quickly as the original plan anticipated.
 
@@ -864,7 +872,7 @@ The symbol set and licensing process proved more time-consuming than expected. I
 
 The Firebase backend is at an early prototype level. The decision was taken to prioritise the offline-first architecture and local storage layer over cloud integration. Firebase configuration has been started, but full synchronisation and authentication have been deliberately deferred. This was a conscious scope prioritisation rather than an unplanned delay.
 
-Text-to-speech quality for Sinhala and Tamil fell short of expectations. The assumption that the default platform TTS engines would produce acceptable output proved incorrect during initial testing. Alternative TTS services will need to be evaluated in the next increment.
+Text-to-speech quality for Sinhala and Tamil fell short of expectations. The assumption that the default platform TTS engines would produce acceptable output proved incorrect during initial testing. Alternative TTS services will need to be evaluated in the next sprint.
 
 The ethics application for Karapitiya Teaching Hospital has taken longer to coordinate than originally anticipated. The process involves both the hospital's institutional ethics committee and Ministry of Health governance requirements. The application is in advanced preparation but has not yet been formally submitted.
 
@@ -884,20 +892,20 @@ None of these delays affect the critical path in a way that compromises the fina
 
 ### 5.4 Revised Plan for Remaining Work
 
-Based on the progress to date and the delays identified, the project plan has been revised for the remaining increments. The key adjustment is the introduction of an overlap between Increments 3 and 4, where Platform A completion, model training, and ethics preparation proceed in parallel. This is feasible because these tasks have limited interdependencies. Figure 18 presents the updated project Gantt chart reflecting these changes.
+Based on the progress to date and the delays identified, the project plan has been revised for the remaining sprints. The key adjustment is the introduction of an overlap between Sprints 3 and 4, where Platform A completion, model training, and ethics preparation proceed in parallel. This is feasible because these tasks have limited interdependencies and Scrum allows the backlog to be reprioritised between sprints as needed. Figure 18 presents the updated project Gantt chart reflecting these changes.
 
 Figure 18: Updated Project Gantt Chart
 [Insert figure here. To be included in the final submission.]
 
 The revised schedule is as follows.
 
-Months 5 to 6 (Revised Increment 3). The focus during this period will be on finalising the symbol set, completing Platform A vocabulary and TTS integration, submitting the ethics application, continuing model training on public datasets, and beginning dataset curation.
+Months 5 to 6 (Revised Sprint 3). The focus during this period will be on finalising the symbol set, completing Platform A vocabulary and TTS integration, submitting the ethics application, continuing model training on public datasets, and beginning dataset curation.
 
-Months 6 to 7 (Overlap between Revised Increments 3 and 4). This period will focus on full model training and evaluation once the dataset is ready, Platform B FER integration and testing, and dashboard completion.
+Months 6 to 7 (Overlap between Revised Sprints 3 and 4). This period will focus on full model training and evaluation once the dataset is ready, Platform B FER integration and testing, and dashboard completion.
 
-Months 7 to 8 (Revised Increment 4). Ethics approval is expected during this period. Tasks include pilot preparation, participant recruitment, and finalisation of backup and synchronisation flows.
+Months 7 to 8 (Revised Sprint 4). Ethics approval is expected during this period. Tasks include pilot preparation, participant recruitment, and finalisation of backup and synchronisation flows.
 
-Months 8 to 9 (Revised Increment 5). This period covers pilot execution at Karapitiya Teaching Hospital, data collection, and preliminary analysis.
+Months 8 to 9 (Revised Sprint 5). This period covers pilot execution at Karapitiya Teaching Hospital, data collection, and preliminary analysis.
 
 Months 9 to 10 (Final phase). The final period is reserved for final report writing, preparation of deliverables, and the project presentation.
 
@@ -929,7 +937,7 @@ Documentation covers the interim report, final report, user documentation, prese
 
 ### 5.7 Conclusion
 
-The project has completed Increment 1 in full and the majority of Increment 2. The literature review, system architecture, technology selection, Flutter project setup, and preliminary AI model training are all in place. Some tasks have taken longer than the original plan allowed for, particularly symbol set licensing, ethics coordination with Karapitiya Teaching Hospital, and the discovery that platform TTS engines do not produce acceptable Sinhala and Tamil output. These delays are acknowledged but none of them are severe enough to compromise the final deadline, provided the revised plan is followed.
+The project has completed Sprint 1 in full and the majority of Sprint 2. The literature review, system architecture, technology selection, Flutter project setup, and preliminary AI model training are all in place. Some tasks have taken longer than the original plan allowed for, particularly symbol set licensing, ethics coordination with Karapitiya Teaching Hospital, and the discovery that platform TTS engines do not produce acceptable Sinhala and Tamil output. These delays are acknowledged but none of them are severe enough to compromise the final deadline, provided the revised plan is followed.
 
 The amount of work remaining is substantial. Platform A needs to be completed with full trilingual vocabulary and customisation features. The FER model needs to be trained on a larger, more balanced dataset and integrated into the Flutter application. The ethics application needs to be submitted and approved before any pilot data collection can begin. The revised plan introduces parallel scheduling for these tasks during Months 5 to 8, which is feasible because the tasks have limited interdependencies.
 
