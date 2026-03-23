@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
   <diagram name="Page-1" id="2NoGIhwqwHrc9IBwlEg-">
-    <mxGraphModel dx="3903" dy="3903" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="734" dy="2034" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -240,11 +240,6 @@
             <mxPoint x="3610" y="1519" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="C8vPSrb35GphamFglj_B-22" connectable="0" parent="C8vPSrb35GphamFglj_B-7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="Text" vertex="1">
-          <mxGeometry relative="1" x="-0.3941" y="-7" as="geometry">
-            <mxPoint x="1" as="offset" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="C8vPSrb35GphamFglj_B-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=25;strokeWidth=2;fontStyle=1" value="&amp;nbsp; &amp;nbsp;Switch Language" vertex="1">
           <mxGeometry height="70" width="390" x="3380" y="-230" as="geometry" />
         </mxCell>
@@ -312,11 +307,6 @@
             <Array as="points" />
             <mxPoint x="3938" y="1688" as="sourcePoint" />
             <mxPoint x="3718" y="1818" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="C8vPSrb35GphamFglj_B-24" connectable="0" parent="C8vPSrb35GphamFglj_B-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="Text" vertex="1">
-          <mxGeometry relative="1" x="-0.3941" y="-7" as="geometry">
-            <mxPoint x="1" as="offset" />
           </mxGeometry>
         </mxCell>
       </root>

@@ -403,6 +403,91 @@ The project is organised into five sprints, each approximately two months in dur
 
 **Sprint 5 (Months 9-10), Pilot Execution and Final Report.** This sprint covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
 
+#### 2.6.3 Product Backlog
+
+The product backlog represents the full set of features, tasks, and deliverables required across the entire project. Items were prioritised based on dependency, academic deadlines, and stakeholder input, and were drawn into individual sprint backlogs at the start of each sprint.
+
+| Priority | Backlog Item | Target Sprint |
+|---|---|---|
+| High | Literature review and requirements analysis | Sprint 1 |
+| High | System architecture and technology selection | Sprint 1 |
+| High | Flutter project setup (Android and iOS targets) | Sprint 1 |
+| High | Symbol grid, navigation, and basic AAC flow | Sprint 2 |
+| High | Trilingual UI framework (Sinhala, Tamil, English) | Sprint 2 |
+| Medium | Basic TTS integration | Sprint 2 |
+| Medium | Firebase project setup (exploratory) | Sprint 2 |
+| High | AI model pipeline setup and initial training | Sprint 2-3 |
+| High | Full model training and TFLite export | Sprint 3 |
+| High | Platform B FER integration | Sprint 3 |
+| Medium | Emotion-adaptive vocabulary logic | Sprint 3 |
+| Medium | Dashboard completion | Sprint 4 |
+| High | Ethics application and approval | Sprint 4 |
+| Medium | Pilot protocol and participant recruitment | Sprint 4 |
+| High | Pilot execution and data collection | Sprint 5 |
+| High | Final report and deliverables | Sprint 5 |
+
+#### 2.6.4 Sprint Backlogs
+
+Each sprint backlog was drawn from the product backlog at the start of the sprint during sprint planning. The tables below summarise the planned backlog items for each sprint.
+
+**Sprint 1 Backlog (Months 1-2)**
+
+| Task | Status |
+|---|---|
+| Complete literature review (ASD, AAC, FER, Sri Lankan context) | Done |
+| Gather requirements from literature and informal stakeholder discussions | Done |
+| Design system architecture (dual-platform, offline-first) | Done |
+| Select technology stack (Flutter, TensorFlow, Firebase) | Done |
+| Initialise Flutter project with Android and iOS build targets | Done |
+| Produce design artefacts (architecture diagram, ER diagram, use case diagram, class diagram) | Done |
+
+**Sprint 2 Backlog (Months 3-4)**
+
+| Task | Status |
+|---|---|
+| Implement symbol grid interface with category navigation | Done |
+| Implement trilingual switching framework (English complete, Sinhala/Tamil partial) | In Progress |
+| Integrate basic text-to-speech (English functional, Sinhala/Tamil under evaluation) | In Progress |
+| Set up local data layer (SQLite, JSON vocabulary files) | Done |
+| Create Firebase project and explore configuration | Done |
+| Begin AI model pipeline setup (ahead of schedule from Sprint 3) | Done |
+| Run preliminary training experiments on public datasets | Done |
+| Conduct initial field exposure at Karapitiya Teaching Hospital | Done |
+| Implement basic unit and widget tests | Done |
+| Upload APK to Google Play Console for internal testing | Done |
+
+**Sprint 3 Backlog (Months 5-6) (Planned)**
+
+| Task | Status |
+|---|---|
+| Finalise symbol set and resolve licensing | Pending |
+| Complete Sinhala and Tamil vocabulary | Pending |
+| Evaluate alternative TTS engines for Sinhala/Tamil | Pending |
+| Complete curated dataset (2,000-5,000 images) | Pending |
+| Full model training with hyperparameter tuning | Pending |
+| TFLite export and on-device benchmarking | Pending |
+| Submit ethics application | In Preparation |
+
+**Sprint 4 Backlog (Months 7-8) (Planned)**
+
+| Task | Status |
+|---|---|
+| Integrate FER pipeline into Flutter application | Pending |
+| Implement emotion-adaptive logic and caregiver override | Pending |
+| Complete therapist-parent dashboard | Pending |
+| Obtain ethics approval | Pending |
+| Design pilot protocol and recruit participants | Pending |
+
+**Sprint 5 Backlog (Months 9-10) (Planned)**
+
+| Task | Status |
+|---|---|
+| Conduct supervised pilot at Karapitiya Teaching Hospital | Pending |
+| Collect quantitative and qualitative data | Pending |
+| Analyse pilot findings | Pending |
+| Write final report | Pending |
+| Prepare presentation and deliverables | Pending |
+
 Sprint management and task tracking were carried out using Trello, with columns for Backlog, To Do, In Progress, Review, and Done. Figure 19 presents the Trello board used for sprint management during the project.
 
 Figure 19: Trello Board for Sprint Management
@@ -410,11 +495,31 @@ Figure 19: Trello Board for Sprint Management
 
 ### 2.7 Research Methodology
 
-This project adopts a mixed-methods approach combining qualitative and quantitative techniques. Qualitative insights were gathered through informal discussions with parents of children with ASD and conversations with speech-language therapists, which informed the understanding of real-world communication challenges and guided design decisions beyond what the literature alone could provide.
+#### 2.7.1 Justification for Mixed-Methods Approach
 
-Quantitative methods are applied in evaluating the FER model using standard classification metrics such as accuracy, precision, recall, and F1-score. The system as a whole is assessed against defined non-functional requirements, including inference latency and offline reliability.
+A mixed-methods research approach was selected for this project because neither a purely quantitative nor a purely qualitative strategy would be sufficient on its own. The project involves two fundamentally different types of evaluation. First, the facial expression recognition model requires objective measurement through classification metrics, which is inherently quantitative. Second, the usability and practical relevance of the AAC system can only be understood through the experiences and perspectives of caregivers, therapists, and observers, which is inherently qualitative. Creswell and Creswell (2018) argue that mixed-methods designs are particularly appropriate when a research problem requires both numerical performance data and contextual human insight, which is precisely the case here.
 
-The development follows an Agile Scrum methodology (described in Section 2.6), with the application built and tested in iterative sprints. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval. This combined approach helps to validate the system technically while keeping it practically relevant to the intended users and context.
+The convergent mixed-methods design was chosen, where quantitative and qualitative data are collected in parallel during the pilot phase and then compared to provide a more complete picture of the system's effectiveness and usability.
+
+#### 2.7.2 Quantitative Evaluation
+
+The quantitative component of the evaluation focuses on two areas.
+
+The first is FER model performance. The trained model is evaluated using standard classification metrics, including overall accuracy, per-class precision, recall, and F1-score, and a confusion matrix. These metrics are computed on a held-out test set that was not used during training. The target accuracy is at least 80 per cent across six emotion classes.
+
+The second is system usability and user experience. During the pilot phase, structured questionnaires will be administered to caregivers and therapists who observe or facilitate the use of the application with children. The questionnaire is designed to capture numerical ratings on dimensions such as ease of use, symbol relevance, navigation clarity, response time, and overall satisfaction. A Likert scale (1 to 5) will be used for most items. The System Usability Scale (SUS) is also planned as a standardised usability measure (Brooke, 1996). Questionnaire responses will be analysed using descriptive statistics to identify patterns in user satisfaction and areas requiring improvement.
+
+#### 2.7.3 Qualitative Evaluation
+
+The qualitative component focuses on understanding the practical experience of using the system in a real clinical and home context. Semi-structured interviews will be conducted with caregivers and therapists following the pilot period. These interviews will explore topics such as how the child responded to the AAC interface, whether the symbol vocabulary was appropriate, how useful the emotion detection feature was perceived to be, and what barriers or difficulties were encountered during use.
+
+Informal observations during pilot sessions will also be recorded, noting how children interact with the interface, which symbols are used most frequently, and how caregivers intervene or support the interaction. Qualitative data will be analysed thematically to identify recurring patterns and insights that the quantitative data alone may not capture.
+
+#### 2.7.4 Evidence for the Final Report
+
+The final report will present evidence from both evaluation streams. Quantitative evidence will include model evaluation metrics (accuracy, precision, recall, F1-score, confusion matrix), questionnaire results with descriptive statistics, SUS scores, and system performance benchmarks (inference latency, startup time). Qualitative evidence will include thematic analysis of interview transcripts, observational notes from pilot sessions, and selected participant quotes (anonymised) illustrating key findings. The combination of both types of evidence is intended to provide a balanced assessment of the system's technical performance and its practical value in the intended context.
+
+The development follows an Agile Scrum methodology (described in Section 2.6), with the application built and tested in iterative sprints. For the AI component, training data is sourced from publicly available datasets in the first instance, with purpose-collected data planned following ethics approval.
 
 ### 2.8 AI Model Design and Data Collection
 
@@ -681,7 +786,11 @@ Draft consent forms and participant information sheets have been prepared in Eng
 
 Testing at the interim stage has focused on unit tests for the most critical parts of the codebase. The data layer functions, symbol handling logic in the AAC module, and the emotion-based decision logic in the FER integration have all been covered with automated tests. The AI model itself runs as a TensorFlow Lite component on the device, which makes direct unit testing of the full inference pipeline impractical at this stage. Instead, mock-based tests were written to validate the output handling, for example confirming that the correct dominant emotion is selected from a set of prediction probabilities.
 
-All implemented tests were executed using Flutter's built-in testing framework and passed without failure. That said, full test coverage has not been achieved. During this phase, development priority was given to getting core features functional, with the understanding that test coverage would be expanded in subsequent sprints. Manual testing of the basic AAC communication flow, including symbol selection, category navigation, and text-to-speech output, has been carried out on an Android emulator and one physical device. iOS testing has not yet been conducted, and formal user testing with children and caregivers will only take place after ethics approval is obtained.
+All implemented tests were executed using Flutter's built-in testing framework and passed without failure. That said, full test coverage has not been achieved. During this phase, development priority was given to getting core features functional, with the understanding that test coverage would be expanded in subsequent sprints.
+
+Although the application is being developed for both Android and iOS using Flutter's cross-platform framework, all testing at the interim stage has been conducted exclusively on the Android platform. Manual testing of the basic AAC communication flow, including symbol selection, category navigation, and text-to-speech output, has been carried out on an Android emulator and one physical Android device. iOS testing has not yet been conducted, as the necessary Apple Developer account access is still being arranged. iOS-specific testing, including device compatibility and TTS behaviour, is planned for a later sprint once the developer account is in place.
+
+Formal user testing with children and caregivers will only take place after ethics approval is obtained. As described in Section 2.7, the evaluation will follow a mixed-methods approach. Quantitative evaluation will include structured questionnaires administered to caregivers and therapists, alongside model performance metrics. Qualitative evaluation will include semi-structured interviews and observational notes from pilot sessions. All evaluation evidence will be documented in the final report.
 
 Figure 7 presents the output from the Flutter unit test suite at the interim stage.
 
@@ -962,6 +1071,10 @@ Barrett, L.F., Adolphs, R., Marsella, S., Martinez, A.M. and Pollak, S.D. (2019)
 Beukelman, D.R. and Light, J.C. (2020) *Augmentative and alternative communication: supporting children and adults with complex communication needs*. 5th edn. Baltimore, MD: Paul H. Brookes.
 
 Boehm, B.W. (1988) 'A spiral model of software development and enhancement', *Computer*, 21(5), pp. 61-72.
+
+Brooke, J. (1996) 'SUS: a "quick and dirty" usability scale', in Jordan, P.W., Thomas, B., Weerdmeester, B.A. and McClelland, I.L. (eds.) *Usability Evaluation in Industry*. London: Taylor and Francis, pp. 189-194.
+
+Creswell, J.W. and Creswell, J.D. (2018) *Research design: qualitative, quantitative, and mixed methods approaches*. 5th edn. Thousand Oaks, CA: SAGE Publications.
 
 Dawe, M. (2006) 'Desperately seeking simplicity: how young adults with cognitive disabilities and their families adopt assistive technologies', in *Proceedings of the SIGCHI Conference on Human Factors in Computing Systems*. New York: ACM, pp. 1143-1152.
 
