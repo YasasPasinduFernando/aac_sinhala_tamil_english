@@ -86,7 +86,7 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 16. Figure 16: Field Exposure at Karapitiya Teaching Hospital
 17. Figure 17: Initial Project Gantt Chart
 18. Figure 18: Updated Project Gantt Chart
-19. Figure 19: Trello Board for Sprint Management
+19. Figure 19: Google Sheets Sprint Tracking Spreadsheet
 
 ## List of Tables
 
@@ -98,10 +98,10 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 6. Table 6: Dataset Distribution by Emotion
 7. Table 7: Ethical Risk Assessment
 8. Table 8: Risk Assessment Matrix
-9. Table 9: Work Completed Summary
-10. Table 10: Remaining Work Plan
-11. Table 11: Development Libraries and Packages
-12. Table 12: AI Model Training Libraries
+9. Table 9: Development Libraries and Packages
+10. Table 10: AI Model Training Libraries (Google Colab)
+11. Table 11: Work Completed Summary
+12. Table 12: Remaining Work Plan
 
 **Formatting note (ESOFT):** When exporting/printing, apply Times New Roman, size 12, 1.5 line spacing, and keep the heading hierarchy as shown in this document.
 
@@ -389,21 +389,21 @@ Agile Scrum was selected as the best fit for this project for several reasons.
 - External dependencies such as ethics approval and hospital coordination have uncertain timelines. Scrum accommodates this by allowing tasks to be moved between sprints without disrupting the overall framework.
 - The dual-platform architecture still benefits from phased delivery, with Platform A features developed before Platform B, but within a flexible sprint structure rather than rigid predefined phases.
 
-Since this is a single-developer project, the standard Scrum framework was adapted to suit the context. The roles of developer, product owner, and scrum master were combined and carried out by the same individual. Formal team ceremonies such as daily stand-ups were not applicable, but sprint planning was conducted at the start of each sprint and a sprint review was held with the project supervisor at the end. Retrospective notes were recorded after each sprint to identify what worked well and what needed adjustment in the following cycle. A Trello board was used to manage the product backlog, sprint backlogs, and task progress throughout the project, providing a visual record of how work was prioritised and completed across sprints.
+Since this is a single-developer project, the standard Scrum framework was adapted to suit the context. The roles of developer, product owner, and scrum master were combined and carried out by the same individual. Formal team ceremonies such as daily stand-ups were not applicable, but sprint planning was conducted at the start of each sprint and a sprint review was held with the project supervisor at the end. Retrospective notes were recorded after each sprint to identify what worked well and what needed adjustment in the following cycle. A Google Sheets spreadsheet was used to manage the product backlog, sprint backlogs, and task progress throughout the project, providing a visual record of how work was prioritised and completed across sprints. This approach was preferred over tools such as Trello or Jira for two reasons. First, the project involved a single developer, and a shared spreadsheet offered a simpler, more direct way to track items without the overhead of a full project management platform. Second, Google Sheets is accessible through its mobile application, which proved particularly useful during visits to Karapitiya Teaching Hospital and informal meetings with clinical staff. Progress updates and backlog priorities could be reviewed and confirmed on the spot without requiring access to a laptop, allowing stakeholder input to be captured immediately and reflected in the sprint plan.
 
 #### 2.6.2 Sprint Plan
 
-The project is organised into five sprints, each approximately two months in duration. The sprint boundaries align with the academic timeline and key project milestones.
+The project is organised into five sprints aligned with the academic timeline. The first two sprints are each approximately two months in duration, while the remaining three sprints are approximately one month each, reflecting the compressed schedule required to complete all deliverables within the academic year ending in May 2026.
 
-**Sprint 1 (Months 1-2), Requirements, Architecture, and Minimal AAC.** This sprint covers literature review completion, requirements analysis, system architecture design, technology stack selection, and initial Flutter project setup. The deliverable is a documented architecture and a basic application skeleton.
+**Sprint 1 (November to December 2025), Requirements, Architecture, and Minimal AAC.** This sprint covers literature review completion, requirements analysis, system architecture design, technology stack selection, and initial Flutter project setup. The deliverable is a documented architecture and a basic application skeleton.
 
-**Sprint 2 (Months 3-4), Platform A and Firebase Backend.** This sprint covers the core AAC features for Platform A (symbol grid, trilingual support, basic TTS, navigation), Firebase backend configuration, and initial dashboard implementation. The deliverable is a functional (though incomplete) AAC application and backend.
+**Sprint 2 (January to February 2026), Platform A and Firebase Backend.** This sprint covers the core AAC features for Platform A (symbol grid, trilingual support, basic TTS, navigation), Firebase backend configuration, and initial dashboard implementation. The deliverable is a functional (though incomplete) AAC application and backend.
 
-**Sprint 3 (Months 5-6), AI Model Training and Platform B Integration.** This sprint covers dataset assembly, full model training and evaluation, TFLite export, integration of the FER pipeline into the Flutter application, and implementation of emotion-adaptive vocabulary logic. The deliverable is a working Platform B prototype.
+**Sprint 3 (March 2026), AI Model Training and Dataset Preparation.** This sprint covers dataset assembly, full model training and evaluation, TFLite export, symbol set finalisation, and ethics application submission. The deliverable is a trained and exported model ready for integration.
 
-**Sprint 4 (Months 7-8), Dashboard Completion, Ethics Approval, and Pilot Preparation.** This sprint covers full dashboard development, ethics application and approval process, pilot protocol design, and participant recruitment. The deliverable is a complete system ready for pilot deployment.
+**Sprint 4 (April 2026), Platform B Integration, Dashboard, and Pilot Preparation.** This sprint covers integration of the FER pipeline into the Flutter application, emotion-adaptive vocabulary logic, dashboard completion, ethics follow-up, and pilot protocol design. The deliverable is a complete system ready for pilot deployment.
 
-**Sprint 5 (Months 9-10), Pilot Execution and Final Report.** This sprint covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
+**Sprint 5 (May 2026), Pilot Execution and Final Report.** This sprint covers supervised pilot use, data collection and analysis, final report writing, and preparation of deliverables. The deliverable is the final report and all supporting documentation.
 
 #### 2.6.3 Product Backlog
 
@@ -432,7 +432,7 @@ The product backlog represents all required features and deliverables of the sys
 
 Each sprint backlog was derived from the product backlog during sprint planning. Tasks were selected based on priority, dependencies, and project timeline constraints. For example, Sprint 2 focused on implementing the core AAC functionality, including symbol grid navigation, multilingual support, and local data storage, while Sprint 3 prioritises AI model training and integration. The tables below summarise the backlog items for each sprint.
 
-**Sprint 1 Backlog (Months 1-2)**
+**Sprint 1 Backlog (November to December 2025)**
 
 | Task | Status |
 |---|---|
@@ -443,7 +443,7 @@ Each sprint backlog was derived from the product backlog during sprint planning.
 | Initialise Flutter project with Android and iOS build targets | Done |
 | Produce design artefacts (architecture diagram, ER diagram, use case diagram, class diagram) | Done |
 
-**Sprint 2 Backlog (Months 3-4)**
+**Sprint 2 Backlog (January to February 2026)**
 
 | Task | Status |
 |---|---|
@@ -458,7 +458,7 @@ Each sprint backlog was derived from the product backlog during sprint planning.
 | Implement basic unit and widget tests | Done |
 | Upload APK to Google Play Console for internal testing | Done |
 
-**Sprint 3 Backlog (Months 5-6) (Planned)**
+**Sprint 3 Backlog (March 2026) (Current)**
 
 | Task | Status |
 |---|---|
@@ -470,30 +470,27 @@ Each sprint backlog was derived from the product backlog during sprint planning.
 | TFLite export and on-device benchmarking | Pending |
 | Submit ethics application | In Preparation |
 
-**Sprint 4 Backlog (Months 7-8) (Planned)**
+**Sprint 4 Backlog (April 2026) (Planned)**
 
 | Task | Status |
 |---|---|
 | Integrate FER pipeline into Flutter application | Pending |
 | Implement emotion-adaptive logic and caregiver override | Pending |
 | Complete therapist-parent dashboard | Pending |
-| Obtain ethics approval | Pending |
+| Follow up on ethics approval | Pending |
 | Design pilot protocol and recruit participants | Pending |
 
-**Sprint 5 Backlog (Months 9-10) (Planned)**
+**Sprint 5 Backlog (May 2026) (Planned)**
 
 | Task | Status |
 |---|---|
 | Conduct supervised pilot at Karapitiya Teaching Hospital | Pending |
 | Collect quantitative and qualitative data | Pending |
 | Analyse pilot findings | Pending |
-| Write final report | Pending |
-| Prepare presentation and deliverables | Pending |
+| Write final report and compile deliverables | Pending |
+| Prepare and deliver final presentation | Pending |
 
-Sprint management and task tracking were carried out using Trello, with columns for Backlog, To Do, In Progress, Review, and Done. Figure 19 presents the Trello board used for sprint management during the project.
-
-Figure 19: Trello Board for Sprint Management
-[Insert figure here. To be included in the final submission.]
+Sprint management and task tracking were carried out using a Google Sheets spreadsheet, with columns for Backlog, To Do, In Progress, Review, and Done. This provided a lightweight but effective tracking mechanism suited to a single-developer workflow. The spreadsheet was also accessible via the Google Sheets mobile application, which allowed backlog items and task statuses to be reviewed or updated during hospital visits and stakeholder discussions without requiring a laptop. The sprint tracking spreadsheet is presented as Figure 19 in Section 5.4.
 
 ### 2.7 Research Methodology
 
@@ -744,7 +741,7 @@ The application was developed using Visual Studio Code as the primary IDE, with 
 
 The following table lists the key development libraries and packages used in the project, as specified in the project dependency file (`pubspec.yaml`). These packages were selected based on their relevance to the project requirements, community support, and compatibility with the offline-first architecture.
 
-[Table 11: Development Libraries and Packages]
+[Table 9: Development Libraries and Packages]
 
 | Package | Version | Purpose | Justification for Selection |
 |---|---|---|---|
@@ -766,7 +763,7 @@ Custom assets bundled with the application include the TensorFlow Lite emotion m
 
 For the AI model training component, the following Python libraries were used within Google Colab.
 
-[Table 12: AI Model Training Libraries (Google Colab)]
+[Table 10: AI Model Training Libraries (Google Colab)]
 
 | Library | Purpose | Justification for Selection |
 |---|---|---|
@@ -848,7 +845,7 @@ Figure 7 presents the output from the Flutter unit test suite at the interim sta
 Figure 7: Flutter Unit Test Output
 [Insert figure here. To be included in the final submission.]
 
-[Table 9: Work Completed Summary]
+[Table 11: Work Completed Summary]
 
 | Work Package | Status | Notes |
 |---|---|---|
@@ -979,21 +976,21 @@ The pilot phase requires obtaining ethics approval from Karapitiya Teaching Hosp
 
 Final deliverables include the final report incorporating pilot findings and full model evaluation, user documentation such as an installation guide and user manual, a deployment package containing the APK or IPA, model files, and backend configuration, and a presentation or demonstration for the examining panel.
 
-[Table 10: Remaining Work Plan]
+[Table 12: Remaining Work Plan]
 
 | Task | Target Period | Dependency | Status |
 |---|---|---|---|
-| Finalise symbol set and licensing | Month 5 | None | Pending |
-| Complete Platform A (full trilingual AAC) | Months 5–6 | Symbol set | Pending |
-| Complete curated dataset | Months 5–7 | Ethics approval | Pending |
-| Full model training and evaluation | Months 6–7 | Dataset | Pending |
-| Platform B integration (FER + adaptation) | Months 6–7 | Model | Pending |
-| Full dashboard | Months 6–7 | None | Pending |
-| Full offline-first sync | Month 7 | None | Pending |
-| Ethics approval (hospital + MoH) | Months 5–6 | Application | In preparation |
-| Pilot recruitment | Month 7 | Ethics approval | Pending |
-| Pilot execution | Months 8–9 | Recruitment | Pending |
-| Final report | Months 9–10 | All above | Pending |
+| Finalise symbol set and licensing | March 2026 | None | Pending |
+| Complete Platform A (full trilingual AAC) | March 2026 | Symbol set | Pending |
+| Complete curated dataset | March to April 2026 | Ethics approval | Pending |
+| Full model training and evaluation | March to April 2026 | Dataset | Pending |
+| Platform B integration (FER + adaptation) | April 2026 | Model | Pending |
+| Full dashboard | April 2026 | None | Pending |
+| Full offline-first sync | April 2026 | None | Pending |
+| Ethics approval (hospital + MoH) | March to April 2026 | Application | In preparation |
+| Pilot recruitment | April 2026 | Ethics approval | Pending |
+| Pilot execution | May 2026 | Recruitment | Pending |
+| Final report | May 2026 | All above | Pending |
 
 ---
 
@@ -1001,30 +998,30 @@ Final deliverables include the final report incorporating pilot findings and ful
 
 ### 5.1 Original Project Plan
 
-At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the full academic year. This chart divided the work into five sprints spanning approximately ten months, with each sprint building upon the deliverables of the previous one. Figure 17 presents the original project Gantt chart.
+At the outset of the project, a Gantt chart was prepared as part of the project proposal to establish the planned schedule across the academic year. This chart divided the work into five sprints spanning approximately seven months, with each sprint building upon the deliverables of the previous one. Figure 17 presents the original project Gantt chart.
 
 Figure 17: Initial Project Gantt Chart
 [Insert figure here. To be included in the final submission.]
 
 The five sprints in the original plan were defined as follows.
 
-Sprint 1 (Months 1 to 2) covered requirements analysis, architecture design, literature review, and the initial Flutter project setup. The expected deliverable was a documented system architecture and a basic application skeleton.
+Sprint 1 (November to December 2025) covered requirements analysis, architecture design, literature review, and the initial Flutter project setup. The expected deliverable was a documented system architecture and a basic application skeleton.
 
-Sprint 2 (Months 3 to 4) covered Platform A core AAC features, including the symbol grid, trilingual support, basic TTS, and navigation. It also included Firebase backend configuration and initial dashboard implementation. The expected deliverable was a functional, though incomplete, AAC application and backend.
+Sprint 2 (January to February 2026) covered Platform A core AAC features, including the symbol grid, trilingual support, basic TTS, and navigation. It also included Firebase backend configuration and initial dashboard implementation. The expected deliverable was a functional, though incomplete, AAC application and backend.
 
-Sprint 3 (Months 5 to 6) covered dataset assembly, full model training and evaluation, TFLite export, and Platform B FER integration. The expected deliverable was a working Platform B prototype.
+Sprint 3 (March 2026) covered dataset assembly, full model training and evaluation, TFLite export, and symbol set finalisation. The expected deliverable was a trained model ready for integration.
 
-Sprint 4 (Months 7 to 8) covered dashboard completion, ethics approval, pilot design, consent form translation, and participant recruitment. The expected deliverable was a complete system ready for pilot deployment.
+Sprint 4 (April 2026) covered Platform B FER integration, dashboard completion, ethics approval, pilot design, and participant recruitment. The expected deliverable was a complete system ready for pilot deployment.
 
-Sprint 5 (Months 9 to 10) covered pilot execution, data collection and analysis, final report writing, and preparation of deliverables. The expected deliverable was the final report and all supporting documentation.
+Sprint 5 (May 2026) covered pilot execution, data collection and analysis, final report writing, and preparation of deliverables. The expected deliverable was the final report and all supporting documentation.
 
-At the interim submission point, which falls at the end of Month 4, Sprints 1 and 2 were expected to be fully complete.
+At the interim submission point, which falls at the end of February 2026, Sprints 1 and 2 were expected to be fully complete.
 
 ### 5.2 Progress Against the Original Plan
 
-Sprint 1 (Months 1 to 2) was completed on schedule. The literature review, requirements analysis, system architecture, and technology stack selection were all delivered within the planned timeframe. The Flutter project was initialised with the intended folder structure and build targets for both Android and iOS. No significant issues arose during this phase.
+Sprint 1 (November to December 2025) was completed on schedule. The literature review, requirements analysis, system architecture, and technology stack selection were all delivered within the planned timeframe. The Flutter project was initialised with the intended folder structure and build targets for both Android and iOS. No significant issues arose during this phase.
 
-Sprint 2 (Months 3 to 4) is substantially complete, though progress was uneven across different work packages. The core AAC features for Platform A, including the symbol grid, screen navigation, basic text-to-speech, and the multilingual switching framework, have been partially implemented and are functional at a prototype level. The AI model pipeline was set up ahead of schedule, with preliminary training experiments on public datasets completed during this sprint rather than in Sprint 3 as originally planned. This early start on the model work provides a useful buffer for the next phase.
+Sprint 2 (January to February 2026) is substantially complete, though progress was uneven across different work packages. The core AAC features for Platform A, including the symbol grid, screen navigation, basic text-to-speech, and the multilingual switching framework, have been partially implemented and are functional at a prototype level. The AI model pipeline was set up ahead of schedule, with preliminary training experiments on public datasets completed during this sprint rather than in Sprint 3 as originally planned. This early start on the model work provides a useful buffer for the next phase.
 
 However, four areas did not progress as quickly as the original plan anticipated.
 
@@ -1081,17 +1078,19 @@ Figure 18: Updated Project Gantt Chart
 
 The revised schedule is as follows.
 
-Months 5 to 6 (Revised Sprint 3). The focus during this period will be on finalising the symbol set, completing Platform A vocabulary and TTS integration, submitting the ethics application, continuing model training on public datasets, and beginning dataset curation.
+March 2026 (Revised Sprint 3). The focus during this period will be on finalising the symbol set, completing Platform A vocabulary and TTS integration, submitting the ethics application, continuing model training on public datasets, and beginning dataset curation.
 
-Months 6 to 7 (Overlap between Revised Sprints 3 and 4). This period will focus on full model training and evaluation once the dataset is ready, Platform B FER integration and testing, and dashboard completion.
+April 2026 (Revised Sprint 4). This period will focus on full model training completion, Platform B FER integration and testing, dashboard completion, and ethics follow-up. Pilot protocol design and participant recruitment will also begin during this sprint.
 
-Months 7 to 8 (Revised Sprint 4). Ethics approval is expected during this period. Tasks include pilot preparation, participant recruitment, and finalisation of backup and synchronisation flows.
+May 2026 (Revised Sprint 5 and Final Phase). This final sprint covers pilot execution at Karapitiya Teaching Hospital, data collection and analysis, final report writing, preparation of deliverables, and the project presentation.
 
-Months 8 to 9 (Revised Sprint 5). This period covers pilot execution at Karapitiya Teaching Hospital, data collection, and preliminary analysis.
 
-Months 9 to 10 (Final phase). The final period is reserved for final report writing, preparation of deliverables, and the project presentation.
+The main difference between the original and revised plans is the parallel scheduling of previously sequential tasks during March to May 2026 and the compression of Sprints 3 to 5 into one-month cycles. This approach absorbs the minor delays without extending the overall project timeline.
 
-The main difference between the original and revised plans is the parallel scheduling of previously sequential tasks during Months 5 to 8. This approach absorbs the minor delays without extending the overall project timeline.
+Throughout the project, sprint progress and task status were tracked using a Google Sheets spreadsheet, which served as both the product backlog and the sprint backlog tracker. Figure 19 presents the sprint tracking spreadsheet used during the project.
+
+Figure 19: Google Sheets Sprint Tracking Spreadsheet
+[Insert figure here. To be included in the final submission.]
 
 ### 5.5 Risk Assessment for Remaining Work
 
