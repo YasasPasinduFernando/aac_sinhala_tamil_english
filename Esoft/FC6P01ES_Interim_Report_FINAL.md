@@ -1038,17 +1038,39 @@ The ethics application for Karapitiya Teaching Hospital has taken longer to coor
 
 ### 5.3 Justification for Delays
 
-The delays identified above are minor and have specific, identifiable causes.
+The delays identified in Section 5.2 are minor and have specific, identifiable causes. Each is explained below with its impact and the corrective action taken.
 
-First, regarding the symbol set licensing, most established AAC symbol libraries are designed for Western contexts. Finding and licensing symbols that represent Sri Lankan food, clothing, and cultural activities required additional research and correspondence with symbol library providers. The time required for this task was underestimated in the original plan.
+**Delay 1: Symbol Set Licensing**
 
-Second, regarding ethics coordination, the ethics approval process at Karapitiya Teaching Hospital involves coordination with both the hospital institutional ethics committee and the Ministry of Health. The administrative timelines for these processes were not fully known at the planning stage and have proved longer than initially assumed.
+- **Problem.** Most established AAC symbol libraries (such as PCS and Widgit) are designed for Western contexts. The food, clothing, and cultural symbols in these libraries do not represent Sri Lankan daily life.
+- **Cause.** Finding and licensing culturally appropriate symbols required correspondence with multiple symbol library providers and manual adaptation of existing assets. The time required for this process was significantly underestimated in the original plan.
+- **Impact.** The full trilingual vocabulary for Platform A is not yet complete.
+- **Action taken.** Manual sourcing of culturally relevant symbols is ongoing. This task has been carried forward to Sprint 3 as a priority item.
 
-Third, regarding TTS quality, the original assumption that platform native TTS engines would provide acceptable Sinhala and Tamil output was incorrect. This limitation was only identified during implementation and now requires evaluation of third party alternatives.
+**Delay 2: Ethics Coordination**
 
-Fourth, regarding AI model training, the training pipeline was developed and executed on Google Colab using the free tier GPU allocation. The free tier imposes session time limits, which meant that longer training runs were sometimes interrupted before completion, resulting in lost checkpoints and the need to repeat experiments. This slowed the pace of iterative experimentation. More frequent checkpoint saving was adopted as a mitigation measure, and overall training progress continued, but the rate of experimentation was slower than originally anticipated.
+- **Problem.** The formal ethics application for the pilot study at Karapitiya Teaching Hospital has not yet been submitted.
+- **Cause.** The approval process involves coordination with both the hospital's institutional ethics committee and the Ministry of Health. The administrative timelines and procedural requirements for these bodies were not fully known at the planning stage and have proved longer than initially assumed.
+- **Impact.** Purpose-collected data from children with ASD cannot yet be used for model training, and the formal pilot study cannot begin until approval is obtained.
+- **Action taken.** The ethics application is in advanced preparation. An exploratory field exposure was conducted in the meantime to inform design decisions without formal data collection.
 
-None of these delays affect the critical path in a way that compromises the final deadline, provided the revised plan outlined below is followed. The critical path runs through ethics approval, dataset collection, model training, Platform B integration, pilot execution, and the final report. Platform A development and model training on public data can proceed independently of the ethics timeline.
+**Delay 3: Text-to-Speech Quality**
+
+- **Problem.** The default platform TTS engines on Android do not produce acceptable speech output for Sinhala and Tamil.
+- **Cause.** The original plan assumed that the built-in TTS engines would provide adequate quality for all three languages. This assumption was only disproved during implementation when the Sinhala and Tamil output was tested and found to be unnatural and difficult to understand.
+- **Impact.** Trilingual TTS is not yet functional. English TTS works as expected.
+- **Action taken.** Evaluation of third-party TTS services and recorded audio alternatives has been added to the Sprint 3 backlog.
+
+**Delay 4: AI Model Training on Google Colab**
+
+- **Problem.** The pace of model experimentation was slower than originally anticipated.
+- **Cause.** The training pipeline was executed on Google Colab using the free-tier GPU allocation. The free tier imposes session time limits, which meant that longer training runs were sometimes interrupted before completion, resulting in lost checkpoints and the need to repeat experiments.
+- **Impact.** Fewer training iterations were completed than planned during Sprint 2, though preliminary results were still obtained.
+- **Action taken.** More frequent checkpoint saving was adopted to prevent further data loss. The backlog for Sprint 3 includes completing full model training with the final dataset.
+
+**Overall Impact Assessment**
+
+None of these delays affect the critical path in a way that compromises the final deadline, provided the revised plan outlined in Section 5.4 is followed. The critical path runs through ethics approval, dataset collection, model training, Platform B integration, pilot execution, and the final report. Platform A development and model training on public data can proceed independently of the ethics timeline.
 
 ### 5.4 Revised Plan for Remaining Work
 
