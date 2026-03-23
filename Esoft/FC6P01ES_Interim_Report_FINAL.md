@@ -183,9 +183,9 @@ The severity classification uses three levels based on how much support a person
 
 | Severity Level | Social Communication | Typical Communication Profile |
 |---|---|---|
-| Level 1: Requiring support | Noticeable deficits without supports; difficulty initiating interactions | Full sentences; struggles with pragmatics (turn-taking, topic maintenance); benefits from AAC for high-demand situations |
-| Level 2: Requiring substantial support | Marked deficits in verbal and nonverbal communication; limited initiation | Simple phrases or short sentences; benefits from consistent AAC support |
-| Level 3: Requiring very substantial support | Severe deficits; very limited initiation; minimal response to social overtures | Very limited or no functional speech; depends heavily on AAC for basic needs, preferences, and emotions |
+| Level 1: Requiring support | Noticeable deficits without supports, with difficulty initiating interactions | Full sentences, struggles with pragmatics (turn-taking and topic maintenance), and benefits from AAC for high-demand situations |
+| Level 2: Requiring substantial support | Marked deficits in verbal and nonverbal communication, with limited initiation | Simple phrases or short sentences, and benefits from consistent AAC support |
+| Level 3: Requiring very substantial support | Severe deficits, very limited initiation, and minimal response to social overtures | Very limited or no functional speech, and depends heavily on AAC for basic needs, preferences, and emotions |
 
 #### 2.1.2 Communication and Emotional Regulation in ASD
 
@@ -235,13 +235,13 @@ The economic realities also shape what is practical. Internet connectivity can b
 
 | System | Platform | Languages | AI/Adaptive Features | Offline Support | Cost |
 |---|---|---|---|---|---|
-| Proloquo2Go | iOS | English, Spanish, French, others | Crescendo vocabulary; no FER | Offline core | ~USD 250 |
-| TouchChat | iOS, Windows | English primarily | Word prediction; no FER | Offline core | ~USD 300 |
-| LAMP Words for Life | iOS | English | Motor-planning based; no FER | Offline core | ~USD 300 |
+| Proloquo2Go | iOS | English, Spanish, French, others | Crescendo vocabulary with no FER | Offline core | ~USD 250 |
+| TouchChat | iOS, Windows | English primarily | Word prediction with no FER | Offline core | ~USD 300 |
+| LAMP Words for Life | iOS | English | Motor-planning based design with no FER | Offline core | ~USD 300 |
 | LetMeTalk | Android, iOS | User-configurable via TTS | None | Partial | Free |
-| CoughDrop | Web, Android, iOS | English primarily | Basic usage logging; no FER | Limited | Subscription |
-| Avaz AAC | iOS, Android | English, Hindi, Tamil, others | Word prediction; no FER | Offline core | ~USD 100-200 |
-| **Proposed System** | **Android, iOS (Flutter)** | **Sinhala, Tamil, English** | **On-device FER (EfficientNetB0 + CBAM; MobileNetV2 initially evaluated) via TFLite; emotion-adaptive AAC** | **Full offline-first** | **TBD (pilot)** |
+| CoughDrop | Web, Android, iOS | English primarily | Basic usage logging with no FER | Limited | Subscription |
+| Avaz AAC | iOS, Android | English, Hindi, Tamil, others | Word prediction with no FER | Offline core | ~USD 100-200 |
+| **Proposed System** | **Android, iOS (Flutter)** | **Sinhala, Tamil, English** | **On-device FER (EfficientNetB0 + CBAM, with MobileNetV2 initially evaluated) via TFLite, with emotion-adaptive AAC** | **Full offline-first** | **TBD (pilot)** |
 
 Looking at the table above, three clear gaps stand out. First, no existing system supports both Sinhala and Tamil. Second, none of them use on-device FER for emotion-adaptive communication. Third, the proposed system's full offline-first design (with local storage and manual export backup) is particularly well suited to Sri Lanka's connectivity situation.
 
@@ -363,8 +363,8 @@ The following non-functional requirements have been defined.
 | Emotion inference latency | Less than 500 ms on mid-range smartphone |
 | App startup time | Less than 3 seconds |
 | Offline operation | 100% core AAC and FER available offline |
-| Accessibility | WCAG 2.1 AA; configurable fonts, contrast, layout |
-| Data protection | TLS encryption; no raw facial images transmitted to cloud |
+| Accessibility | WCAG 2.1 AA with configurable fonts, contrast, and layout |
+| Data protection | TLS encryption with no raw facial images transmitted to cloud |
 | Platform support | Android 8.0+ and iOS 14+ |
 
 #### 2.5.7 Data Model (Interim)
@@ -629,11 +629,11 @@ A pilot at Karapitiya Teaching Hospital requires approval from the hospital's in
 
 | Ethical Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| Consent not fully informed | Low | High | Multilingual information sheets; assent from child; ongoing monitoring |
-| Privacy breach (facial images) | Low | Very High | On-device processing; no default image storage; encryption |
-| Misclassification of emotion | Medium | Medium | Confidence thresholding; caregiver override; transparency |
-| Child distress during data collection | Low | High | Trained collectors; stop criteria; parental presence |
-| Delayed ethics approval | Medium | Medium | Early submission; alternative evaluation plans |
+| Consent not fully informed | Low | High | Mitigation measures include multilingual information sheets, child assent, and continuous monitoring during all sessions. |
+| Privacy breach (facial images) | Low | Very High | Mitigation measures include on-device processing, no default image storage, and encryption for any retained data. |
+| Misclassification of emotion | Medium | Medium | Mitigation measures include confidence thresholding, caregiver override controls, and clear communication that predictions remain suggestive. |
+| Child distress during data collection | Low | High | Mitigation measures include trained data collectors, predefined stop criteria, and parental presence during sessions. |
+| Delayed ethics approval | Medium | Medium | Mitigation measures include early submission and a prepared alternative evaluation plan while approvals are pending. |
 
 ### 2.10 Risk Analysis
 
@@ -641,14 +641,14 @@ A pilot at Karapitiya Teaching Hospital requires approval from the hospital's in
 
 | Risk | Category | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| Emotion model accuracy below 80% | Technical | Medium | High | Data augmentation; class rebalancing; hyperparameter tuning |
-| Poor performance on low-end devices | Technical | Medium | Medium | Quantisation; lower-resolution input; minimum device specs |
-| Sync conflicts in offline-first design | Technical | Medium | Medium | Conflict resolution policy; comprehensive testing |
-| Delayed ethics/Ministry approval | Project | High | High | Early submission; alternative evaluation plans |
-| Limited therapist/parent availability | Project | Medium | Medium | Flexible scheduling; remote participation |
-| Consent or data breach | Ethical | Low | Very High | Strict access control; encryption; incident response plan |
-| Sinhala/Tamil TTS quality insufficient | Technical | Medium | Medium | Multiple TTS engines; recorded audio fallback |
-| Scope creep | Project | Medium | Medium | Defined scope; regular supervisor check-ins |
+| Emotion model accuracy below 80% | Technical | Medium | High | Mitigation measures include data augmentation, class rebalancing, and targeted hyperparameter tuning. |
+| Poor performance on low-end devices | Technical | Medium | Medium | Mitigation measures include quantisation, lower-resolution inputs, and clear minimum device specifications. |
+| Sync conflicts in offline-first design | Technical | Medium | Medium | Mitigation measures include a defined conflict resolution policy and comprehensive integration testing. |
+| Delayed ethics/Ministry approval | Project | High | High | Mitigation measures include early submission and an alternative interim evaluation pathway. |
+| Limited therapist/parent availability | Project | Medium | Medium | Mitigation measures include flexible scheduling and remote participation where appropriate. |
+| Consent or data breach | Ethical | Low | Very High | Mitigation measures include strict access controls, encryption, and a documented incident response plan. |
+| Sinhala/Tamil TTS quality insufficient | Technical | Medium | Medium | Mitigation measures include multiple TTS engines and a recorded-audio fallback approach. |
+| Scope creep | Project | Medium | Medium | Mitigation measures include defined scope boundaries and regular supervisor review meetings. |
 
 The critical path runs through ethics approval, dataset collection, model training, Platform B integration, pilot execution, and the final report. The primary contingency is to proceed with model training on public data and complete Platform A independently.
 
@@ -745,18 +745,18 @@ The following table lists the key development libraries and packages used in the
 
 | Package | Version | Purpose | Justification for Selection |
 |---|---|---|---|
-| flutter (SDK) | >=2.19.0 | Cross-platform mobile framework | Single codebase for both Android and iOS; large community; hot reload speeds up development; native performance through platform channels |
+| flutter (SDK) | >=2.19.0 | Cross-platform mobile framework | Single codebase for both Android and iOS, large community support, faster iteration through hot reload, and native performance through platform channels |
 | cupertino_icons | ^1.0.6 | iOS-style icon set | Provides platform-consistent iconography for iOS users without requiring separate asset bundles |
-| flutter_tts | ^3.8.3 | Text-to-speech output | Most widely adopted Flutter TTS package; supports multiple languages including Sinhala and Tamil engine access; works offline |
-| shared_preferences | ^2.2.2 | Local key-value storage | Lightweight and simple for storing user settings and preferences; no server dependency; supports the offline-first architecture |
-| google_mobile_ads | ^4.0.0 | Advertisement integration | Planned for a future sustainability model to keep the application free for end users; official Google package with strong documentation |
-| http | ^1.1.0 | HTTP client | Standard Dart HTTP package for planned payment gateway and optional API calls; minimal footprint |
-| connectivity_plus | ^5.0.0 | Network connectivity detection | Required for offline-first behaviour; detects connection state changes so the application can switch between offline and online modes |
-| camera | ^0.11.0+2 | Camera access | Official Flutter camera plugin; provides access to the front-facing camera required for facial expression capture in Platform B |
-| tflite_flutter | ^0.12.1 | On-device ML inference | Only viable option for running TensorFlow Lite models within Flutter via platform channels; enables on-device emotion classification without cloud dependency |
+| flutter_tts | ^3.8.3 | Text-to-speech output | Most widely adopted Flutter TTS package, supports multiple languages including Sinhala and Tamil engine access, and works offline |
+| shared_preferences | ^2.2.2 | Local key-value storage | Lightweight and simple for storing user settings and preferences, has no server dependency, and supports the offline-first architecture |
+| google_mobile_ads | ^4.0.0 | Advertisement integration | Planned for a future sustainability model to keep the application free for end users, and is the official Google package with strong documentation |
+| http | ^1.1.0 | HTTP client | Standard Dart HTTP package for planned payment gateway and optional API calls, with a minimal footprint |
+| connectivity_plus | ^5.0.0 | Network connectivity detection | Required for offline-first behaviour, and detects connection state changes so the application can switch between offline and online modes |
+| camera | ^0.11.0+2 | Camera access | Official Flutter camera plugin that provides access to the front-facing camera required for facial expression capture in Platform B |
+| tflite_flutter | ^0.12.1 | On-device ML inference | Viable option for running TensorFlow Lite models within Flutter via platform channels, and enables on-device emotion classification without cloud dependency |
 | image | ^4.1.7 | Image processing | Needed for preprocessing camera frames (cropping, resizing to 224x224, normalisation) before passing them to the TFLite model |
-| flutter_test (dev) | SDK | Unit and widget testing | Built-in Flutter testing framework; no additional dependency needed; supports mock-based testing of AAC and FER logic |
-| flutter_launcher_icons (dev) | ^0.13.1 | App icon generation | Automates icon generation for both Android and iOS from a single source image; reduces manual configuration |
+| flutter_test (dev) | SDK | Unit and widget testing | Built-in Flutter testing framework with no additional dependency required, and supports mock-based testing of AAC and FER logic |
+| flutter_launcher_icons (dev) | ^0.13.1 | App icon generation | Automates icon generation for both Android and iOS from a single source image, and reduces manual configuration |
 | flutter_lints (dev) | ^6.0.0 | Code quality | Enforces recommended Dart coding standards and best practices through static analysis |
 
 Custom assets bundled with the application include the TensorFlow Lite emotion model (`emotion_model.tflite`), emotion class labels (`labels.txt`), and the NotoColorEmoji font for consistent emoji rendering across devices.
@@ -767,12 +767,12 @@ For the AI model training component, the following Python libraries were used wi
 
 | Library | Purpose | Justification for Selection |
 |---|---|---|
-| TensorFlow / Keras | Model training and evaluation | Industry-standard deep learning framework; supports transfer learning with EfficientNetB0; direct TFLite export for mobile deployment |
-| NumPy | Array manipulation and computation | Required dependency for TensorFlow; used for data preprocessing and numerical operations |
-| Matplotlib | Training curve visualisation | Standard plotting library; used to visualise loss and accuracy curves across training epochs for model evaluation |
-| Pillow (PIL) | Image loading and preprocessing | Widely used image library; handles loading, resizing, and format conversion of facial expression images |
+| TensorFlow / Keras | Model training and evaluation | Industry-standard deep learning framework that supports transfer learning with EfficientNetB0, and direct TFLite export for mobile deployment |
+| NumPy | Array manipulation and computation | Required dependency for TensorFlow, and used for data preprocessing and numerical operations |
+| Matplotlib | Training curve visualisation | Standard plotting library used to visualise loss and accuracy curves across training epochs for model evaluation |
+| Pillow (PIL) | Image loading and preprocessing | Widely used image library that handles loading, resizing, and format conversion of facial expression images |
 | scikit-learn | Classification metrics and confusion matrix | Provides precision, recall, F1-score, and confusion matrix functions required for model evaluation against the 80% accuracy target |
-| tf.data API | Optimised data pipeline | Built into TensorFlow; enables efficient batching, shuffling, and augmentation during training; reduces GPU idle time |
+| tf.data API | Optimised data pipeline | Built into TensorFlow, enables efficient batching, shuffling, and augmentation during training, and reduces GPU idle time |
 
 Core AAC features for Platform A have been partially implemented.
 
@@ -853,13 +853,13 @@ Figure 7: Flutter Unit Test Output
 | Requirements and design | Substantially complete | Documented in Section 2 |
 | Flutter project setup | Complete | Single codebase for Android/iOS |
 | Platform A (core AAC) | Partially complete | Symbol grid, navigation, basic TTS, multilingual placeholders |
-| Platform B (AI + FER) | In progress | Pipeline set up; initial training on public data |
-| Firebase backend | Early / exploratory | Project created; not fully implemented or synced |
-| Therapist-parent dashboard | Early / prototype | Basic UI and placeholders; integration pending |
-| Ethics and partnership | In progress | Draft consent forms; hospital contact made |
-| AI model training | In progress | Initial experiments; full training pending |
+| Platform B (AI + FER) | In progress | Pipeline set up, with initial training on public data |
+| Firebase backend | Early / exploratory | Project created, but not fully implemented or synced |
+| Therapist-parent dashboard | Early / prototype | Basic UI and placeholders available, with integration pending |
+| Ethics and partnership | In progress | Draft consent forms completed, and initial hospital contact established |
+| AI model training | In progress | Initial experiments completed, with full training still pending |
 | TFLite export and benchmarking | Complete (preliminary) | Inference time acceptable |
-| Testing | In progress | Unit tests; manual testing; no formal user testing |
+| Testing | In progress | Unit tests and manual testing completed, with no formal user testing yet |
 
 ### 3.8 Current UI Screens (Interim)
 
