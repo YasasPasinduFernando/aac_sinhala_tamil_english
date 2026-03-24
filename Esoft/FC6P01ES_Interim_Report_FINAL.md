@@ -30,7 +30,7 @@ Date: ______________________________
 
 ## Acknowledgements
 
-The author would like to express sincere gratitude to the project supervisor, Ms. Niruni Fonseka, at ESOFT Metro Campus for her continuous guidance, constructive feedback, and support throughout this project.
+The author would like to express sincere gratitude to the project supervisor, Ms. Niruni Fonseka, at ESOFT Metro Campus for her continuous guidance, constructive feedback, and support throughout this project. Gratitude is also extended to the second supervisor, Mr. Akila Udara Akalanka, at ESOFT Metro Campus for his additional advice and support across technical and academic aspects of the work.
 
 Special thanks are also extended to the staff at Karapitiya Teaching Hospital, Galle, for their openness to a potential collaboration for the planned pilot study and for sharing valuable clinical insights on children with autism spectrum disorder.
 
@@ -1095,6 +1095,8 @@ Figure 19: Google Sheets Sprint Tracking Spreadsheet
 [Insert figure here. To be included in the final submission.]
 
 The workbook used for sprint tracking was organised into several sheets so that backlog management, day-to-day progress, and governance could be recorded in one place. The Product Backlog sheet listed prioritised features and epics. The Sprint Backlogs sheet broke work down by sprint. The Sprint Tracker sheet followed a Kanban-style layout for task status. Additional sheets supported project oversight, namely Sprint Summary for high-level progress, Milestones for key dates, Meeting Log for supervisor and stakeholder reviews, Issue Tracker for defects and blockers, Decision Log for agreed changes, Retrospectives for sprint reflections, and Time Log for effort records. The same structure was maintained when the file was prepared for upload to Google Drive and reviewed as a screenshot for Figure 19.
+
+The Sprint Summary sheet reports aggregate progress across the full product backlog (for example, 14 of 33 tasks completed, approximately 42 per cent). That percentage is a task-count measure across all planned sprints, including work scheduled for later sprints that had not started at the interim reporting date (25 March 2026). It therefore reflects backlog completion against the entire plan rather than calendar time alone, and a value below 50 per cent is expected at the interim stage while Sprints 3 to 5 remain partially complete or pending.
 
 ### 5.5 Risk Assessment for Remaining Work
 
