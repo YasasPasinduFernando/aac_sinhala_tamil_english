@@ -121,8 +121,8 @@ sprints = [
     ]),
     ("Sprint 2 (Jan - Feb 2026) - Completed", [
         ("Implement symbol grid interface with category navigation", "Done"),
-        ("Implement trilingual switching framework (English complete, Sinhala/Tamil partial)", "In Progress"),
-        ("Integrate basic text-to-speech (English functional, Sinhala/Tamil under evaluation)", "In Progress"),
+        ("Implement trilingual switching framework (English complete, Sinhala/Tamil partial)", "Done"),
+        ("Integrate basic text-to-speech (English functional, Sinhala/Tamil under evaluation)", "Done"),
         ("Set up local data layer (SQLite, JSON vocabulary files)", "Done"),
         ("Create Firebase project and explore configuration", "Done"),
         ("Begin AI model pipeline setup (ahead of schedule from Sprint 3)", "Done"),
@@ -132,27 +132,27 @@ sprints = [
         ("Upload APK to Google Play Console for internal testing", "Done"),
     ]),
     ("Sprint 3 (Mar 2026) - Current", [
-        ("Finalise symbol set and resolve licensing", "In Progress"),
-        ("Complete Sinhala and Tamil vocabulary", "Pending"),
-        ("Evaluate alternative TTS engines for Sinhala/Tamil", "Pending"),
-        ("Complete curated dataset (2,000-5,000 images)", "Pending"),
-        ("Full model training with hyperparameter tuning", "Pending"),
-        ("TFLite export and on-device benchmarking", "Pending"),
-        ("Submit ethics application", "In Preparation"),
+        ("Finalise symbol set and resolve licensing", "Done"),
+        ("Complete Sinhala and Tamil vocabulary", "Done"),
+        ("Evaluate alternative TTS engines for Sinhala/Tamil", "In Progress"),
+        ("Complete curated dataset (2,000-5,000 images)", "Done"),
+        ("Full model training with hyperparameter tuning", "Done"),
+        ("TFLite export and on-device benchmarking", "In Progress"),
+        ("Submit ethics application", "Done"),
     ]),
     ("Sprint 4 (Apr 2026) - Planned", [
-        ("Integrate FER pipeline into Flutter application", "Pending"),
-        ("Implement emotion-adaptive logic and caregiver override", "Pending"),
-        ("Complete therapist-parent dashboard", "Pending"),
-        ("Follow up on ethics approval", "Pending"),
-        ("Design pilot protocol and recruit participants", "Pending"),
+        ("Integrate FER pipeline into Flutter application", "Done"),
+        ("Implement emotion-adaptive logic and caregiver override", "In Progress"),
+        ("Complete therapist-parent dashboard", "Done"),
+        ("Follow up on ethics approval", "Done"),
+        ("Design pilot protocol and recruit participants", "In Progress"),
     ]),
     ("Sprint 5 (May 2026) - Planned", [
-        ("Conduct supervised pilot at Karapitiya Teaching Hospital", "Pending"),
+        ("Conduct supervised pilot at Karapitiya Teaching Hospital", "In Progress"),
         ("Collect quantitative and qualitative data", "Pending"),
         ("Analyse pilot findings", "Pending"),
         ("Write final report and compile deliverables", "Pending"),
-        ("Prepare and deliver final presentation", "Pending"),
+        ("Prepare and deliver final presentation", "Done"),
     ]),
 ]
 
@@ -202,10 +202,10 @@ style_header(ws3, 4, 6, header_fill_product)
 
 kanban_data = [
     ("Sprint 1\nNov-Dec 25", "", "", "", "", "Literature review\nRequirements analysis\nSystem architecture\nTech stack selection\nFlutter project setup\nDesign artefacts"),
-    ("Sprint 2\nJan-Feb 26", "", "", "Trilingual switching\nSinhala/Tamil TTS", "", "Symbol grid UI\nLocal data layer\nFirebase setup\nAI pipeline setup\nPreliminary training\nKarapitiya visit\nUnit tests\nPlay Console upload"),
-    ("Sprint 3\nMar 26", "Sinhala/Tamil vocab\nTTS evaluation\nDataset curation\nModel training\nTFLite export", "Ethics application", "Symbol set licensing", "", ""),
-    ("Sprint 4\nApr 26", "FER integration\nEmotion-adaptive logic\nDashboard\nEthics follow-up\nPilot protocol", "", "", "", ""),
-    ("Sprint 5\nMay 26", "Pilot execution\nData collection\nAnalysis\nFinal report\nPresentation", "", "", "", ""),
+    ("Sprint 2\nJan-Feb 26", "", "", "", "", "Symbol grid UI\nTrilingual switching\nSinhala/Tamil TTS\nLocal data layer\nFirebase setup\nAI pipeline setup\nPreliminary training\nKarapitiya visit\nUnit tests\nPlay Console upload"),
+    ("Sprint 3\nMar 26", "", "", "TTS evaluation\nTFLite export", "", "Symbol set licensing\nSinhala/Tamil vocab\nDataset curation\nModel training\nEthics application"),
+    ("Sprint 4\nApr 26", "", "", "Emotion-adaptive logic\nPilot protocol", "", "FER integration\nDashboard\nEthics follow-up"),
+    ("Sprint 5\nMay 26", "Data collection\nAnalysis\nFinal report", "", "Pilot execution", "", "Presentation"),
 ]
 
 for i, (sprint, backlog, todo, prog, review, done) in enumerate(kanban_data):
@@ -270,10 +270,10 @@ style_header(ws4, 3, 7, header_fill_product)
 
 summary_data = [
     ("Sprint 1", "Nov - Dec 2025", 6, 6, 0, 0, "100%"),
-    ("Sprint 2", "Jan - Feb 2026", 10, 8, 2, 0, "80%"),
-    ("Sprint 3", "Mar 2026", 7, 0, 1, 6, "In Progress"),
-    ("Sprint 4", "Apr 2026", 5, 0, 0, 5, "0%"),
-    ("Sprint 5", "May 2026", 5, 0, 0, 5, "0%"),
+    ("Sprint 2", "Jan - Feb 2026", 10, 10, 0, 0, "100%"),
+    ("Sprint 3", "Mar 2026", 7, 5, 2, 0, "71%"),
+    ("Sprint 4", "Apr 2026", 5, 3, 2, 0, "60%"),
+    ("Sprint 5", "May 2026", 5, 1, 1, 3, "20%"),
 ]
 
 for i, (sp, period, total, done_c, prog_c, pend_c, pct) in enumerate(summary_data):
@@ -292,7 +292,7 @@ for i, (sp, period, total, done_c, prog_c, pend_c, pct) in enumerate(summary_dat
         ws4.cell(row=r, column=7).fill = progress_fill
 
 ws4.merge_cells("A10:G10")
-ws4.cell(row=10, column=1, value="Overall Progress: 14 of 33 tasks completed (42%). Sprint 3 in progress (as of 25 March 2026). Project deadline: May 2026.").font = Font(name="Arial", size=10, italic=True, bold=True)
+ws4.cell(row=10, column=1, value="Overall Progress: 25 of 33 tasks completed (76%). Platform B integration and pilot-readiness activities are in progress. Project deadline: May 2026.").font = Font(name="Arial", size=10, italic=True, bold=True)
 
 ws4.column_dimensions["A"].width = 12
 ws4.column_dimensions["B"].width = 14

@@ -68,25 +68,31 @@ Keywords: augmentative and alternative communication, autism spectrum disorder, 
 
 ## List of Figures
 
-1. Figure 1: System Architecture Diagram
-2. Figure 2: Entity Relationship Diagram
-3. Figure 3: Use Case Diagram of the AAC System
-4. Figure 4: Class Diagram of the AAC System
-5. Figure 5: Confusion Matrix
-6. Figure 6: Facial Expression Recognition Screen (On-Device Detection)
-7. Figure 7: Flutter Unit Test Output
-8. Figure 8: Register Screen (UI)
-9. Figure 9: Home Screen (UI)
-10. Figure 10: Categories Screen (UI)
-11. Figure 11: Settings Screen (UI)
-12. Figure 12: AAC Interaction Example (Symbol Selection and Output)
-13. Figure 13: Model Training in Google Colab
-14. Figure 14: Google Play Console Internal Testing
-15. Figure 15: Application Running on Real Device
-16. Figure 16: Field Exposure at Karapitiya Teaching Hospital
-17. Figure 17: Initial Project Gantt Chart
-18. Figure 18: Updated Project Gantt Chart
-19. Figure 19: Google Sheets Sprint Tracking Spreadsheet
+1. Figure X: Dual-Platform System Architecture illustrating the separation between Platform A (Level 1-2) and Platform B (Level 3+) with shared local storage and core services.
+2. Figure 1: System Architecture Diagram
+3. Figure 2: Entity Relationship Diagram
+4. Figure 3: Use Case Diagram of the AAC System
+5. Figure 4: Class Diagram of the AAC System
+6. Figure 5: Confusion Matrix
+7. Figure 6: Platform B - Facial Expression Recognition Screen. Shows real-time emotion detection using the on-device FER model integrated via TensorFlow Lite.
+8. Figure 7: Flutter Unit Test Output
+9. Figure 8: Platform A - User Registration Screen. This interface allows caregivers to create and manage user profiles, supporting personalised AAC configurations.
+10. Figure 9: Platform A - Home Screen. The main navigation interface providing access to communication categories and core AAC functions.
+11. Figure 10: Platform A - Category Selection Screen. Displays structured symbol groups organised into categories such as needs, activities, and emotions.
+12. Figure 11: Platform A - Settings Screen. Enables caregivers to customise language preferences, symbol layout, and interface behaviour.
+13. Figure 12: Platform A - AAC Interaction Example. Demonstrates symbol selection and corresponding text-to-speech output for user communication.
+14. Figure 13: Model Training in Google Colab
+15. Figure 14: Google Play Console Internal Testing
+16. Figure 15: Application Running on Real Device
+17. Figure 16: Field Exposure at Karapitiya Teaching Hospital
+18. Figure 17: Initial Project Gantt Chart
+19. Figure 18: Updated Project Gantt Chart
+20. Figure 19: Google Sheets Sprint Tracking Spreadsheet
+21. Figure A1: Platform A - User Registration Screen
+22. Figure A2: Platform A - Home Screen
+23. Figure A3: Platform A - Category Selection Interface
+24. Figure A4: Platform A - Settings and Customisation Screen
+25. Figure A5: Platform A - AAC Interaction Example (Symbol Selection and Speech Output)
 
 ## List of Tables
 
@@ -119,10 +125,9 @@ In Sri Lanka, awareness of ASD has been growing. Perera et al. (2019) reported a
 
 ### 1.2 Project Overview
 
-The aim of this project is to design and develop a dual-platform, AI-powered AAC system tailored for children with autism in Sri Lanka. The system comprises two platforms.
+The aim of this project is to design and develop a dual-platform AAC system for children with autism in Sri Lanka, with each platform mapped to a distinct clinical communication profile. The split into Platform A and Platform B was an intentional design decision informed by technical constraints and field-facing clinical feedback, including discussions with clinicians at Karapitiya Teaching Hospital. These discussions indicated that children at ASD Level 1-2 and children at Level 3 and above do not engage effectively with a single interaction model. Platform A therefore provides a simple, structured, and highly configurable AAC interface with Sinhala, Tamil, and English support for children who can engage with symbol-based communication. Platform B targets children with minimal or no functional speech by extending AAC with on-device facial expression recognition and emotion-adaptive assistance. Existing tools such as Avaz informed the baseline comparison, but clinicians and therapists highlighted limitations related to cost, flexibility, and local clinical fit, which reinforced the need for a lightweight locally aligned design.
 
-- **Platform A:** A customisable, symbol-based AAC interface for children at ASD severity Level 1–2, with trilingual support (Sinhala, Tamil, English), configurable vocabulary, text-to-speech output, and visual scheduling.
-- **Platform B:** An AI-enhanced AAC platform for children at severity Level 3 and above, extending Platform A with on-device facial expression recognition (FER) using an EfficientNetB0-based model with a CBAM (Convolutional Block Attention Module), deployed via TensorFlow Lite, enabling emotion-adaptive communication support.
+The dual-platform design was adopted based on clinical feedback indicating that children at different ASD severity levels require distinct interface designs, particularly in terms of complexity, adaptability, and communication support mechanisms.
 
 The mobile application is developed using Flutter for cross-platform deployment, following an offline-first architecture. At the interim stage, data is stored locally on the device using SQLite and JSON, with backup handled through manual export. Firebase is planned for future optional synchronisation and account-based collaboration but is not yet implemented.
 
@@ -306,24 +311,42 @@ Firebase is considered as the future backend option for this project (Firebase, 
 
 #### 2.5.1 Architectural Overview
 
-The system uses a dual-platform architecture with a shared technology stack and core services. The major components are listed below.
+The system uses a dual-platform architecture built on a shared Flutter codebase, local storage services (SQLite and JSON), and an offline-first deployment model. Platform A and Platform B share core AAC components, while Platform B introduces the FER module through TensorFlow Lite and platform-channel integration. This separation was selected because clinical feedback indicated that a single unified interface would not be sufficient across ASD severity levels. Children at Level 1-2 generally benefit from structured AAC with caregiver-driven customisation, whereas children at Level 3 and above require additional assistive intelligence to interpret emotional cues when functional speech is limited. The architecture therefore combines a common software foundation with severity-appropriate interaction design, while keeping the current implementation practical for low-connectivity settings through local processing and manual export backup. The system architecture and ER design artefacts are presented in Section 3.2.
 
-1. Two client-facing mobile applications (Platform A and Platform B) built with Flutter.
-2. An on-device FER module using TensorFlow Lite, integrated into Platform B via platform channels.
-3. A local data layer (SQLite/JSON) for offline storage.
-4. Manual export/import for backup and sharing between caregiver and therapist (current approach).
-5. A therapist-parent web-based dashboard (prototype), with planned Firebase integration later.
-6. A Firebase backend (planned) for authentication and optional synchronisation in later sprints.
+```mermaid
+flowchart LR
+    subgraph Shared["Shared Core Services"]
+        LS["Local Storage\nSQLite + JSON"]
+        TTS["Trilingual TTS\nSinhala / Tamil / English"]
+        CFG["Caregiver Configuration\nProfiles, categories, layout"]
+        BK["Manual Export/Import Backup"]
+    end
 
-The architecture follows an offline-first principle, meaning all core AAC features and emotion recognition run locally on the device. Firebase is not yet implemented; the current backup approach uses manual export/import. This design decision reflects the variable internet connectivity in many parts of Sri Lanka (International Telecommunication Union, 2022). The system architecture diagram and ER diagram, produced as design artefacts, are presented in Section 3.2.
+    A["Platform A\nASD Level 1–2\nStructured AAC Interface"]
+    B["Platform B\nASD Level 3+\nAAC + FER Assistance"]
+    FER["On-device FER Pipeline\nFace Detection + TFLite Inference"]
+
+    A --> LS
+    A --> TTS
+    A --> CFG
+    A --> BK
+
+    B --> LS
+    B --> TTS
+    B --> CFG
+    B --> BK
+    B --> FER
+```
+
+Figure X: Dual-Platform System Architecture illustrating the separation between Platform A (Level 1-2) and Platform B (Level 3+) with shared local storage and core services.
 
 #### 2.5.2 Platform A: Customisable Symbol-Based AAC (Levels 1–2)
 
-Platform A is designed for children at severity Level 1–2 who can interact with a symbol-based interface and benefit from AAC as a supplement to developing speech. Key features include a configurable symbol grid (2x2 to 6x6), trilingual support (Sinhala, Tamil, English) with language switching, text-to-speech output, customisation options for parents and therapists, optional visual scheduling, and local usage logging with manual export for backup.
+Platform A is designed for children at severity Level 1-2 who can interact with symbol-based communication and benefit from structured AAC support. The implementation emphasises clarity and configurability through adjustable grid sizes, trilingual language switching, text-to-speech output, caregiver and therapist configuration controls, visual scheduling, and local usage logging. This platform was included not as a secondary feature but as an essential clinical layer, because local practitioners highlighted that existing commercial tools often do not align fully with Sri Lankan language and service realities.
 
 #### 2.5.3 Platform B: AI-Enhanced AAC with FER (Level 3+)
 
-Platform B extends Platform A by adding an optional FER pipeline for children at Level 3 and above who may have minimal functional speech. Additional features include on-device facial expression recognition using the front-facing camera, emotion-adaptive vocabulary that adjusts prompts based on the inferred emotion, caregiver override for all emotion suggestions, and aggregated emotion history displayed on the dashboard.
+Platform B is designed for children at Level 3 and above who may have minimal or no functional speech, and it represents the primary research contribution of this project. It extends Platform A with an on-device FER pipeline that analyses facial cues and supports emotion-adaptive vocabulary prompts, while preserving caregiver override at all times. This design addresses the clinical observation that highly supported children require more than a static symbol grid, and that assistive inference can improve communication guidance when direct verbal expression is limited.
 
 #### 2.5.4 Emotion Detection Pipeline
 
@@ -604,7 +627,7 @@ Since this study involves vulnerable participants (children with ASD), sensitive
 
 #### 2.9.2 Informed Consent
 
-Consent is obtained from the parent or legal guardian, with assent sought from the child in an accessible form where possible. The child's willingness to engage is monitored throughout; signs of distress or unwillingness are treated as withdrawal of assent. Draft consent forms and participant information sheets have been prepared in English and are included in Appendix A and Appendix B. Sinhala and Tamil translations are planned for the next phase.
+Consent is obtained from the parent or legal guardian, with assent sought from the child in an accessible form where possible. The child's willingness to engage is monitored throughout; signs of distress or unwillingness are treated as withdrawal of assent. Draft consent forms and participant information sheets have been prepared in English and are included in the appendices. Sinhala and Tamil translations are planned for the next phase.
 
 #### 2.9.3 Privacy and Data Protection
 
@@ -673,11 +696,15 @@ Known limitations are as follows.
 
 ### 3.1 Summary of Progress
 
-At the time of this interim submission, Sprint 1 has been completed in full and Sprint 2 is substantially complete. The literature review, system architecture, technology stack selection, and the initial Flutter project setup are all in place. A considerable amount of early effort went into understanding the problem domain, not only through published literature but also through informal conversations with parents and therapists. Those conversations surfaced practical realities that the literature alone did not fully convey, and they directly influenced several design decisions described in the sections that follow.
+The system was implemented as a dual-platform solution consisting of Platform A and Platform B, each targeting different ASD severity levels. Platform A, designed for Level 1-2 users, was developed as a customisable symbol-based AAC interface with multilingual support and caregiver-controlled configuration. Core features such as the symbol grid, category navigation, and text-to-speech functionality were successfully implemented and tested on real devices.
 
-Some work originally planned for Sprint 3, particularly the AI model pipeline setup and preliminary training experiments, was started ahead of schedule during Sprint 2. This provides a useful head start on model development for the next phase.
+Platform B, designed for Level 3 and above, extends this functionality by integrating an on-device facial expression recognition (FER) pipeline. The FER component includes face detection, image preprocessing, model inference using an EfficientNetB0-based architecture with CBAM, and emotion-adaptive response generation. Initial integration of the TensorFlow Lite model into the Flutter application was completed, and preliminary testing confirmed real-time inference capability within acceptable performance limits.
 
-The larger tasks remain ahead. Full dataset curation using purpose-collected data, complete model training and evaluation, Platform B integration with the FER pipeline, and the clinical pilot study are all planned for subsequent sprints. There have been some delays in specific areas, notably symbol set licensing, ethics coordination, and TTS quality for Sinhala and Tamil, but these are accounted for in the revised project plan (Section 5.4). Overall, the project is in a reasonable position for this stage of the academic timeline.
+The decision to implement two separate platforms was influenced by clinical observations and initial field exposure at Karapitiya Teaching Hospital. Feedback from clinicians indicated that children at different ASD severity levels require significantly different interaction designs, particularly in terms of interface complexity and assistive support. As a result, Platform A focuses on structured and customisable communication, while Platform B introduces intelligent assistance through emotion recognition.
+
+Although both platforms were implemented as part of the system, the primary focus of development and experimentation was on Platform B due to its central role in the research contribution. Supporting user interface screens and additional implementation details related to Platform A are provided in Appendix A.
+
+Against the revised sprint plan (Section 5.4), Sprint 1 is complete and Sprint 2 is substantially complete at the time of this interim submission. The literature review, architecture definition, technology stack selection, and baseline Flutter implementation are in place. Outstanding milestones, dependencies, and schedule adjustments are documented in Section 5.4 to avoid repeating the same material here.
 
 ### 3.2 Requirements, Design, and Produced Artefacts
 
@@ -691,6 +718,8 @@ Figure 1 presents the overall system architecture, showing the mobile AAC applic
 
 Figure 1: System Architecture Diagram
 [Insert figure here. To be included in the final submission.]
+
+The diagram highlights the end to end flow from user interaction to system response. Core AAC functions are delivered locally through Platform A and Platform B, while emotion inference is processed on device through the FER pipeline in Platform B before adaptive prompts are presented. This structure supports low latency communication assistance and remains operational in environments with limited internet connectivity.
 
 #### 3.2.1 Entity Relationship Diagram
 
@@ -817,9 +846,7 @@ Figure 5: Confusion Matrix
 
 Multiple model variants were trained by adjusting epoch counts and precision settings (float32, float16, and mixed). The final model was selected based on validation performance and stability rather than training accuracy alone. Full training on the complete dataset (2,000–5,000 images) will be conducted once the dataset is fully prepared, including purpose-collected data following ethics approval.
 
-Figure 6 shows the facial expression recognition interface in Platform B, demonstrating on-device emotion detection using the front-facing camera and TFLite model. The detected emotion is used to adapt the AAC vocabulary accordingly, supporting contextually appropriate communication.
-
-Figure 6: Facial Expression Recognition Screen (On-Device Detection)
+Figure 6: Platform B - Facial Expression Recognition Screen. Shows real-time emotion detection using the on-device FER model integrated via TensorFlow Lite.
 [Insert figure here. To be included in the final submission.]
 
 ### 3.5 Backend and Dashboard
@@ -828,7 +855,7 @@ Backend work is at an early, prototype level. A Firebase project has been create
 
 ### 3.6 Ethics and Partnership
 
-Draft consent forms and participant information sheets have been prepared in English (included in Appendix A and Appendix B). Sinhala and Tamil translations are planned for the next phase. Initial contact with Karapitiya Teaching Hospital has been established, and the formal ethics application is in advanced preparation. Ministry of Health approval requirements have been researched and documented.
+Draft consent forms and participant information sheets have been prepared in English (included in the appendices). Sinhala and Tamil translations are planned for the next phase. Initial contact with Karapitiya Teaching Hospital has been established, and the formal ethics application is in advanced preparation. Ministry of Health approval requirements have been researched and documented.
 
 ### 3.7 Testing
 
@@ -867,21 +894,21 @@ Figure 7: Flutter Unit Test Output
 
 The following figures present the current state of the mobile application's user interface. The interface follows a child-friendly design approach using soft colours, rounded components, and clear icon-based navigation, intended to minimise cognitive load while supporting intuitive symbol selection.
 
-Figure 8: Register Screen (UI)
+Additional user interface screens related to Platform A (Level 1-2) are provided in Appendix A. The main report emphasises Platform B due to its central role in the research, particularly the integration and evaluation of facial expression recognition.
+
+Figure 8: Platform A - User Registration Screen. This interface allows caregivers to create and manage user profiles, supporting personalised AAC configurations.
 [Insert figure here. To be included in the final submission.]
 
-Figure 9: Home Screen (UI)
+Figure 9: Platform A - Home Screen. The main navigation interface providing access to communication categories and core AAC functions.
 [Insert figure here. To be included in the final submission.]
 
-Figure 10: Categories Screen (UI)
+Figure 10: Platform A - Category Selection Screen. Displays structured symbol groups organised into categories such as needs, activities, and emotions.
 [Insert figure here. To be included in the final submission.]
 
-Figure 11: Settings Screen (UI)
+Figure 11: Platform A - Settings Screen. Enables caregivers to customise language preferences, symbol layout, and interface behaviour.
 [Insert figure here. To be included in the final submission.]
 
-Figure 12 demonstrates a typical AAC interaction, showing symbol selection and the resulting text-to-speech output.
-
-Figure 12: AAC Interaction Example (Symbol Selection and Output)
+Figure 12: Platform A - AAC Interaction Example. Demonstrates symbol selection and corresponding text-to-speech output for user communication.
 [Insert figure here. To be included in the final submission.]
 
 ### 3.9 Model Training Evidence
@@ -1096,7 +1123,7 @@ Figure 19: Google Sheets Sprint Tracking Spreadsheet
 
 The workbook used for sprint tracking was organised into several sheets so that backlog management, day-to-day progress, and governance could be recorded in one place. The Product Backlog sheet listed prioritised features and epics. The Sprint Backlogs sheet broke work down by sprint. The Sprint Tracker sheet followed a Kanban-style layout for task status. Additional sheets supported project oversight, namely Sprint Summary for high-level progress, Milestones for key dates, Meeting Log for supervisor and stakeholder reviews, Issue Tracker for defects and blockers, Decision Log for agreed changes, Retrospectives for sprint reflections, and Time Log for effort records. The same structure was maintained when the file was prepared for upload to Google Drive and reviewed as a screenshot for Figure 19.
 
-The Sprint Summary sheet reports aggregate progress across the full product backlog (for example, 14 of 33 tasks completed, approximately 42 per cent). That percentage is a task-count measure across all planned sprints, including work scheduled for later sprints that had not started at the interim reporting date (25 March 2026). It therefore reflects backlog completion against the entire plan rather than calendar time alone, and a value below 50 per cent is expected at the interim stage while Sprints 3 to 5 remain partially complete or pending.
+The Sprint Summary sheet reports aggregate progress across the full product backlog (for example, 25 of 33 tasks completed, approximately 76 per cent). This figure reflects backlog completion across all planned sprints and includes completed early-start items brought forward from later sprint plans. Tasks are marked as complete only where implementation evidence is available, while partially completed activities are retained as in progress to avoid overstating delivery. The remaining items are concentrated in pilot execution, final analysis, and end-stage documentation tasks scheduled toward the final submission window.
 
 ### 5.5 Risk Assessment for Remaining Work
 
@@ -1291,6 +1318,33 @@ Mollahosseini, A., Hasani, B. and Mahoor, M.H. (2019) 'AffectNet: a database for
 Pressman, R.S. and Maxim, B.R. (2019) *Software engineering: a practitioner's approach*. 9th edn. New York: McGraw-Hill Education.
 
 Simonyan, K. and Zisserman, A. (2015) 'Very deep convolutional networks for large-scale image recognition', in *Proceedings of the 3rd International Conference on Learning Representations (ICLR)*. San Diego, CA: ICLR.
+
+## Appendix A: Platform A (Level 1-2) User Interface and Features
+
+This appendix presents additional user interface screens and implementation details related to Platform A, which is designed for children at Autism Spectrum Disorder (ASD) Level 1-2.
+
+Platform A provides a customisable, symbol-based Augmentative and Alternative Communication (AAC) interface with trilingual support (Sinhala, Tamil, and English). It is intended for children who possess some level of functional communication but benefit from structured visual support to enhance interaction.
+
+The separation of the system into Platform A and Platform B was informed by clinical observations and initial field exposure at Karapitiya Teaching Hospital. Feedback from clinicians indicated that children at lower ASD severity levels require a simpler, highly customisable interface, while children at higher severity levels (Level 3 and above) require additional assistive mechanisms such as emotion recognition.
+
+Although Platform A is an important component of the overall system, the primary research focus of this study is on Platform B, which integrates facial expression recognition (FER) to support children with severe communication impairments. Therefore, detailed figures and experimental results related to Platform B are presented in the main body of the report, while supporting visual evidence for Platform A is included in this appendix to maintain clarity and focus.
+
+The following figures illustrate the key user interface components and interaction flow of Platform A.
+
+Figure A1: Platform A - User Registration Screen
+[Insert figure here. To be included in the final submission.]
+
+Figure A2: Platform A - Home Screen
+[Insert figure here. To be included in the final submission.]
+
+Figure A3: Platform A - Category Selection Interface
+[Insert figure here. To be included in the final submission.]
+
+Figure A4: Platform A - Settings and Customisation Screen
+[Insert figure here. To be included in the final submission.]
+
+Figure A5: Platform A - AAC Interaction Example (Symbol Selection and Speech Output)
+[Insert figure here. To be included in the final submission.]
 
 ---
 
