@@ -46,6 +46,8 @@ dependencies:
   camera: ^0.11.0+2
   tflite_flutter: ^0.12.1
   image: ^4.1.7
+  # Face detection gate (prevents emotion inference on no-face / unclear frames)
+  google_mlkit_face_detection: ^0.13.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+import '../../services/sensory_feedback_service.dart';
 import 'app_theme.dart';
 
-class CustomWordCard extends StatefulWidget {
+/// Animated word tile for **fixed** AAC vocabulary (category grid).
+/// Renamed from a legacy widget class to avoid confusion with removed
+/// user-editable card tooling.
+class AacWordCard extends StatefulWidget {
   final String text;
   final String? emoji;
   final String? illustrationPath;
@@ -10,7 +17,7 @@ class CustomWordCard extends StatefulWidget {
   final bool isGirl;
   final String language;
 
-  const CustomWordCard({
+  const AacWordCard({
     Key? key,
     required this.text,
     this.emoji,
@@ -22,10 +29,10 @@ class CustomWordCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomWordCard> createState() => _CustomWordCardState();
+  State<AacWordCard> createState() => _AacWordCardState();
 }
 
-class _CustomWordCardState extends State<CustomWordCard>
+class _AacWordCardState extends State<AacWordCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -58,6 +65,7 @@ class _CustomWordCardState extends State<CustomWordCard>
 
   void _onTapUp() {
     _controller.reverse();
+    unawaited(SensoryFeedbackService.triggerLightVibrationIfEnabled());
     widget.onTap();
     widget.onSpeak();
   }
@@ -107,7 +115,6 @@ class _CustomWordCardState extends State<CustomWordCard>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Illustration or Emoji
                 Expanded(
                   flex: 3,
                   child: Padding(
@@ -125,7 +132,6 @@ class _CustomWordCardState extends State<CustomWordCard>
                         : _buildEmojiDisplay(widget.emoji ?? '😊', colors),
                   ),
                 ),
-                // Word Text
                 Expanded(
                   flex: 2,
                   child: Padding(
@@ -226,99 +232,6 @@ class _CustomWordCardState extends State<CustomWordCard>
           textAlign: TextAlign.center,
         ),
       ],
-    );
-  }
-}
-
-class GradientButton extends StatefulWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final bool isGirl;
-  final double fontSize;
-  final double? width;
-
-  const GradientButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    required this.isGirl,
-    this.fontSize = 16,
-    this.width,
-  }) : super(key: key);
-
-  @override
-  State<GradientButton> createState() => _GradientButtonState();
-}
-
-class _GradientButtonState extends State<GradientButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1, end: 0.95).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = AppTheme.getThemeColors(widget.isGirl);
-
-    return ScaleTransition(
-      scale: _scaleAnimation,
-      child: GestureDetector(
-        onTapDown: (_) => _controller.forward(),
-        onTapUp: (_) {
-          _controller.reverse();
-          widget.onPressed();
-        },
-        onTapCancel: () => _controller.reverse(),
-        child: Container(
-          width: widget.width ?? double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                colors['gradient1']!,
-                colors['gradient2']!,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: colors['primary']!.withOpacity(0.4),
-                blurRadius: 10,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          child: Center(
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                fontSize: widget.fontSize,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

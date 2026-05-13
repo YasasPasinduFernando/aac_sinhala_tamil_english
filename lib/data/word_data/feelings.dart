@@ -100,6 +100,26 @@ final List<Map<String, dynamic>> feelings = [
     ]
   },
   {
+    'si': 'සාමාන්‍යයි',
+    'ta': 'சாதாரணம்',
+    'en': 'Neutral',
+    'emoji': '😐',
+    'actions': [
+      {
+        'si': 'මට හොඳයි',
+        'ta': 'நான் நலம்',
+        'en': 'I am okay',
+        'emoji': '😐'
+      },
+      {
+        'si': 'සාමාන්‍ය',
+        'ta': 'சாதாரணமாக',
+        'en': 'Feeling normal',
+        'emoji': '🙂'
+      }
+    ]
+  },
+  {
     'si': 'මහන්සියි',
     'ta': 'சோர்வு',
     'en': 'Tired',

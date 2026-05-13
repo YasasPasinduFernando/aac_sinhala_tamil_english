@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +15,6 @@ import 'camera_expression_screen.dart';
 import 'settings.dart';
 import 'donation_screen.dart';
 import 'theme/app_theme.dart';
-import 'theme/custom_card_widget.dart';
 import 'theme/animated_category_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,6 +34,11 @@ class _HomeScreenState extends State<HomeScreen>
   late ScrollController _scrollController;
   bool _showSentencePanel = true;
   bool _isInitialized = false;
+
+  // Suggested feeling banner — populated when CameraExpressionScreen returns
+  // a *reliable* emotion. Stays null for no-face / face-not-clear / uncertain.
+  String? _suggestedEmotion;
+  Timer? _suggestionTimer;
 
   @override
   bool get wantKeepAlive => true;
@@ -68,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen>
     WidgetsBinding.instance.removeObserver(this);
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _suggestionTimer?.cancel();
     flutterTts.stop();
 
     // Restore system UI when leaving screen
@@ -167,6 +174,77 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _clearSentence() {
     setState(() => sentence.clear());
+  }
+
+  /// Receives a reliable emotion from [CameraExpressionScreen] and shows a
+  /// small suggestion banner. Never called for no-face / unclear / uncertain
+  /// results — the camera screen filters those out before popping.
+  void _applyEmotionToAac(String emotion) {
+    final normalized = emotion.trim();
+    if (normalized.isEmpty) return;
+
+    _suggestionTimer?.cancel();
+    setState(() => _suggestedEmotion = normalized);
+
+    _suggestionTimer = Timer(const Duration(seconds: 6), () {
+      if (mounted) {
+        setState(() => _suggestedEmotion = null);
+      }
+    });
+  }
+
+  /// Maps a detected DISPLAY emotion label (Happy / Sad / Angry / Fear /
+  /// Surprise / Neutral) to the corresponding entry in
+  /// `lib/data/word_data/feelings.dart`. Returns null if no safe match.
+  ///
+  /// NOTE: "Tired" was removed from this mapping because the deployed model
+  /// has no Tired class (model.pdf trains Anger/Fear/Joy/Natural/Sadness/
+  /// Surprise). The "Tired" word still exists as a normal AAC vocabulary
+  /// entry in feelings.dart and can be picked manually from the Feelings
+  /// category — we just won't *suggest* it from camera output.
+  String? _feelingWordFor(String emotion) {
+    switch (emotion.toLowerCase()) {
+      case 'angry':
+        return selectedLanguage == 'si-LK'
+            ? 'තරහයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'கோபம்'
+                : 'Angry';
+      case 'happy':
+        return selectedLanguage == 'si-LK'
+            ? 'සතුටුයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'மகிழ்ச்சி'
+                : 'Happy';
+      case 'sad':
+        return selectedLanguage == 'si-LK'
+            ? 'දුකයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'சோகம்'
+                : 'Sad';
+      case 'fear':
+        return selectedLanguage == 'si-LK'
+            ? 'බයයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'பயம்'
+                : 'Scared';
+      case 'surprise':
+        // No "Surprise" entry exists in feelings.dart; we display a generic
+        // localized word so the banner stays useful without adding new AAC
+        // cards (per spec: keep the app simple).
+        return selectedLanguage == 'si-LK'
+            ? 'පුදුමයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'ஆச்சரியம்'
+                : 'Surprised';
+      case 'neutral':
+        return selectedLanguage == 'si-LK'
+            ? 'සාමාන්‍යයි'
+            : selectedLanguage == 'ta-IN'
+                ? 'சாதாரணம்'
+                : 'Neutral';
+    }
+    return null;
   }
 
   void _changeGender() {
@@ -628,8 +706,8 @@ class _HomeScreenState extends State<HomeScreen>
                             });
                           }),
                           const SizedBox(width: 4),
-                          _buildHeaderButton('📷', () {
-                            Navigator.push(
+                          _buildHeaderButton('📷', () async {
+                            final emotion = await Navigator.push<String?>(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => CameraExpressionScreen(
@@ -638,6 +716,10 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               ),
                             );
+                            if (!mounted) return;
+                            if (emotion != null && emotion.isNotEmpty) {
+                              _applyEmotionToAac(emotion);
+                            }
                           }),
                           const SizedBox(width: 4),
                           _buildHeaderButton(
@@ -685,6 +767,10 @@ class _HomeScreenState extends State<HomeScreen>
                       ],
                     ),
                   ),
+
+                // Suggested Feeling Banner (from camera emotion detection)
+                if (_suggestedEmotion != null)
+                  _buildEmotionSuggestionBanner(colors),
 
                 // Sentence Panel
                 AnimatedContainer(
@@ -1106,6 +1192,75 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  Widget _buildEmotionSuggestionBanner(Map<String, Color> colors) {
+    final emotion = _suggestedEmotion!;
+    final localized = _feelingWordFor(emotion) ?? emotion;
+    final emotionEmoji = _emotionEmojiFor(emotion);
+
+    final prefix = selectedLanguage == 'si-LK'
+        ? 'යෝජිත හැඟීම:'
+        : selectedLanguage == 'ta-IN'
+            ? 'பரிந்துரைக்கப்பட்ட உணர்வு:'
+            : 'Suggested feeling:';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            colors['primary']!.withOpacity(0.85),
+            colors['accent']!.withOpacity(0.85),
+          ],
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(emotionEmoji, style: const TextStyle(fontSize: 20)),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              '$prefix $localized',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              setState(() => _suggestedEmotion = null);
+              _suggestionTimer?.cancel();
+            },
+            child: const Icon(Icons.close, color: Colors.white, size: 18),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _emotionEmojiFor(String emotion) {
+    switch (emotion.toLowerCase()) {
+      case 'angry':
+        return '😠';
+      case 'fear':
+        return '😨';
+      case 'happy':
+        return '😊';
+      case 'neutral':
+        return '😐';
+      case 'sad':
+        return '😢';
+      case 'surprise':
+        return '😮';
+    }
+    return '🙂';
+  }
+
   Widget _buildActionButton({
     required IconData icon,
     required String label,
@@ -1269,53 +1424,5 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() => _showSentencePanel = true);
       }
     });
-  }
-}
-
-class GradientButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final bool isGirl;
-  final double fontSize;
-
-  const GradientButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    required this.isGirl,
-    this.fontSize = 16,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: AppTheme.getGradient(isGirl),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

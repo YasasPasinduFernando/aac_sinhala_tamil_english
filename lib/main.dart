@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 import 'screens/theme/app_theme.dart';
 import 'services/offline_service.dart';
+import 'services/sensory_feedback_service.dart';
 import 'services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await OfflineService().initialize();
+  await SensoryFeedbackService.load(); // vibration_enabled (+ legacy migration)
   runApp(const AACApp());
 }
 

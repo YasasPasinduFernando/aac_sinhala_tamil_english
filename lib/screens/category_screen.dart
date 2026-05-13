@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_theme.dart';
-import 'theme/custom_card_widget.dart';
+import 'theme/aac_word_card_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   final List<Map<String, dynamic>> allCategories;
@@ -477,7 +477,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   onLongPress: actions.isNotEmpty
                       ? () => _showActionsBottomSheet(context, text, actions)
                       : null,
-                  child: CustomWordCard(
+                  child: AacWordCard(
                     text: text,
                     emoji: item['emoji'],
                     isGirl: widget.isGirl,

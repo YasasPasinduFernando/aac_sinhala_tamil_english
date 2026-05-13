@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'theme/app_theme.dart';
 import '../data/word_data.dart';
+import '../services/sensory_feedback_service.dart';
 
 class FavouriteScreen extends StatefulWidget {
   final String language;
@@ -539,6 +542,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
                           return GestureDetector(
                             onTap: () {
+                              unawaited(SensoryFeedbackService
+                                  .triggerLightVibrationIfEnabled());
                               _processWordTap(text);
                             },
                             onLongPress: word['actions'] != null &&

@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+import '../../services/sensory_feedback_service.dart';
 import 'app_theme.dart';
 import '../../widgets/emoji_text.dart';
 
@@ -78,7 +82,10 @@ class _AnimatedCategoryCardState extends State<AnimatedCategoryCard>
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: GestureDetector(
-          onTap: widget.onTap,
+          onTap: () {
+            unawaited(SensoryFeedbackService.triggerLightVibrationIfEnabled());
+            widget.onTap();
+          },
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

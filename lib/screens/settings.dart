@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/sensory_feedback_service.dart';
 import 'theme/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -154,6 +155,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return categoryMap[key]?['emoji'] ?? '📂';
   }
 
+  String _vibrationOnLabel() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'කම්පනය සක්‍රියයි';
+      case 'ta-IN':
+        return 'அதிர்வு இயக்கம்';
+      default:
+        return 'Vibration On';
+    }
+  }
+
+  Widget _buildVibrationSection(Map<String, Color> colors) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: colors['accent']!, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: colors['primary']!.withOpacity(0.08),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: SwitchListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+        title: Text(
+          _vibrationOnLabel(),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: colors['textColor'],
+          ),
+        ),
+        value: SensoryFeedbackService.isVibrationEnabled(),
+        activeColor: colors['primary'],
+        onChanged: (v) async {
+          await SensoryFeedbackService.setVibrationEnabled(v);
+          if (mounted) setState(() {});
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = AppTheme.getThemeColors(widget.isGirl);
@@ -178,6 +225,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: colors['background'],
         body: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: _buildVibrationSection(colors),
+            ),
             // Instructions
             Container(
               padding: const EdgeInsets.all(16),
