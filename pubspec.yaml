@@ -48,6 +48,8 @@ dependencies:
   image: ^4.1.7
   # Face detection gate (prevents emotion inference on no-face / unclear frames)
   google_mlkit_face_detection: ^0.13.0
+  # Short clips for emotion support panel (optional assets under assets/audio/support/)
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +84,10 @@ flutter:
     - assets/models/emotion_efficientnetb0_finetuned.tflite
     - assets/models/emotion_mobilenetv2_fallback.tflite
     - assets/models/labels.txt
+    - assets/audio/support/
+    - assets/audio/support/en/
+    - assets/audio/support/si/
+    - assets/audio/support/ta/
 
   # App Icon Configuration
   # Run: flutter pub run flutter_launcher_icons

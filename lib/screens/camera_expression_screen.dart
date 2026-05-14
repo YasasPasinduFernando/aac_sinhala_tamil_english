@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image/image.dart' as img;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
+import '../services/emotion_support_audio_service.dart';
 import '../services/sensory_feedback_service.dart';
 import 'theme/app_theme.dart';
 
@@ -17,6 +19,9 @@ import 'theme/app_theme.dart';
 enum _CaptureStatus { idle, noFace, faceNotClear, uncertain, reliable }
 
 enum _EmotionModelSlotResult { ok, loadFailed, tensorFailed }
+
+/// Which `.tflite` to load (saved in SharedPreferences).
+enum _EmotionModelLoadMode { auto, primaryOnly, fallbackOnly }
 
 class CameraExpressionScreen extends StatefulWidget {
   final String language;
@@ -128,6 +133,12 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   List<double>? _lastMeanSoftmax;
   List<int>? _lastFrameStats; // [framesWithFace, framesUnclear, framesNoFace]
 
+  /// Human-readable active TFLite model (set when interpreter loads).
+  String _activeEmotionModelName = '';
+  _EmotionModelLoadMode _modelLoadMode = _EmotionModelLoadMode.auto;
+  bool _faceGateEnabled = true;
+  bool _reloadModelBusy = false;
+
   // ──────────────────────────────────────────────────────────────────────────
   // RAW model labels  ──>  USER-FRIENDLY display labels
   //
@@ -199,7 +210,79 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
       ),
     );
     _initAnimations();
-    _initialize();
+    unawaited(_bootstrapCameraScreen());
+  }
+
+  Future<void> _bootstrapCameraScreen() async {
+    final p = await SharedPreferences.getInstance();
+    final idx = p.getInt('emotion_model_load_mode');
+    if (idx != null &&
+        idx >= 0 &&
+        idx < _EmotionModelLoadMode.values.length) {
+      _modelLoadMode = _EmotionModelLoadMode.values[idx];
+    }
+    _faceGateEnabled = p.getBool('emotion_face_gate_enabled') ?? true;
+    if (!mounted) return;
+    setState(() {});
+    await _initialize();
+  }
+
+  Future<void> _persistModelLoadMode(_EmotionModelLoadMode mode) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setInt('emotion_model_load_mode', mode.index);
+  }
+
+  Future<void> _persistFaceGate(bool enabled) async {
+    final p = await SharedPreferences.getInstance();
+    await p.setBool('emotion_face_gate_enabled', enabled);
+  }
+
+  Future<void> _applyModelLoadMode(_EmotionModelLoadMode next) async {
+    if (_reloadModelBusy || next == _modelLoadMode) return;
+    setState(() => _reloadModelBusy = true);
+    final prev = _modelLoadMode;
+    _modelLoadMode = next;
+    await _persistModelLoadMode(next);
+    final ok = await _loadEmotionInterpreterOnly(isInitialStartup: false);
+    if (!mounted) {
+      return;
+    }
+    if (!ok) {
+      _modelLoadMode = prev;
+      await _persistModelLoadMode(prev);
+      await _loadEmotionInterpreterOnly(isInitialStartup: false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_debugModelSwitchFailedMessage())),
+      );
+    }
+    setState(() => _reloadModelBusy = false);
+  }
+
+  String _debugModelSwitchFailedMessage() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'මොඩලය මාරු කිරීම අසාර්ථකයි. පෙර සැකසුම යළි යොදන ලදී.';
+      case 'ta-IN':
+        return 'மாதிரி மாற்றம் தோல்வி. முந்தைய அமைப்பு மீட்டமைக்கப்பட்டது.';
+      default:
+        return 'Could not switch model. Reverted to previous.';
+    }
+  }
+
+  Future<void> _setFaceGateEnabled(bool value) async {
+    setState(() => _faceGateEnabled = value);
+    await _persistFaceGate(value);
+  }
+
+  /// Center-crop square then 224² — used when face gate is OFF.
+  img.Image _wholeFrameSquare224(img.Image decoded) {
+    final w = decoded.width;
+    final h = decoded.height;
+    final side = math.min(w, h);
+    final x = ((w - side) / 2).floor();
+    final y = ((h - side) / 2).floor();
+    final cropped = img.copyCrop(decoded, x: x, y: y, width: side, height: side);
+    return img.copyResize(cropped, width: 224, height: 224);
   }
 
   void _initAnimations() {
@@ -288,10 +371,89 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
       return _EmotionModelSlotResult.tensorFailed;
     }
     _interpreter = interp;
+    _activeEmotionModelName = activeEmotionModelDebugName;
     debugPrint('[ModelLoad] $slotLogName model loaded OK');
     debugPrint('[ModelLoad] Active model: $assetPath');
     debugPrint('[ModelLoad] Active emotion model: $activeEmotionModelDebugName');
     return _EmotionModelSlotResult.ok;
+  }
+
+  /// Loads TFLite interpreter according to [_modelLoadMode]. On failure during
+  /// app startup, calls [_failInit]. During debug model switch, returns false.
+  Future<bool> _loadEmotionInterpreterOnly({
+    required bool isInitialStartup,
+  }) async {
+    _interpreter?.close();
+    _interpreter = null;
+    _activeEmotionModelName = '';
+
+    _EmotionModelSlotResult primaryResult = _EmotionModelSlotResult.loadFailed;
+    _EmotionModelSlotResult? fallbackResult;
+
+    switch (_modelLoadMode) {
+      case _EmotionModelLoadMode.primaryOnly:
+        primaryResult = await _tryLoadEmotionModelSlot(
+          assetPath: _kPrimaryModelAsset,
+          slotLogName: 'Primary',
+          activeEmotionModelDebugName: 'EfficientNetB0 Fine-tuned',
+        );
+        if (primaryResult == _EmotionModelSlotResult.ok) {
+          return true;
+        }
+        if (isInitialStartup) {
+          _failInit(
+            primaryResult == _EmotionModelSlotResult.tensorFailed
+                ? _getText('Emotion model shape is not supported')
+                : _getText('Emotion model failed to load'),
+          );
+        }
+        return false;
+
+      case _EmotionModelLoadMode.fallbackOnly:
+        fallbackResult = await _tryLoadEmotionModelSlot(
+          assetPath: _kFallbackModelAsset,
+          slotLogName: 'Fallback',
+          activeEmotionModelDebugName: 'MobileNetV2 Fallback',
+        );
+        if (fallbackResult == _EmotionModelSlotResult.ok) {
+          return true;
+        }
+        if (isInitialStartup) {
+          _failInit(
+            fallbackResult == _EmotionModelSlotResult.tensorFailed
+                ? _getText('Emotion model shape is not supported')
+                : _getText('Emotion model failed to load'),
+          );
+        }
+        return false;
+
+      case _EmotionModelLoadMode.auto:
+        primaryResult = await _tryLoadEmotionModelSlot(
+          assetPath: _kPrimaryModelAsset,
+          slotLogName: 'Primary',
+          activeEmotionModelDebugName: 'EfficientNetB0 Fine-tuned',
+        );
+        if (primaryResult == _EmotionModelSlotResult.ok) {
+          return true;
+        }
+        fallbackResult = await _tryLoadEmotionModelSlot(
+          assetPath: _kFallbackModelAsset,
+          slotLogName: 'Fallback',
+          activeEmotionModelDebugName: 'MobileNetV2 Fallback',
+        );
+        if (fallbackResult == _EmotionModelSlotResult.ok) {
+          return true;
+        }
+        if (isInitialStartup) {
+          if (primaryResult == _EmotionModelSlotResult.tensorFailed &&
+              fallbackResult == _EmotionModelSlotResult.tensorFailed) {
+            _failInit(_getText('Emotion model shape is not supported'));
+          } else {
+            _failInit(_getText('Emotion model failed to load'));
+          }
+        }
+        return false;
+    }
   }
 
   Future<void> _initialize() async {
@@ -326,27 +488,11 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     }
     debugPrint('[InitDebug] Camera initialized OK');
 
-    // 3–5) TFLite emotion model (primary → fallback) then labels + order check
-    final primaryResult = await _tryLoadEmotionModelSlot(
-      assetPath: _kPrimaryModelAsset,
-      slotLogName: 'Primary',
-      activeEmotionModelDebugName: 'EfficientNetB0 Fine-tuned',
-    );
-    if (primaryResult != _EmotionModelSlotResult.ok) {
-      final fallbackResult = await _tryLoadEmotionModelSlot(
-        assetPath: _kFallbackModelAsset,
-        slotLogName: 'Fallback',
-        activeEmotionModelDebugName: 'MobileNetV2 Fallback',
-      );
-      if (fallbackResult != _EmotionModelSlotResult.ok) {
-        if (primaryResult == _EmotionModelSlotResult.tensorFailed &&
-            fallbackResult == _EmotionModelSlotResult.tensorFailed) {
-          _failInit(_getText('Emotion model shape is not supported'));
-        } else {
-          _failInit(_getText('Emotion model failed to load'));
-        }
-        return;
-      }
+    // 3–5) TFLite emotion model then labels + order check
+    final modelOk =
+        await _loadEmotionInterpreterOnly(isInitialStartup: true);
+    if (!modelOk) {
+      return;
     }
 
     // Labels (after a valid interpreter is chosen)
@@ -401,6 +547,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
 
   @override
   void dispose() {
+    unawaited(EmotionSupportAudioService.stop());
     _controller?.dispose();
     _interpreter?.close();
     _faceDetector.close();
@@ -470,6 +617,30 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     try {
       for (var i = 0; i < _kBurstFrames; i++) {
         final XFile file = await _controller!.takePicture();
+
+        if (!_faceGateEnabled) {
+          final bytesWhole = await File(file.path).readAsBytes();
+          final decodedWhole = img.decodeImage(bytesWhole);
+          if (decodedWhole == null) {
+            if (i < _kBurstFrames - 1) {
+              await Future.delayed(_kBurstDelay);
+            }
+            continue;
+          }
+          final resizedWhole = _wholeFrameSquare224(decodedWhole);
+          final inputWhole = _buildModelInput(resizedWhole);
+          final outputWhole = List.generate(
+              1, (_) => List<double>.filled(_labels.length, 0.0));
+          _interpreter!.run(inputWhole, outputWhole);
+          softmaxAccum.add(List<double>.from(outputWhole.first));
+          framesWithFace++;
+          debugPrint('[EmotionDebug] frame ${i + 1}/$_kBurstFrames: '
+              'face_gate=OFF (whole-frame crop → 224²)');
+          if (i < _kBurstFrames - 1) {
+            await Future.delayed(_kBurstDelay);
+          }
+          continue;
+        }
 
         // 1. Face detection on the raw JPEG.
         final inputImage = InputImage.fromFilePath(file.path);
@@ -731,6 +902,13 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     setState(() => _supportPlaying = true);
 
     await SensoryFeedbackService.triggerLightVibrationIfEnabled();
+    final display = _displayFor(_resultLabel);
+    if (display.isNotEmpty) {
+      unawaited(EmotionSupportAudioService.playForDisplayEmotion(
+        display,
+        widget.language,
+      ));
+    }
 
     // Slow, calm breathing/dim animation. Always slow; never blinking.
     _breathingController.value = 0.0;
@@ -739,6 +917,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   }
 
   void _stopSupport() {
+    unawaited(EmotionSupportAudioService.stop());
     _breathingController.stop();
     _breathingController.value = 0.0;
     if (mounted) {
@@ -943,26 +1122,26 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
                 ),
               ),
 
-            // Result card (replaces the old single result block).
+            // Result card + support + debug: scrollable band so controls never overlap.
             if (_status != _CaptureStatus.idle && !_isLoading && _errorText == null)
               Positioned(
-                top: 120,
-                left: 16,
-                right: 16,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildResultCard(colors),
-                    // Sensory support panel: only for *reliable* results that
-                    // have a plan (Neutral returns null, no-face/uncertain
-                    // never reach this branch).
-                    if (_status == _CaptureStatus.reliable &&
-                        _resultLabel != null &&
-                        !_supportPanelDismissed)
-                      _buildSupportPanelOrEmpty(colors),
-                    // AI debug panel (caregiver / developer toggle in AppBar).
-                    if (_showDebugProbs) _buildDebugProbsPanel(colors),
-                  ],
+                left: 12,
+                right: 12,
+                top: MediaQuery.of(context).padding.top + 52,
+                bottom: MediaQuery.of(context).padding.bottom + 136,
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildResultCard(colors),
+                      if (_status == _CaptureStatus.reliable &&
+                          _resultLabel != null &&
+                          !_supportPanelDismissed)
+                        _buildSupportPanelOrEmpty(colors),
+                      if (_showDebugProbs) _buildDebugProbsPanel(colors),
+                    ],
+                  ),
                 ),
               ),
 
@@ -1301,9 +1480,12 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
 
             const SizedBox(height: 12),
 
-            // Action buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // Action buttons (wrap so long Sinhala/Tamil labels never collide).
+            Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 10,
+              runSpacing: 10,
               children: [
                 if (!_supportPlaying)
                   TextButton.icon(
@@ -1339,7 +1521,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colors['accent'],
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 10),
+                        horizontal: 14, vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                     ),
@@ -1489,6 +1671,107 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
                 ),
               ],
             ),
+            const SizedBox(height: 8),
+            _debugLine(
+              'active_model: ${_activeEmotionModelName.isEmpty ? "—" : _activeEmotionModelName}',
+            ),
+            Text(
+              widget.language == 'si-LK'
+                  ? 'මොඩලය: Auto = ස්වයං, නැතහොත් එකක් පමණක් බලන්න.'
+                  : widget.language == 'ta-IN'
+                      ? 'மாதிரி: Auto = தானாக, அல்லது ஒன்றை கட்டாயமாக்கு.'
+                  : 'Model: Auto picks best load; or force one TFLite.',
+              style: const TextStyle(color: Colors.white60, fontSize: 10),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                ChoiceChip(
+                  label: Text(
+                    widget.language == 'si-LK'
+                        ? 'ස්වයං'
+                        : widget.language == 'ta-IN'
+                            ? 'தானாக'
+                            : 'Auto',
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                  selected: _modelLoadMode == _EmotionModelLoadMode.auto,
+                  onSelected: _reloadModelBusy
+                      ? null
+                      : (v) {
+                          if (v) {
+                            unawaited(
+                                _applyModelLoadMode(_EmotionModelLoadMode.auto));
+                          }
+                        },
+                  selectedColor: Colors.amber.withOpacity(0.35),
+                  labelStyle: const TextStyle(color: Colors.white),
+                ),
+                ChoiceChip(
+                  label: Text(
+                    widget.language == 'si-LK'
+                        ? 'EfficientNet'
+                        : widget.language == 'ta-IN'
+                            ? 'EfficientNet'
+                            : 'EfficientNet',
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                  selected:
+                      _modelLoadMode == _EmotionModelLoadMode.primaryOnly,
+                  onSelected: _reloadModelBusy
+                      ? null
+                      : (v) {
+                          if (v) {
+                            unawaited(_applyModelLoadMode(
+                                _EmotionModelLoadMode.primaryOnly));
+                          }
+                        },
+                  selectedColor: Colors.amber.withOpacity(0.35),
+                  labelStyle: const TextStyle(color: Colors.white),
+                ),
+                ChoiceChip(
+                  label: Text(
+                    widget.language == 'si-LK'
+                        ? 'MobileNet'
+                        : widget.language == 'ta-IN'
+                            ? 'MobileNet'
+                            : 'MobileNet',
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                  selected:
+                      _modelLoadMode == _EmotionModelLoadMode.fallbackOnly,
+                  onSelected: _reloadModelBusy
+                      ? null
+                      : (v) {
+                          if (v) {
+                            unawaited(_applyModelLoadMode(
+                                _EmotionModelLoadMode.fallbackOnly));
+                          }
+                        },
+                  selectedColor: Colors.amber.withOpacity(0.35),
+                  labelStyle: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+            SwitchListTile(
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                widget.language == 'si-LK'
+                    ? 'මුහුණ හඳුනාගැනීම (ON = මුහුණ අවශ්‍ය)'
+                    : widget.language == 'ta-IN'
+                        ? 'முகம் கண்டறிதல் (ON = முகம் தேவை)'
+                        : 'Face detection (ON = require face crop)',
+                style: const TextStyle(color: Colors.white70, fontSize: 11),
+              ),
+              value: _faceGateEnabled,
+              onChanged: (v) => unawaited(_setFaceGateEnabled(v)),
+              activeColor: Colors.amberAccent,
+            ),
+            const SizedBox(height: 6),
+            Container(height: 1, color: Colors.white24),
             const SizedBox(height: 6),
             if (mean == null || mean.isEmpty)
               const Text(
