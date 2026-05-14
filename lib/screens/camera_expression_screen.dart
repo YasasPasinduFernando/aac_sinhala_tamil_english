@@ -16,6 +16,8 @@ import 'theme/app_theme.dart';
 /// High-level state of a capture attempt.
 enum _CaptureStatus { idle, noFace, faceNotClear, uncertain, reliable }
 
+enum _EmotionModelSlotResult { ok, loadFailed, tensorFailed }
+
 class CameraExpressionScreen extends StatefulWidget {
   final String language;
   final bool isGirl;
@@ -118,7 +120,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   // ⚠️ DEBUG ONLY — must be hidden / removed before final release if you don't
   // want testers to see raw probabilities. The toggle defaults to OFF.
   //
-  // The valid raw label order (model.pdf, EfficientNetB0 + CBAM) is:
+  // The valid raw label order matches `assets/models/labels.txt` / model softmax:
   //   0 = Anger, 1 = Fear, 2 = Joy, 3 = Natural, 4 = Sadness, 5 = Surprise
   // The user-facing display mapping lives just below in `_displayMap`.
   // ──────────────────────────────────────────────────────────────────────────
@@ -137,7 +139,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
   //   3 - Natural
   //   4 - Sadness
   //   5 - Surprise
-  // Architecture: EfficientNetB0 + custom CBAM, 6-class softmax.
+  // Architecture: primary = EfficientNetB0 fine-tuned; fallback = MobileNetV2.
   //
   // `assets/models/labels.txt` MUST stay in this exact raw order — it is the
   // contract with the model's softmax output. Anything user-facing should go
@@ -156,6 +158,14 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     'sadness': 'Sad',
     'surprise': 'Surprise',
   };
+
+  static const String _kPrimaryModelAsset =
+      'assets/models/emotion_efficientnetb0_finetuned.tflite';
+  static const String _kFallbackModelAsset =
+      'assets/models/emotion_mobilenetv2_fallback.tflite';
+  static const String _kLabelsAsset = 'assets/models/labels.txt';
+  static const List<int> _kExpectedInputShape = [1, 224, 224, 3];
+  static const List<int> _kExpectedOutputShape = [1, 6];
 
   /// Emoji map keyed by RAW label (lower-cased), so lookups stay in sync
   /// with the model's softmax indexes.
@@ -225,6 +235,170 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     );
   }
 
+  void _failInit(String localizedMessage) {
+    if (!mounted) return;
+    setState(() {
+      _errorText = localizedMessage;
+      _isLoading = false;
+    });
+  }
+
+  bool _emotionModelTensorsValid(Tensor input, Tensor output) {
+    bool shapeEq(List<int> a, List<int> b) =>
+        a.length == b.length &&
+        List.generate(a.length, (i) => a[i] == b[i]).every((ok) => ok);
+    return shapeEq(input.shape, _kExpectedInputShape) &&
+        shapeEq(output.shape, _kExpectedOutputShape) &&
+        input.type == TensorType.float32 &&
+        output.type == TensorType.float32;
+  }
+
+  /// Loads one `.tflite` from assets and validates I/O tensors. On success,
+  /// assigns [_interpreter] and prints `[ModelLoad]` diagnostics.
+  Future<_EmotionModelSlotResult> _tryLoadEmotionModelSlot({
+    required String assetPath,
+    required String slotLogName,
+    required String activeEmotionModelDebugName,
+  }) async {
+    debugPrint('[ModelLoad] Trying ${slotLogName.toLowerCase()} model: $assetPath');
+    Interpreter? interp;
+    try {
+      interp = await Interpreter.fromAsset(assetPath);
+    } catch (e, st) {
+      debugPrint('[ModelLoad] $slotLogName model failed: $e\n$st');
+      return _EmotionModelSlotResult.loadFailed;
+    }
+    try {
+      final inDetails = interp.getInputTensor(0);
+      final outDetails = interp.getOutputTensor(0);
+      debugPrint('[ModelLoad] $slotLogName input tensor shape/type: '
+          '${inDetails.shape} / ${inDetails.type}');
+      debugPrint('[ModelLoad] $slotLogName output tensor shape/type: '
+          '${outDetails.shape} / ${outDetails.type}');
+      if (!_emotionModelTensorsValid(inDetails, outDetails)) {
+        debugPrint('[ModelLoad] $slotLogName model failed: tensor validation '
+            '(expected input $_kExpectedInputShape float32, '
+            'output $_kExpectedOutputShape float32)');
+        interp.close();
+        return _EmotionModelSlotResult.tensorFailed;
+      }
+    } catch (e, st) {
+      debugPrint('[ModelLoad] $slotLogName model failed: $e\n$st');
+      interp.close();
+      return _EmotionModelSlotResult.tensorFailed;
+    }
+    _interpreter = interp;
+    debugPrint('[ModelLoad] $slotLogName model loaded OK');
+    debugPrint('[ModelLoad] Active model: $assetPath');
+    debugPrint('[ModelLoad] Active emotion model: $activeEmotionModelDebugName');
+    return _EmotionModelSlotResult.ok;
+  }
+
+  Future<void> _initialize() async {
+    // 1) Camera discovery
+    debugPrint('[InitDebug] Camera discovery started');
+    try {
+      _cameras = await availableCameras();
+    } catch (e, st) {
+      debugPrint('[InitDebug] Camera discovery failed: $e\n$st');
+      _failInit(_getText('Camera discovery failed'));
+      return;
+    }
+    if (_cameras.isEmpty) {
+      debugPrint('[InitDebug] Camera discovery: no devices');
+      _failInit(_getText('No camera available'));
+      return;
+    }
+    debugPrint(
+        '[InitDebug] Camera discovery OK (${_cameras.length} device(s))');
+
+    // 2) Camera permission / initialization
+    try {
+      await _initCamera(_currentCameraIndex);
+    } catch (e, st) {
+      debugPrint('[InitDebug] Camera initialize failed: $e\n$st');
+      try {
+        await _controller?.dispose();
+      } catch (_) {}
+      _controller = null;
+      _failInit(_getText('Camera permission or initialization failed'));
+      return;
+    }
+    debugPrint('[InitDebug] Camera initialized OK');
+
+    // 3–5) TFLite emotion model (primary → fallback) then labels + order check
+    final primaryResult = await _tryLoadEmotionModelSlot(
+      assetPath: _kPrimaryModelAsset,
+      slotLogName: 'Primary',
+      activeEmotionModelDebugName: 'EfficientNetB0 Fine-tuned',
+    );
+    if (primaryResult != _EmotionModelSlotResult.ok) {
+      final fallbackResult = await _tryLoadEmotionModelSlot(
+        assetPath: _kFallbackModelAsset,
+        slotLogName: 'Fallback',
+        activeEmotionModelDebugName: 'MobileNetV2 Fallback',
+      );
+      if (fallbackResult != _EmotionModelSlotResult.ok) {
+        if (primaryResult == _EmotionModelSlotResult.tensorFailed &&
+            fallbackResult == _EmotionModelSlotResult.tensorFailed) {
+          _failInit(_getText('Emotion model shape is not supported'));
+        } else {
+          _failInit(_getText('Emotion model failed to load'));
+        }
+        return;
+      }
+    }
+
+    // Labels (after a valid interpreter is chosen)
+    debugPrint('[InitDebug] Loading labels: $_kLabelsAsset');
+    try {
+      final raw = await rootBundle.loadString(_kLabelsAsset);
+      _labels = raw
+          .split('\n')
+          .where((label) => label.trim().isNotEmpty)
+          .map((label) => label.trim())
+          .toList();
+    } catch (e, st) {
+      debugPrint('[InitDebug] Labels load failed: $e\n$st');
+      _interpreter?.close();
+      _interpreter = null;
+      _failInit(_getText('Emotion labels failed to load'));
+      return;
+    }
+    debugPrint('[InitDebug] Labels loaded: $_labels');
+
+    // Tensor contract already verified in _tryLoadEmotionModelSlot.
+    // ── Label-order verification (text file only; do not change labels) ───
+    debugPrint('[EmotionDebug] Loaded labels.txt -> $_labels');
+    const expectedRaw = [
+      'anger',
+      'fear',
+      'joy',
+      'natural',
+      'sadness',
+      'surprise',
+    ];
+    final loadedLower = _labels.map((l) => l.toLowerCase()).toList();
+    final orderOk = loadedLower.length == expectedRaw.length &&
+        List.generate(expectedRaw.length, (i) => loadedLower[i] == expectedRaw[i])
+            .every((ok) => ok);
+    if (orderOk) {
+      debugPrint('[EmotionDebug] ✅ labels.txt matches trained model order '
+          '(Anger, Fear, Joy, Natural, Sadness, Surprise).');
+      debugPrint('[EmotionDebug]    display mapping: $_displayMap');
+    } else {
+      debugPrint('[EmotionDebug] ⚠️ LABEL ORDER WARNING:');
+      debugPrint('[EmotionDebug]   labels.txt order:  $_labels');
+      debugPrint('[EmotionDebug]   expected (from model.pdf): $expectedRaw');
+      debugPrint('[EmotionDebug]   The displayed names may not match what '
+          'the model actually predicts.');
+    }
+
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   void dispose() {
     _controller?.dispose();
@@ -235,77 +409,6 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     _flashController.dispose();
     _breathingController.dispose();
     super.dispose();
-  }
-
-  Future<void> _initialize() async {
-    try {
-      _cameras = await availableCameras();
-      if (_cameras.isEmpty) {
-        setState(() {
-          _errorText = _getText('No camera available');
-          _isLoading = false;
-        });
-        return;
-      }
-      await _initCamera(_currentCameraIndex);
-
-      _interpreter = await Interpreter.fromAsset(
-          'assets/models/emotion_efficientnet_optimized.tflite');
-      _labels = (await rootBundle.loadString('assets/models/labels.txt'))
-          .split('\n')
-          .where((label) => label.trim().isNotEmpty)
-          .map((label) => label.trim())
-          .toList();
-
-      // ── Diagnostic logging (debug builds only) ─────────────────────────────
-      debugPrint('[EmotionDebug] Loaded labels.txt -> $_labels');
-      try {
-        final inDetails = _interpreter!.getInputTensors().first;
-        final outDetails = _interpreter!.getOutputTensors().first;
-        debugPrint('[EmotionDebug] Model input  shape=${inDetails.shape} '
-            'type=${inDetails.type}');
-        debugPrint('[EmotionDebug] Model output shape=${outDetails.shape} '
-            'type=${outDetails.type}');
-      } catch (e) {
-        debugPrint('[EmotionDebug] Could not introspect tensors: $e');
-      }
-
-      // ── Label-order verification ───────────────────────────────────────────
-      // labels.txt MUST equal the trained-model softmax order. The deployed
-      // model (model.pdf, Colab) was trained with:
-      //     [Anger, Fear, Joy, Natural, Sadness, Surprise]
-      // We check that here at runtime so any future drift is caught early.
-      const expectedRaw = ['anger', 'fear', 'joy', 'natural', 'sadness',
-        'surprise'];
-      final loadedLower = _labels.map((l) => l.toLowerCase()).toList();
-      final orderOk = loadedLower.length == expectedRaw.length &&
-          List.generate(expectedRaw.length,
-                  (i) => loadedLower[i] == expectedRaw[i])
-              .every((ok) => ok);
-      if (orderOk) {
-        debugPrint('[EmotionDebug] ✅ labels.txt matches trained model order '
-            '(Anger, Fear, Joy, Natural, Sadness, Surprise).');
-        debugPrint('[EmotionDebug]    display mapping: $_displayMap');
-      } else {
-        debugPrint('[EmotionDebug] ⚠️ LABEL ORDER WARNING:');
-        debugPrint('[EmotionDebug]   labels.txt order:  $_labels');
-        debugPrint('[EmotionDebug]   expected (from model.pdf): $expectedRaw');
-        debugPrint('[EmotionDebug]   The displayed names may not match what '
-            'the model actually predicts.');
-      }
-
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
-    } catch (e, st) {
-      debugPrint('CameraExpressionScreen init failed: $e\n$st');
-      if (mounted) {
-        setState(() {
-          _errorText = _getText('Failed to start camera');
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   Future<void> _initCamera(int cameraIndex) async {
@@ -652,6 +755,21 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
     switch (widget.language) {
       case 'si-LK':
         if (fallback == 'No camera available') return 'කැමරාවක් නැහැ';
+        if (fallback == 'Camera discovery failed') {
+          return 'කැමරාව සොයා ගැනීම අසාර්ථකයි';
+        }
+        if (fallback == 'Camera permission or initialization failed') {
+          return 'කැමරා අවසරය හෝ ආරම්භය අසාර්ථකයි';
+        }
+        if (fallback == 'Emotion model failed to load') {
+          return 'හැඟීම් මොඩලය පූරණය වීම අසාර්ථකයි';
+        }
+        if (fallback == 'Emotion labels failed to load') {
+          return 'හැඟීම් ලේබල් පූරණය වීම අසාර්ථකයි';
+        }
+        if (fallback == 'Emotion model shape is not supported') {
+          return 'හැඟීම් මොඩල් හැඩය සහාය නොදක්වයි';
+        }
         if (fallback == 'Failed to start camera') return 'කැමරාව ආරම්භ වෙන්නේ නැහැ';
         if (fallback == 'Failed to analyze image') return 'විශ්ලේෂණය අසාර්ථකයි';
         if (fallback == 'Unknown') return 'නොදන්නා';
@@ -665,6 +783,21 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
         return fallback;
       case 'ta-IN':
         if (fallback == 'No camera available') return 'கேமரா இல்லை';
+        if (fallback == 'Camera discovery failed') {
+          return 'கேமரா கண்டுபிடிப்பு தோல்வி';
+        }
+        if (fallback == 'Camera permission or initialization failed') {
+          return 'கேமரா அனுமதி அல்லது தொடக்கம் தோல்வி';
+        }
+        if (fallback == 'Emotion model failed to load') {
+          return 'உணர்வு மாதிரி ஏற்ற முடியவில்லை';
+        }
+        if (fallback == 'Emotion labels failed to load') {
+          return 'உணர்வு லேபல்கள் ஏற்ற முடியவில்லை';
+        }
+        if (fallback == 'Emotion model shape is not supported') {
+          return 'உணர்வு மாதிரி வடிவம் ஆதரிக்கப்படவில்லை';
+        }
         if (fallback == 'Failed to start camera') return 'கேமரா துவங்கவில்லை';
         if (fallback == 'Failed to analyze image') return 'ஆய்வு தோல்வி';
         if (fallback == 'Unknown') return 'தெரியாதது';

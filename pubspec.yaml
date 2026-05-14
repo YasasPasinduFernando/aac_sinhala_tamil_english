@@ -79,7 +79,8 @@ flutter:
         - asset: assets/fonts/NotoColorEmoji.ttf
 
   assets:
-    - assets/models/emotion_attention_model.tflite
+    - assets/models/emotion_efficientnetb0_finetuned.tflite
+    - assets/models/emotion_mobilenetv2_fallback.tflite
     - assets/models/labels.txt
 
   # App Icon Configuration
