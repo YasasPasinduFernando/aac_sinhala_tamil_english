@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Global vibration preference + emotion support plans for the camera screen.
 ///
 /// Settings exposes a single **"Vibration On"** toggle (`vibration_enabled`,
-/// default ON). Light haptics use `HapticFeedback.lightImpact` only.
+/// default ON). AAC cards use light impact; main nav (home / arrows) uses
+/// a stronger medium impact when enabled.
 ///
 /// Sound and animation **settings** were removed for simplicity; the camera
 /// support panel still runs its calm animations when the user taps
@@ -46,6 +47,16 @@ class SensoryFeedbackService {
       await HapticFeedback.lightImpact();
     } catch (e, st) {
       debugPrint('SensoryFeedbackService.triggerLightVibrationIfEnabled: $e\n$st');
+    }
+  }
+
+  /// Stronger haptic for bottom home / prev / next navigation circles.
+  static Future<void> triggerMediumVibrationIfEnabled() async {
+    if (!_vibrationEnabled) return;
+    try {
+      await HapticFeedback.mediumImpact();
+    } catch (e, st) {
+      debugPrint('SensoryFeedbackService.triggerMediumVibrationIfEnabled: $e\n$st');
     }
   }
 

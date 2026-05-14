@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -439,6 +441,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Back Button
                 GestureDetector(
                   onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
                     _pageController.previousPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
@@ -467,7 +471,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 // Home Button
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     width: 90,
                     height: 90,
@@ -492,6 +500,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // Next Button
                 GestureDetector(
                   onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
                     _pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,

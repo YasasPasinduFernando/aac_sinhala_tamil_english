@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/sensory_feedback_service.dart';
 import '../../services/storage_service.dart';
 import 'app_theme.dart';
 
@@ -39,38 +43,105 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
     super.dispose();
   }
 
-  String _getGreetingText() {
+  Widget _buildGreetingHeader() {
     switch (widget.language) {
       case 'si-LK':
-        return '👋 ඔබ කවුද?';
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 10, top: 4),
+              child: Text('👋', style: TextStyle(fontSize: 38)),
+            ),
+            Flexible(
+              child: Text(
+                'ඔබ කවුද?',
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        );
       case 'ta-IN':
-        return '👋 நீங்கள் யார்?';
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 10, top: 4),
+              child: Text('👋', style: TextStyle(fontSize: 38)),
+            ),
+            Flexible(
+              child: Text(
+                'நீங்கள் யார்?',
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        );
       case 'en-GB':
-        return '👋 Who Are You?';
       default:
-        return '👋 Who Are You?';
+        return const Text(
+          '👋 Who Are You?',
+          style: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            height: 1.2,
+          ),
+          textAlign: TextAlign.center,
+        );
     }
   }
 
-  String _getSubtitleText() {
+  Widget _buildSubtitle() {
+    final style = const TextStyle(
+      fontSize: 18,
+      color: Colors.white,
+      fontWeight: FontWeight.w500,
+      height: 1.35,
+    );
     switch (widget.language) {
       case 'si-LK':
-        return 'ඔබේ සිතුමම මතකට ගිය වර්ණ තෝරා ගන්න!';
+        return Text(
+          'ඔබට මනාප වන වර්ණයක් තෝරන්න!',
+          style: style,
+          textAlign: TextAlign.center,
+        );
       case 'ta-IN':
-        return 'உங்கள் விருப்பமான வண்ணத் தேர்வு செய்யுங்கள்!';
+        return Text(
+          'உங்கள் விருப்பமான வண்ணத்தைத் தேர்ந்தெடுக்கவும்!',
+          style: style,
+          textAlign: TextAlign.center,
+        );
       case 'en-GB':
-        return 'Choose Your Favourite Colour!';
       default:
-        return 'Choose Your Favourite Colour!';
+        return Text(
+          'Choose your favourite colour!',
+          style: style,
+          textAlign: TextAlign.center,
+        );
     }
   }
 
   String _getGirlText() {
     switch (widget.language) {
       case 'si-LK':
-        return 'ගැහැනු\nළමයා';
+        return 'ගැහැනු ළමයා';
       case 'ta-IN':
-        return 'பெண்\nவள்ளி';
+        return 'பெண் குழந்தை';
       case 'en-GB':
         return 'Girl';
       default:
@@ -81,9 +152,9 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
   String _getBoyText() {
     switch (widget.language) {
       case 'si-LK':
-        return 'පිරිමි\nළමයා';
+        return 'පිරිමි ළමයා';
       case 'ta-IN':
-        return 'ஆண்\nவள்ளி';
+        return 'ஆண் குழந்தை';
       case 'en-GB':
         return 'Boy';
       default:
@@ -92,6 +163,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
   }
 
   void _selectGender(bool isGirl) async {
+    unawaited(SensoryFeedbackService.triggerMediumVibrationIfEnabled());
     final gender = isGirl ? 'girl' : 'boy';
     final prefs = await SharedPreferences.getInstance();
     await StorageService.saveUserData(
@@ -116,61 +188,70 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              ScaleTransition(
-                scale: _animation,
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    _getGreetingText(),
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ScaleTransition(
-                scale: _animation,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    _getSubtitleText(),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ගිරු දරුවු තෝරන බටන්
-                  _buildGenderCard(
-                    emoji: '👧',
-                    title: _getGirlText(),
-                    subtitle: '(Pink Theme)',
-                    isGirl: true,
+                  ScaleTransition(
+                    scale: _animation,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 48, 20, 20),
+                      child: _buildGreetingHeader(),
+                    ),
                   ),
-                  // පිරිමු දරුවු තෝරන බටන්
-                  _buildGenderCard(
-                    emoji: '👦',
-                    title: _getBoyText(),
-                    subtitle: '(Blue Theme)',
-                    isGirl: false,
+                  const SizedBox(height: 20),
+                  ScaleTransition(
+                    scale: _animation,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: _buildSubtitle(),
+                    ),
                   ),
+                  const SizedBox(height: 60),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildGenderCard(
+                        emoji: '👧',
+                        title: _getGirlText(),
+                        subtitle: '(Pink Theme)',
+                        isGirl: true,
+                      ),
+                      _buildGenderCard(
+                        emoji: '👦',
+                        title: _getBoyText(),
+                        subtitle: '(Blue Theme)',
+                        isGirl: false,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 60),
                 ],
               ),
-              const SizedBox(height: 60),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton(
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white.withOpacity(0.95),
+                    size: 26,
+                  ),
+                  tooltip: widget.language == 'si-LK'
+                      ? 'වසන්න'
+                      : widget.language == 'ta-IN'
+                          ? 'மூடு'
+                          : 'Close',
+                  onPressed: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -187,59 +268,57 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen>
     final colors = AppTheme.getThemeColors(isGirl);
     return ScaleTransition(
       scale: _animation,
-      child: GestureDetector(
+      child: ScaleAnimationButton(
         onTap: () => _selectGender(isGirl),
-        child: ScaleAnimationButton(
-          onTap: () => _selectGender(isGirl),
-          child: Container(
-            width: 140,
-            height: 200,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  colors['gradient1']!,
-                  colors['gradient2']!,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+        child: Container(
+          width: 140,
+          height: 200,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                colors['gradient1']!,
+                colors['gradient2']!,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: colors['primary']!.withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 5,
               ),
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: colors['primary']!.withOpacity(0.4),
-                  blurRadius: 15,
-                  spreadRadius: 5,
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                emoji,
+                style: const TextStyle(fontSize: 60),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.25,
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  emoji,
-                  style: const TextStyle(fontSize: 60),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white.withOpacity(0.8),
                 ),
-                const SizedBox(height: 15),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),

@@ -403,7 +403,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   ),
                   const SizedBox(height: 40),
                   GestureDetector(
-                    onTap: _isPinned ? null : () => Navigator.pop(context),
+                    onTap: _isPinned
+                        ? null
+                        : () {
+                            unawaited(
+                                SensoryFeedbackService
+                                    .triggerMediumVibrationIfEnabled());
+                            Navigator.pop(context);
+                          },
                     child: Opacity(
                       opacity: _isPinned ? 0.5 : 1.0,
                       child: Container(
@@ -641,6 +648,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   // Previous Category Button
                   GestureDetector(
                     onTap: () {
+                      unawaited(
+                          SensoryFeedbackService.triggerMediumVibrationIfEnabled());
                       _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
@@ -669,7 +678,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   ),
                   // Home Button (disabled when pinned)
                   GestureDetector(
-                    onTap: _isPinned ? null : () => Navigator.pop(context),
+                    onTap: _isPinned
+                        ? null
+                        : () {
+                            unawaited(
+                                SensoryFeedbackService
+                                    .triggerMediumVibrationIfEnabled());
+                            Navigator.pop(context);
+                          },
                     child: Opacity(
                       opacity: _isPinned ? 0.5 : 1.0,
                       child: Container(
@@ -698,6 +714,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   // Next Category Button
                   GestureDetector(
                     onTap: () {
+                      unawaited(
+                          SensoryFeedbackService.triggerMediumVibrationIfEnabled());
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,

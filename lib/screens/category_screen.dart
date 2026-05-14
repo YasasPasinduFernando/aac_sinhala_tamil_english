@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/sensory_feedback_service.dart';
 import 'theme/app_theme.dart';
 import 'theme/aac_word_card_widget.dart';
 
@@ -108,10 +112,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Dialog(
+      builder: (dialogContext) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         child: Container(
-          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [colors['gradient1']!, colors['gradient2']!],
@@ -120,9 +123,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             borderRadius: BorderRadius.circular(30),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
               // Cute avatar
               Container(
                 width: 100,
@@ -147,19 +155,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
               const SizedBox(height: 20),
               // Question
-              Text(
-                widget.language == 'si-LK'
-                    ? '👋 ඔයාගේ නම මොකද්ද?'
-                    : widget.language == 'ta-IN'
-                        ? '👋 உங்கள் பெயர் என்ன?'
-                        : '👋 What is your name?',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              widget.language == 'si-LK'
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 8, top: 2),
+                          child: Text('👋', style: TextStyle(fontSize: 26)),
+                        ),
+                        Flexible(
+                          child: Text(
+                            'ඔයාගේ නම මොකක්ද?',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.25,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      widget.language == 'ta-IN'
+                          ? '👋 உங்கள் பெயர் என்ன?'
+                          : '👋 What is your name?',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.25,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
               const SizedBox(height: 24),
               // Input field
               Container(
@@ -204,12 +234,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 onTap: () {
                   final name = nameController.text.trim();
                   if (name.isNotEmpty) {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
                     setState(() {
                       userName = name;
                       hasAskedName = true;
                     });
                     _saveUserName(name);
-                    Navigator.pop(context);
+                    Navigator.pop(dialogContext);
 
                     final greeting = widget.language == 'si-LK'
                         ? 'හෙලෝ $name'
@@ -258,6 +290,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       ),
                     ],
                   ),
+                ),
+              ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton(
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white.withOpacity(0.95),
+                    size: 26,
+                  ),
+                  tooltip: widget.language == 'si-LK'
+                      ? 'වසන්න'
+                      : widget.language == 'ta-IN'
+                          ? 'மூடு'
+                          : 'Close',
+                  onPressed: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    Navigator.pop(dialogContext);
+                    setState(() => hasAskedName = true);
+                  },
                 ),
               ),
             ],
@@ -623,7 +682,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
               children: [
                 // Previous Category Button (Blue Circle)
                 GestureDetector(
-                  onTap: () => _navigateToCategory(-1),
+                  onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    _navigateToCategory(-1);
+                  },
                   child: Container(
                     width: 70,
                     height: 70,
@@ -647,7 +710,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 // Home Button (Large Red Circle)
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     width: 90,
                     height: 90,
@@ -671,7 +738,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 // Next Category Button (Blue Circle)
                 GestureDetector(
-                  onTap: () => _navigateToCategory(1),
+                  onTap: () {
+                    unawaited(
+                        SensoryFeedbackService.triggerMediumVibrationIfEnabled());
+                    _navigateToCategory(1);
+                  },
                   child: Container(
                     width: 70,
                     height: 70,
