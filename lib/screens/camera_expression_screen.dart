@@ -23,6 +23,12 @@ enum _EmotionModelSlotResult { ok, loadFailed, tensorFailed }
 /// Which `.tflite` to load (saved in SharedPreferences).
 enum _EmotionModelLoadMode { auto, primaryOnly, fallbackOnly }
 
+/// Soft shadow for white text/icons over the live camera preview.
+const List<Shadow> _kCameraOverlayShadows = [
+  Shadow(offset: Offset(0, 1), blurRadius: 4, color: Color(0x99000000)),
+  Shadow(offset: Offset(0, 0), blurRadius: 10, color: Color(0x55000000)),
+];
+
 class CameraExpressionScreen extends StatefulWidget {
   final String language;
   final bool isGirl;
@@ -1004,6 +1010,22 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+            shadows: _kCameraOverlayShadows,
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.38),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
           title: Text(
             widget.language == 'si-LK'
                 ? 'චායාරූපයෙන් හැඟීම්'
@@ -1011,14 +1033,9 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
                     ? 'புகைப்பட உணர்வு'
                     : 'Emotion Camera',
             style: const TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  offset: Offset(0, 1),
-                  blurRadius: 3.0,
-                  color: Colors.black26,
-                ),
-              ],
+              shadows: _kCameraOverlayShadows,
             ),
           ),
           actions: [
@@ -1032,6 +1049,7 @@ class _CameraExpressionScreenState extends State<CameraExpressionScreen>
               icon: Icon(
                 _showDebugProbs ? Icons.bug_report : Icons.bug_report_outlined,
                 color: _showDebugProbs ? Colors.amberAccent : Colors.white,
+                shadows: _kCameraOverlayShadows,
               ),
               onPressed: () {
                 setState(() => _showDebugProbs = !_showDebugProbs);
@@ -1915,11 +1933,18 @@ class _ControlButton extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.black.withOpacity(0.32),
         border: Border.all(
-          color: Colors.white.withOpacity(0.5),
+          color: Colors.white.withOpacity(0.65),
           width: 2,
         ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x66000000),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: IconButton(
         onPressed: onPressed,
@@ -1927,6 +1952,7 @@ class _ControlButton extends StatelessWidget {
           icon,
           color: Colors.white,
           size: size * 0.4,
+          shadows: _kCameraOverlayShadows,
         ),
       ),
     );

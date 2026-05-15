@@ -8,9 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// default ON). AAC cards use light impact; main nav (home / arrows) uses
 /// a stronger medium impact when enabled.
 ///
-/// Sound and animation **settings** were removed for simplicity; the camera
-/// support panel still runs its calm animations when the user taps
-/// "Play support" (no user-facing animation toggle).
+/// Camera support copy describes **audio/sound only** (no animation wording).
+/// The support panel may still show a calm visual when "Play support" is tapped.
 class SensoryFeedbackService {
   static const String _kVibrationKey = 'vibration_enabled';
   /// Older builds stored this key from the previous sensory settings card.
@@ -69,9 +68,9 @@ class SensoryFeedbackService {
       case 'happy':
         return const SensorySupportPlan(
           emotion: 'Happy',
-          actionEn: 'Celebrate with a soft chime and a gentle happy animation.',
-          actionSi: 'සැහැල්ලු සිනා ශබ්දයකින් සහ සතුටු සංදර්ශනයකින් සැමරුම.',
-          actionTa: 'மென்மையான மணியோசை மற்றும் மகிழ்ச்சி அசைவு.',
+          actionEn: 'Celebrate with a soft happy support sound.',
+          actionSi: 'සතුට ප්‍රකාශ කිරීමට මෘදු සහායක ශබ්දයක් වාදනය කරන්න.',
+          actionTa: 'மகிழ்ச்சியை வெளிப்படுத்த மென்மையான ஆதரவு ஒலியை இயக்குங்கள்.',
           animation: SupportAnimation.positivePulse,
           hapticPattern: HapticPattern.light,
           soundTone: SupportSoundTone.none,
@@ -80,9 +79,9 @@ class SensoryFeedbackService {
       case 'sad':
         return const SensorySupportPlan(
           emotion: 'Sad',
-          actionEn: 'Play a slow calming breathing animation and a soft comforting tone.',
-          actionSi: 'සන්සුන් හුස්ම ගැනීමේ සංදර්ශනය සහ සැහැල්ලු සහනකාරී හඬ.',
-          actionTa: 'அமைதியான மூச்சு அசைவு மற்றும் மென்மையான ஆறுதல் ஓசை.',
+          actionEn: 'Play a gentle comforting support sound.',
+          actionSi: 'සැනසීමට මෘදු සහායක ශබ්දයක් වාදනය කරන්න.',
+          actionTa: 'ஆறுதல் அளிக்க மென்மையான ஆதரவு ஒலியை இயக்குங்கள்.',
           animation: SupportAnimation.calmBreathing,
           hapticPattern: HapticPattern.light,
           soundTone: SupportSoundTone.none,
@@ -91,9 +90,9 @@ class SensoryFeedbackService {
       case 'angry':
         return const SensorySupportPlan(
           emotion: 'Angry',
-          actionEn: 'Guide a slow breathing animation and play a low calming tone.',
-          actionSi: 'මන්දගාමී හුස්ම ගැනීමේ සංදර්ශනය සහ සන්සුන් හඬ.',
-          actionTa: 'மெதுவான மூச்சு அசைவு மற்றும் அமைதியான ஓசை.',
+          actionEn: 'Use a calm support sound to help the child settle.',
+          actionSi: 'සන්සුන් වීමට මෘදු සහායක ශබ්දයක් වාදනය කරන්න.',
+          actionTa: 'அமைதியாக உதவ மென்மையான ஆதரவு ஒலியை இயக்குங்கள்.',
           animation: SupportAnimation.calmBreathing,
           hapticPattern: HapticPattern.light,
           soundTone: SupportSoundTone.none,
@@ -102,9 +101,9 @@ class SensoryFeedbackService {
       case 'fear':
         return const SensorySupportPlan(
           emotion: 'Fear',
-          actionEn: 'Show a safe-space animation. The caregiver may want to comfort the child.',
-          actionSi: 'ආරක්ෂිත සංදර්ශනය. රැකබලාගන්නා කෙනා දරුවාට සැනසීම සැපයීම සුදුසුයි.',
-          actionTa: 'பாதுகாப்பான அசைவு. பராமரிப்பாளர் ஆறுதல் வழங்கலாம்.',
+          actionEn: 'Play a soft reassuring support sound.',
+          actionSi: 'භය අඩු කිරීමට මෘදු සහායක ශබ්දයක් වාදනය කරන්න.',
+          actionTa: 'பயத்தை குறைக்க மென்மையான ஆதரவு ஒலியை இயக்குங்கள்.',
           animation: SupportAnimation.calmBreathing,
           hapticPattern: HapticPattern.light,
           soundTone: SupportSoundTone.none,
@@ -113,9 +112,9 @@ class SensoryFeedbackService {
       case 'surprise':
         return const SensorySupportPlan(
           emotion: 'Surprise',
-          actionEn: 'Acknowledge the surprise with a slow calming animation.',
-          actionSi: 'හදිසි ප්‍රතික්‍රියාව සන්සුන් සංදර්ශනයකින් පිළිගන්න.',
-          actionTa: 'அதிர்ச்சியை அமைதியான அசைவுடன் ஏற்றுக்கொள்ளுங்கள்.',
+          actionEn: 'Play a gentle attention sound.',
+          actionSi: 'අවධානය යොමු කිරීමට මෘදු සහායක ශබ්දයක් වාදනය කරන්න.',
+          actionTa: 'கவனத்தை ஈர்க்க மென்மையான ஆதரவு ஒலியை இயக்குங்கள்.',
           animation: SupportAnimation.calmBreathing,
           hapticPattern: HapticPattern.light,
           soundTone: SupportSoundTone.none,
