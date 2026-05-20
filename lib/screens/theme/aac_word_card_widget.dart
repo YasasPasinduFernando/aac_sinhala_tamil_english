@@ -74,6 +74,19 @@ class _AacWordCardState extends State<AacWordCard>
     _controller.reverse();
   }
 
+  String _speakButtonLabel() {
+    switch (widget.language) {
+      case 'si-LK':
+        return 'කියන්න';
+      case 'ta-IN':
+        return 'பேசு';
+      case 'en-GB':
+        return 'Speak';
+      default:
+        return 'Speak';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = AppTheme.getThemeColors(widget.isGirl);
@@ -157,7 +170,7 @@ class _AacWordCardState extends State<AacWordCard>
                             children: [
                               _buildActionButton(
                                 icon: Icons.volume_up,
-                                label: 'කතා කරන්න',
+                                label: _speakButtonLabel(),
                                 color: colors['primary']!,
                                 onTap: widget.onSpeak,
                               ),
